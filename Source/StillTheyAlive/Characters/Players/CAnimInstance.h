@@ -27,4 +27,5 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) float Speed;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) float Direction;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) EActionType ActionType;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere) bool IsFalling;
 };

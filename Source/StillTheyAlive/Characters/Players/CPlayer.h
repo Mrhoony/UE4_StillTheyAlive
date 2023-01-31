@@ -36,6 +36,7 @@ private:
 	void OnHorizontalLook(float InAxis);
 	void OnVerticalLook(float InAxis);
 	void OnZoom(float InAxis);
+	void OnJump();
 
 // -------------------------------------------------------
 // Variables

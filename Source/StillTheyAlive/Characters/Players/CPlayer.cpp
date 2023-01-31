@@ -51,7 +51,7 @@ ACPlayer::ACPlayer()
 // -------------------------------------------------------
 void ACPlayer::BeginPlay()
 {
-	Super::BeginPlay();	
+	Super::BeginPlay();
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -71,6 +71,8 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis("HorizontalLook", this, &ACPlayer::OnHorizontalLook);
 	PlayerInputComponent->BindAxis("VerticalLook", this, &ACPlayer::OnVerticalLook);
 	PlayerInputComponent->BindAxis("Zoom", this, &ACPlayer::OnZoom);
+
+	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACPlayer::OnJump);
 }
 
 void ACPlayer::OnMoveForward(float InAxis)
@@ -109,4 +111,9 @@ void ACPlayer::OnZoom(float InAxis)
 {
 	SpringArm->TargetArmLength += Option->GetZoomSpeed() * InAxis * GetWorld()->GetDeltaSeconds();
 	SpringArm->TargetArmLength = FMath::Clamp(SpringArm->TargetArmLength, Option->GetZoomRange().X, Option->GetZoomRange().Y);
+}
+
+void ACPlayer::OnJump()
+{
+	this->Jump();
 }
