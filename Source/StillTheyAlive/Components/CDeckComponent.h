@@ -4,21 +4,25 @@
 #include "Components/ActorComponent.h"
 #include "CDeckComponent.generated.h"
 
-
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class STILLTHEYALIVE_API UCDeckComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	UCDeckComponent();
+
+	//void AddPerkInfo(FPerkInfo InPerkInfo);
 
 protected:
 	virtual void BeginPlay() override;
-
+	
+// -------------------------------------------------------
+// Variables
+// -------------------------------------------------------
 public:
-
-	//void AddPerkInfo(FPerkInfo InPerkInfo);
+	
+protected:
 
 private:
 	//class FPerkInfo* PerkInfo[9];

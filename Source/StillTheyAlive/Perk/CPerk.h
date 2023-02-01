@@ -72,12 +72,7 @@ public:
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE bool IsPerkTrinket() { return Type == EPerkType::Trinket; }
 	
-
-
 public:
-
 	UPROPERTY(EditDefaultsOnly)
-	EPerkType Type;
-
-
+		EPerkType Type;
 };
