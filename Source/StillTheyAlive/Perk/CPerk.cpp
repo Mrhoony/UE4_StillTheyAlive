@@ -2,13 +2,11 @@
 
 ACPerk::ACPerk()
 {
-
 }
 
 void ACPerk::BeginPlay()
 {
-	Super::BeginPlay();
-	
+	Super::BeginPlay();	
 }
 
 void ACPerk::L_Action()
@@ -58,4 +56,3 @@ void ACPerk::ChangeType(EPerkType InType)
 {
 	Type = InType;
 }
-
