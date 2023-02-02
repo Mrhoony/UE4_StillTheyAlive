@@ -30,11 +30,12 @@ UCLASS()
 class STILLTHEYALIVE_API UCDT_Weapon : public UDataTable
 {
 	GENERATED_BODY()
+
 	
 public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		FWeaponData WeaponData;
-	
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "DataTable")
 		UDataTable* DataTable;

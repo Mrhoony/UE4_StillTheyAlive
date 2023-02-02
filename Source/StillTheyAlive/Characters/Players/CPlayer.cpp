@@ -1,9 +1,8 @@
 #include "CPlayer.h"
 #include "Global.h"
-
 #include "Components/CStatusComponent.h"
 #include "Components/COptionComponent.h"
-
+#include "Components/CDeckComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
@@ -19,6 +18,7 @@ ACPlayer::ACPlayer()
 	// Create ActorComponent
 	CHelpers::CreateActorComponent(this, &Status, "Status");
 	CHelpers::CreateActorComponent(this, &Option, "Option");
+	CHelpers::CreateActorComponent(this, &Deck, "Deck");
 
 	// Component Settings
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -88));

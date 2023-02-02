@@ -5,6 +5,9 @@
 #include "CDeckComponent.generated.h"
 
 
+
+
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class STILLTHEYALIVE_API UCDeckComponent : public UActorComponent
 {
@@ -16,10 +19,5 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-public:
 
-	//void AddPerkInfo(FPerkInfo InPerkInfo);
-
-private:
-	//class FPerkInfo* PerkInfo[9];
 };

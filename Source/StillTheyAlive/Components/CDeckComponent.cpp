@@ -1,5 +1,5 @@
 #include "CDeckComponent.h"
-#include "Perk/CPerk.h"
+
 
 UCDeckComponent::UCDeckComponent()
 {
@@ -13,9 +13,9 @@ void UCDeckComponent::BeginPlay()
 
 	
 }
-
-//void UCDeckComponent::AddPerkInfo(FPerkInfo InPerkInfo)
+//
+//void UCDeckComponent::AddPerk(FPerkInfo InPerk)
 //{
-//	
+//	if (DeckPerk.Num() < 9)
+//		DeckPerk.Add(InPerk);
 //}
-

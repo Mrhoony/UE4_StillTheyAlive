@@ -16,12 +16,15 @@ class STILLTHEYALIVE_API ACWeapon : public ACPerk
 	GENERATED_BODY()
 
 public:
-	ACWeapon();
-
+	ACWeapon();	
+	
 public:
 	virtual void L_Action() override;
-	
+
 public:
 	UPROPERTY(EditDefaultsOnly)
 	EWeaponType WeaponType;
+
+
+	float Damage = 5.f;
 };
