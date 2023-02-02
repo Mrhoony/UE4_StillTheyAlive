@@ -4,13 +4,6 @@
 #include "Components/ActorComponent.h"
 #include "CDeckComponent.generated.h"
 
-<<<<<<< HEAD
-
-
-
-
-=======
->>>>>>> dev
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class STILLTHEYALIVE_API UCDeckComponent : public UActorComponent
 {
@@ -23,10 +16,6 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-<<<<<<< HEAD
-
-
-=======
 	
 // -------------------------------------------------------
 // Variables
@@ -37,5 +26,4 @@ protected:
 
 private:
 	//class FPerkInfo* PerkInfo[9];
->>>>>>> dev
 };
