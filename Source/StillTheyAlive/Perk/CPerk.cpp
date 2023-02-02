@@ -1,12 +1,24 @@
 #include "CPerk.h"
+#include "Engine/Texture2D.h"
+#include "Global.h"
+#include "Components/CActionComponent.h"
+#include "Components/CStatusComponent.h"
 
 ACPerk::ACPerk()
 {
+<<<<<<< HEAD
+	
+=======
+>>>>>>> dev
 }
 
 void ACPerk::BeginPlay()
 {
+<<<<<<< HEAD
+	Super::BeginPlay();
+=======
 	Super::BeginPlay();	
+>>>>>>> dev
 }
 
 void ACPerk::L_Action()
