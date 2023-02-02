@@ -1,8 +1,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Engine/Texture2D.h"
 #include "GameFramework/Actor.h"
+#include "Components/CDeckComponent.h"
 #include "CPerk.generated.h"
 
 USTRUCT(BlueprintType)
@@ -11,13 +11,10 @@ struct FPerkInfo
 	GENERATED_BODY()
 
 public:
-		UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere)
 		class UTexture2D* PerkImage;
 
-	/*	UPROPERTY(EditAnywhere)
-		class UText* PerkInfo;*/
-
-		UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ACPerk> PerkClass;
 };
 
@@ -34,9 +31,13 @@ class STILLTHEYALIVE_API ACPerk : public AActor
 	
 public:	
 	ACPerk();
-
+	
 protected:
 	virtual void BeginPlay() override;
+
+
+public:
+
 
 public:
 	UFUNCTION()
@@ -74,5 +75,16 @@ public:
 	
 public:
 	UPROPERTY(EditDefaultsOnly)
+<<<<<<< HEAD
+	EPerkType Type;
+
+protected:
+	UPROPERTY(BlueprintReadOnly)
+		class ACharacter* OwnerCharacter;
+
+private:
+	class UCDeckComponent* Deck;
+=======
 		EPerkType Type;
+>>>>>>> dev
 };

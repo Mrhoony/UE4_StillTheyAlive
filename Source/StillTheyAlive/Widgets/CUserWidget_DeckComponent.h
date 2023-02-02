@@ -9,6 +9,9 @@
 //{
 //	GENERATED_BODY()
 //	
+<<<<<<< HEAD
+=======
 //public:
 //	UCUserWidget_DeckComponent() = default;
+>>>>>>> dev
 //};
