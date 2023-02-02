@@ -9,12 +9,7 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
-<<<<<<< HEAD
 				"Engine"
-=======
-				"Engine",
-				"CoreUObject"
->>>>>>> dev
 			]
 		}
 	]
