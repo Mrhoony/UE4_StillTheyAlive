@@ -1,5 +1,3 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 using UnrealBuildTool;
 
 public class StillTheyAlive : ModuleRules
@@ -10,6 +8,6 @@ public class StillTheyAlive : ModuleRules
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 
-		PublicIncludePaths.Add(ModuleDirectory); //포함디렉토리
+		PublicIncludePaths.Add(ModuleDirectory);
 	}
 }
