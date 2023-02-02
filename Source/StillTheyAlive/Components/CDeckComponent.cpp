@@ -1,9 +1,5 @@
 #include "CDeckComponent.h"
-<<<<<<< HEAD
-
-=======
 #include "Global.h"
->>>>>>> dev
 
 UCDeckComponent::UCDeckComponent()
 {	

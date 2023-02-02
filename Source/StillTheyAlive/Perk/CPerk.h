@@ -21,7 +21,7 @@ public:
 UENUM(BlueprintType)
 enum class EPerkType : uint8
 {
-	Unarmed,Weapon,Trap,Spawn,Trinket,Max
+	Unarmed, Weapon, Trap, Spawn, Trinket, Max
 };
 
 UCLASS()
@@ -75,8 +75,7 @@ public:
 	
 public:
 	UPROPERTY(EditDefaultsOnly)
-<<<<<<< HEAD
-	EPerkType Type;
+		EPerkType Type;
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
@@ -84,7 +83,4 @@ protected:
 
 private:
 	class UCDeckComponent* Deck;
-=======
-		EPerkType Type;
->>>>>>> dev
 };
