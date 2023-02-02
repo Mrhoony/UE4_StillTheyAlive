@@ -1,4 +1,5 @@
 #include "CWeapon.h"
+#include "Global.h"
 
 ACWeapon::ACWeapon()
 {
@@ -7,5 +8,5 @@ ACWeapon::ACWeapon()
 
 void ACWeapon::L_Action()
 {
-
+	CLog::Log("Hi");
 }
