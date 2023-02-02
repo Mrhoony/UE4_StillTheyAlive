@@ -74,6 +74,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis("Zoom", this, &ACPlayer::OnZoom);
 
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACPlayer::OnJump);
+	PlayerInputComponent->BindAction("Action", EInputEvent::IE_Pressed, this, &ACPlayer::DoAction);
 }
 
 void ACPlayer::OnMoveForward(float InAxis)
@@ -117,4 +118,9 @@ void ACPlayer::OnZoom(float InAxis)
 void ACPlayer::OnJump()
 {
 	this->Jump();
+}
+
+void ACPlayer::DoAction()
+{
+	Deck->PerkAction();
 }
