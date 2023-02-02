@@ -73,10 +73,9 @@ public:
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE bool IsPerkTrinket() { return Type == EPerkType::Trinket; }
 	
-
-
 public:
 	UPROPERTY(EditDefaultsOnly)
+<<<<<<< HEAD
 	EPerkType Type;
 
 protected:
@@ -85,4 +84,7 @@ protected:
 
 private:
 	class UCDeckComponent* Deck;
+=======
+		EPerkType Type;
+>>>>>>> dev
 };

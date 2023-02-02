@@ -6,12 +6,19 @@
 
 ACPerk::ACPerk()
 {
+<<<<<<< HEAD
 	
+=======
+>>>>>>> dev
 }
 
 void ACPerk::BeginPlay()
 {
+<<<<<<< HEAD
 	Super::BeginPlay();
+=======
+	Super::BeginPlay();	
+>>>>>>> dev
 }
 
 void ACPerk::L_Action()
@@ -61,4 +68,3 @@ void ACPerk::ChangeType(EPerkType InType)
 {
 	Type = InType;
 }
-
