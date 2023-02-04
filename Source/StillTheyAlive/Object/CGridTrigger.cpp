@@ -39,6 +39,7 @@ void ACGridTrigger::BeginPlay()
 		if (!GetWorld()) return;
 		
 		GridClass.Emplace(Cast<ACGridSection>(GetWorld()->SpawnActor(ACGridSection::StaticClass(), &gridTransform)));
+		GridClass.Top()->SetScale(0.1f);
 	}
 }
 

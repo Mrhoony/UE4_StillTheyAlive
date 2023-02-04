@@ -31,12 +31,8 @@ void ACGridSection::BeginPlay()
 	Mesh->SetMaterial(0, DynamicMaterial);
 }
 
-void ACGridSection::SetbuildTrue()
+void ACGridSection::SetScale(float scale)
 {
-	bCanBuild = true;
-}
-
-void ACGridSection::SetbuildFalse()
-{
-	bCanBuild = false;
+	Scale = FVector(scale);
+	Mesh->SetRelativeScale3D(Scale);
 }
