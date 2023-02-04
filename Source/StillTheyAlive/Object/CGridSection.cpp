@@ -23,7 +23,7 @@ void ACGridSection::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	UObject* obj = StaticLoadObject(UMaterialInstanceConstant::StaticClass(), nullptr, TEXT("MaterialInstanceConstant'/Game/Material/MAT_Demo_Inst.MAT_Demo_Inst'"));
+	UObject* obj = StaticLoadObject(UMaterialInstanceConstant::StaticClass(), nullptr, TEXT("MaterialInstanceConstant'/Game/Material/MAT_Base_Inst.MAT_Base_Inst'"));
 	UMaterialInstanceConstant* materialInstance = Cast<UMaterialInstanceConstant>(obj);
 	if (!materialInstance) return;
 	
