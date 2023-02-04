@@ -21,9 +21,14 @@ protected:
 // Variables
 // -------------------------------------------------------
 public:
-	
+	void PerkAction();
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Perk")
+		TSubclassOf<class ACPerk> PerkClass;
+
 protected:
 
 private:
+	TArray<class ACPerk*> Perk;
 	//class FPerkInfo* PerkInfo[9];
 };
