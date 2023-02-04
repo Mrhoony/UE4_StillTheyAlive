@@ -14,9 +14,10 @@ public:
 	ACGridSection();
 
 	FORCEINLINE bool IsCanbuild() { return bCanBuild; }
-	void SetbuildTrue();
-	void SetbuildFalse();
+	FORCEINLINE void SetbuildTrue() { bCanBuild = true; }
+	FORCEINLINE void SetbuildFalse() { bCanBuild = false; }
 
+	void SetScale(float scale);
 protected:
 	virtual void BeginPlay() override;
 
@@ -32,4 +33,5 @@ private:
 
 private:
 	bool bCanBuild;
+	FVector Scale;
 };

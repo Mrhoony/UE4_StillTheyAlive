@@ -23,7 +23,7 @@ void ACGridSection::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	UObject* obj = StaticLoadObject(UMaterialInstanceConstant::StaticClass(), nullptr, TEXT("MaterialInstanceConstant'/Game/Material/MAT_Demo_Inst.MAT_Demo_Inst'"));
+	UObject* obj = StaticLoadObject(UMaterialInstanceConstant::StaticClass(), nullptr, TEXT("MaterialInstanceConstant'/Game/Material/MAT_Base_Inst.MAT_Base_Inst'"));
 	UMaterialInstanceConstant* materialInstance = Cast<UMaterialInstanceConstant>(obj);
 	if (!materialInstance) return;
 	
@@ -31,12 +31,8 @@ void ACGridSection::BeginPlay()
 	Mesh->SetMaterial(0, DynamicMaterial);
 }
 
-void ACGridSection::SetbuildTrue()
+void ACGridSection::SetScale(float scale)
 {
-	bCanBuild = true;
-}
-
-void ACGridSection::SetbuildFalse()
-{
-	bCanBuild = false;
+	Scale = FVector(scale);
+	Mesh->SetRelativeScale3D(Scale);
 }
