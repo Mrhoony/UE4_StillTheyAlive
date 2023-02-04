@@ -4,7 +4,6 @@
 #include "Components/ActorComponent.h"
 #include "CStatusComponent.generated.h"
 
-
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class STILLTHEYALIVE_API UCStatusComponent : public UActorComponent
 {
@@ -13,9 +12,20 @@ class STILLTHEYALIVE_API UCStatusComponent : public UActorComponent
 public:	
 	UCStatusComponent();
 
+	
+//=======================================================
+// [Blueprint]
+//=======================================================
 protected:
 	virtual void BeginPlay() override;
 
+private:
+	UFUNCTION(BlueprintCallable)
+		void CreateStatusWidget();
+
+//=======================================================
+// [CPPOnly]
+//=======================================================
 public:
 	FORCEINLINE float GetSneakSpeed() { return SneakSpeed; }
 	FORCEINLINE float GetWalkSpeed() { return WalkSpeed; }
@@ -25,14 +35,21 @@ public:
 	void SetMove();
 	void SetStop();
 
-// -------------------------------------------------------
-// Variables
-// -------------------------------------------------------
+	void IncreaseHealth(float InAmount);
+	void DecreaseHealth(float InAmount);
+
+//=======================================================
+// [Variables]
+//=======================================================
 private:
-	UPROPERTY(EditAnywhere, Category = "Speed") float SneakSpeed = 200;
-	UPROPERTY(EditAnywhere, Category = "Speed")	float WalkSpeed = 400;
-	UPROPERTY(EditAnywhere, Category = "Speed")	float RunSpeed = 600;
+	UPROPERTY(EditAnywhere, Category = "Speed")		float SneakSpeed = 200;
+	UPROPERTY(EditAnywhere, Category = "Speed")		float WalkSpeed = 400;
+	UPROPERTY(EditAnywhere, Category = "Speed")		float RunSpeed = 600;
+	UPROPERTY(EditAnywhere, Category = "Health")	float MaxHealth = 100;
 
 private:
 	bool bCanMove = true;
+	float Health;
+	TSubclassOf<class UCUserWidget_PlayerStatus> WidgetClass;
+	class UCUserWidget_PlayerStatus* Widget;
 };
