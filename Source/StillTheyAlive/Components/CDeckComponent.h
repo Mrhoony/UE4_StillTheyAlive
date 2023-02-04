@@ -12,23 +12,21 @@ class STILLTHEYALIVE_API UCDeckComponent : public UActorComponent
 public:
 	UCDeckComponent();
 
-	//void AddPerkInfo(FPerkInfo InPerkInfo);
-
 protected:
 	virtual void BeginPlay() override;
 	
-// -------------------------------------------------------
-// Variables
-// -------------------------------------------------------
 public:
 	void PerkAction();
+	void SetCurrentPerk(int index);
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Perk")
-		TSubclassOf<class ACPerk> PerkClass;
-
-protected:
+//=======================================================
+// [Variables]
+//=======================================================
+public:
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Perk")	TSubclassOf<class ACPerk> PerkClass;
 
 private:
-	TArray<class ACPerk*> Perk;
+	TArray<class ACPerk*> Perks;
+	class ACPerk* CurrentPerk;
 	//class FPerkInfo* PerkInfo[9];
 };
