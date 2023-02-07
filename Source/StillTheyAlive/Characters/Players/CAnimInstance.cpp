@@ -11,10 +11,10 @@ void UCAnimInstance::NativeBeginPlay()
 	ACharacter* character = Cast<ACharacter>(TryGetPawnOwner());
 	CheckNull(character);
 
-	UCActionComponent* action = CHelpers::GetComponent<UCActionComponent>(character);
-	CheckNull(action);
+	//UCActionComponent* action = CHelpers::GetComponent<UCActionComponent>(character);
+	//CheckNull(action);
 
-	action->OnActionTypeChanged.AddDynamic(this, &UCAnimInstance::OnActionTypeChanged);
+//	action->OnActionTypeChanged.AddDynamic(this, &UCAnimInstance::OnActionTypeChanged);
 }
 
 void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -29,7 +29,7 @@ void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	IsFalling = character->GetCharacterMovement()->IsFalling();
 }
 
-void UCAnimInstance::OnActionTypeChanged(EActionType InPrevType, EActionType InNewType)
-{
-	ActionType = InNewType;
-}
+//void UCAnimInstance::OnActionTypeChanged(EActionType InPrevType, EActionType InNewType)
+//{
+//	ActionType = InNewType;
+//}
