@@ -27,24 +27,25 @@ private:
 // [Variables]
 //=======================================================
 private:
-	FString Name;
-	FString Description;
-	ETrapType TrapType;
-	int32 BuyPrice;
-	int32 BuildCost;
-	float MaxMana = 100.0f;
-	float CurMana;
-	float NeedMana = 30.0f;
-	float BaseDamage;
-	float FinalDamage;
+	FString Name;			// 이름
+	FString Description;	// 설명
+	ETrapType TrapType;		// 타입
+	int32 BuyPrice;			// 상점에서 구매할때 가격
+	int32 BuildCost;		// 지을때 가격
+	float MaxMana = 100.0f;	// 공격을 하기위한 자원의 맥스
+	float CurMana;			// 현재 자원량
+	float NeedMana = 30.0f;	// 공격시 필요한 자원량
+	float BaseDamage;		// 데이터테이블에서 읽어올 기본 공격력
+	float AddedDamage;		// 업그레이드나 상태이상에 따른 추가 공격력
+	float FinalDamage;		// base + added
 
 	// 구현 예정
-	//FString Upgrade;
-	//int32 Upgrade1Cost;
-	//int32 Upgrade2Cost;
+	//FString Upgrade;		// 업그레이드 이름
+	//int32 Upgrade1Cost;	// 1레벨가격
+	//int32 Upgrade2Cost;	// 2레벨가격
 	//int32 Upgrade3Cost;
-	//FString Unique1;
-	//FString Unique2;
-	//int32 UniqueCost;
-	//bool HasUnique;
+	//FString Unique1;		// 특성 이름
+	//FString Unique2;		//
+	//int32 UniqueCost;		// 특성 가격
+	//bool HasUnique;		// 특성을 샀는지 / 안샀는지
 };

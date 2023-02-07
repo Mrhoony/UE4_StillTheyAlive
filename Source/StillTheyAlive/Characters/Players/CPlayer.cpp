@@ -3,7 +3,6 @@
 #include "Components/CStatusComponent.h"
 #include "Components/COptionComponent.h"
 #include "Components/CDeckComponent.h"
-
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
@@ -121,13 +120,15 @@ void ACPlayer::OnZoom(float InAxis)
 void ACPlayer::OnJump() { this->Jump(); }
 void ACPlayer::DoAction() { Deck->PerkAction(); }
 
-void ACPlayer::SelectDeck1() { Deck->SetCurrentPerk(1); }
-void ACPlayer::SelectDeck2() { Deck->SetCurrentPerk(2); }
-void ACPlayer::SelectDeck3() { Deck->SetCurrentPerk(3); }
-void ACPlayer::SelectDeck4() { Deck->SetCurrentPerk(4); }
-void ACPlayer::SelectDeck5() { Deck->SetCurrentPerk(5); }
-void ACPlayer::SelectDeck6() { Deck->SetCurrentPerk(6); }
-void ACPlayer::SelectDeck7() { Deck->SetCurrentPerk(7); }
-void ACPlayer::SelectDeck8() { Deck->SetCurrentPerk(8); }
-void ACPlayer::SelectDeck9() { Deck->SetCurrentPerk(9); }
-void ACPlayer::SelectDeck0() { Deck->SetCurrentPerk(0); }
+void ACPlayer::SelectDeck1() { Deck->SetCurrentPerk(0); }
+void ACPlayer::SelectDeck2() { Deck->SetCurrentPerk(1); }
+void ACPlayer::SelectDeck3() { Deck->SetCurrentPerk(2); }
+void ACPlayer::SelectDeck4() { Deck->SetCurrentPerk(3); }
+void ACPlayer::SelectDeck5() { Deck->SetCurrentPerk(4); }
+void ACPlayer::SelectDeck6() { Deck->SetCurrentPerk(5); }
+void ACPlayer::SelectDeck7() { Deck->SetCurrentPerk(6); }
+void ACPlayer::SelectDeck8() { Deck->SetCurrentPerk(7); }
+void ACPlayer::SelectDeck9() { Deck->SetCurrentPerk(8); }
+void ACPlayer::SelectDeck0() { Deck->SetCurrentPerk(9); }
+
+//마우스 휠로 변경하는 작업도 부탁드립니당 ^~^

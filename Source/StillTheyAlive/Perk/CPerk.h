@@ -37,7 +37,8 @@ protected:
 
 
 public:
-
+	UFUNCTION(BlueprintPure)
+		FORCEINLINE class UPerkActionData* GetCurrent() { return Data; }
 
 public:
 	UFUNCTION()
@@ -77,10 +78,14 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 		EPerkType Type;
 
+	UPROPERTY(EditDefaultsOnly)
+		class UPerkActionData* Data;
 protected:
 	UPROPERTY(BlueprintReadOnly)
 		class ACharacter* OwnerCharacter;
 
 private:
 	class UCDeckComponent* Deck;
+
+
 };

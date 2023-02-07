@@ -1,9 +1,13 @@
 #include "CDeckComponent.h"
 #include "Global.h"
 #include "Perk/CPerk.h"
+#include "Perk/CDoAction.h"
+#include "Perk/CAttachment.h"
+#include "Perk/CEquipment.h"
 
 UCDeckComponent::UCDeckComponent()
-{
+{	
+
 }
 
 void UCDeckComponent::BeginPlay()
@@ -13,25 +17,47 @@ void UCDeckComponent::BeginPlay()
 	if (!!PerkClass)
 	{
 		Perks.Add(GetOwner()->GetWorld()->SpawnActorDeferred<ACPerk>(PerkClass, transform, GetOwner()));
-
+	
 		UGameplayStatics::FinishSpawningActor(Perks[0], transform);
 	}
+
 }
+
+
 
 void UCDeckComponent::PerkAction()
 {
-	Perks[0]->L_Action();
+	ACDoAction* doAction = Perks[DeckNumber]->GetCurrent()->GetDoAction();
+
+
 }
+
 void UCDeckComponent::SetCurrentPerk(int index)
 {
-	CurrentPerk = Perks[index];
-	CheckNull(CurrentPerk);
-	switch (CurrentPerk->Type)
+	ChangePerk(Perks[DeckNumber], Perks[index]);
+	DeckNumber = index;
+}
+
+void UCDeckComponent::Begin_Perk(ACPerk* InNewPerk)
+{
+	if (InNewPerk->GetCurrent()->GetAttachment())
 	{
-	case EPerkType::Unarmed:	break;
-	case EPerkType::Weapon:		break;
-	case EPerkType::Trap:		break;
-	case EPerkType::Spawn:		break;
-	case EPerkType::Trinket:	break;
+		InNewPerk->GetCurrent()->GetAttachment()->OnEquip();
+		if (InNewPerk->GetCurrent()->GetEquipment())
+			InNewPerk->GetCurrent()->GetEquipment()->Equip();
 	}
 }
+
+void UCDeckComponent::End_Perk(ACPerk* InPrevPerk)
+{
+	if(InPrevPerk->GetCurrent()->GetAttachment())
+	InPrevPerk->GetCurrent()->GetAttachment()->OnUnequip();
+	//히든 상태 만들기
+}
+
+void UCDeckComponent::ChangePerk(ACPerk* InPrevPerk, ACPerk* InNewPerk)
+{
+	End_Perk(InPrevPerk);
+	Begin_Perk(InNewPerk);
+}
+
