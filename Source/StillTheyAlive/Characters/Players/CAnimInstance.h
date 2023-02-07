@@ -3,7 +3,8 @@
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
 
-//#include "Components/CActionComponent.h"
+#include "Components/CStateComponent.h"
+#include "Perk/CPerk.h"
 
 #include "CAnimInstance.generated.h"
 
@@ -17,15 +18,20 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 private:
-	//UFUNCTION()
-		//void OnActionTypeChanged(EActionType InPrevType, EActionType InNewType);
+	UFUNCTION()
+		void OnPerkTypeChanged(EPerkType InPrevType, EPerkType InNewType);
 
-// -------------------------------------------------------
-// Variables
-// -------------------------------------------------------
+	UFUNCTION()
+		void OnStateTypeChanged(EStateTypes InPrevType, EStateTypes InNewType);
+
+//=======================================================
+// [Variables]
+//=======================================================
 protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) float Speed;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) float Direction;
-	//UPROPERTY(BlueprintReadOnly, EditAnywhere) EActionType ActionType;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) bool IsFalling;
+	
+	UPROPERTY(BlueprintReadOnly, EditAnywhere) EStateTypes StateType;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere) EPerkType PerkType;
 };

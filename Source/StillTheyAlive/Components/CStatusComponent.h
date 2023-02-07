@@ -11,7 +11,6 @@ class STILLTHEYALIVE_API UCStatusComponent : public UActorComponent
 
 public:	
 	UCStatusComponent();
-
 	
 //=======================================================
 // [Blueprint]

@@ -25,6 +25,7 @@ public:
 	void End_Perk(class ACPerk* InPrevPerk);
 
 	void ChangePerk(class ACPerk* InPrevPerk,class  ACPerk* InNewPerk);
+
 //=======================================================
 // [Variables]
 //=======================================================
@@ -35,5 +36,4 @@ private:
 	uint32 DeckNumber;
 	TArray<class ACPerk*> Perks;
 	class ACPerk* CurrentPerk;
-
 };
