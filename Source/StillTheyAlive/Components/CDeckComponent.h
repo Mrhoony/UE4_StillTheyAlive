@@ -16,9 +16,15 @@ protected:
 	virtual void BeginPlay() override;
 	
 public:
+	void GetCurrentPerkData();
+
+public:
 	void PerkAction();
 	void SetCurrentPerk(int index);
+	void Begin_Perk(class ACPerk* InNewPerk);
+	void End_Perk(class ACPerk* InPrevPerk);
 
+	void ChangePerk(class ACPerk* InPrevPerk,class  ACPerk* InNewPerk);
 //=======================================================
 // [Variables]
 //=======================================================
@@ -26,7 +32,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Perk")	TSubclassOf<class ACPerk> PerkClass;
 
 private:
+	uint32 DeckNumber;
 	TArray<class ACPerk*> Perks;
 	class ACPerk* CurrentPerk;
-	//class FPerkInfo* PerkInfo[9];
+
 };
