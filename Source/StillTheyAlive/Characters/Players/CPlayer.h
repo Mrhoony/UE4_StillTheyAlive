@@ -63,8 +63,12 @@ private:
 	UPROPERTY(VisibleDefaultsOnly) class UCStatusComponent* Status;
 	UPROPERTY(VisibleDefaultsOnly) class UCOptionComponent* Option;
 	UPROPERTY(VisibleDefaultsOnly) class UCDeckComponent* Deck;
+<<<<<<< HEAD
+	UPROPERTY(VisibleDefaultsOnly) class UCStateComponent* State;
+=======
 	//UPROPERTY(VisibleDefaultsOnly) class UCStateComponent* State;
 	//UPROPERTY(VisibleDefaultsOnly) class UCMontagesComponent* Montages;
 	//UPROPERTY(VisibleDefaultsOnly) class UCActionComponent* Action;
 	//UPROPERTY(VisibleDefaultsOnly) class UCDeckComponent* Deck;
+>>>>>>> 0e1781a0c5016e450e78998f9717c3714d1d314b
 };

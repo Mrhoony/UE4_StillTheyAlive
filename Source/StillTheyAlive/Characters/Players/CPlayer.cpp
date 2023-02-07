@@ -90,7 +90,6 @@ void ACPlayer::OnMoveForward(float InAxis)
 
 	AddMovementInput(direction, InAxis);
 }
-
 void ACPlayer::OnMoveRight(float InAxis)
 {
 	CheckFalse(Status->IsCanMove());
@@ -130,5 +129,8 @@ void ACPlayer::SelectDeck7() { Deck->SetCurrentPerk(6); }
 void ACPlayer::SelectDeck8() { Deck->SetCurrentPerk(7); }
 void ACPlayer::SelectDeck9() { Deck->SetCurrentPerk(8); }
 void ACPlayer::SelectDeck0() { Deck->SetCurrentPerk(9); }
+<<<<<<< HEAD
+=======
 
 //마우스 휠로 변경하는 작업도 부탁드립니당 ^~^
+>>>>>>> 0e1781a0c5016e450e78998f9717c3714d1d314b
