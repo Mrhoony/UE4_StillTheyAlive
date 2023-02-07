@@ -86,6 +86,4 @@ protected:
 
 private:
 	class UCDeckComponent* Deck;
-
-
 };

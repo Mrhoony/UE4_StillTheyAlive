@@ -6,12 +6,7 @@
 #include "Perk/CEquipment.h"
 
 UCDeckComponent::UCDeckComponent()
-<<<<<<< HEAD
 {
-=======
-{	
-
->>>>>>> 0e1781a0c5016e450e78998f9717c3714d1d314b
 }
 
 void UCDeckComponent::BeginPlay()
@@ -24,25 +19,13 @@ void UCDeckComponent::BeginPlay()
 	
 		UGameplayStatics::FinishSpawningActor(Perks[0], transform);
 	}
-<<<<<<< HEAD
 }
 
-=======
-
-}
-
-
-
->>>>>>> 0e1781a0c5016e450e78998f9717c3714d1d314b
 void UCDeckComponent::PerkAction()
 {
 	ACDoAction* doAction = Perks[DeckNumber]->GetCurrent()->GetDoAction();
 
-<<<<<<< HEAD
 	//TODO: Perk 동작에 대한 코드 없음
-=======
-
->>>>>>> 0e1781a0c5016e450e78998f9717c3714d1d314b
 }
 
 void UCDeckComponent::SetCurrentPerk(int index)
@@ -73,7 +56,3 @@ void UCDeckComponent::ChangePerk(ACPerk* InPrevPerk, ACPerk* InNewPerk)
 	End_Perk(InPrevPerk);
 	Begin_Perk(InNewPerk);
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 0e1781a0c5016e450e78998f9717c3714d1d314b
