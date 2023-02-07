@@ -11,7 +11,6 @@ void UCAnimInstance::NativeBeginPlay()
 	ACharacter* character = Cast<ACharacter>(TryGetPawnOwner());
 	CheckNull(character);
 
-<<<<<<< HEAD
 	UCStateComponent* state = CHelpers::GetComponent<UCStateComponent>(character);
 	CheckNull(state);
 
@@ -25,12 +24,6 @@ void UCAnimInstance::NativeBeginPlay()
 
 	state->OnStateTypeChanged.AddDynamic(this, &UCAnimInstance::OnStateTypeChanged);
 	//deck->OnPerkTypeChanged.AddDynamic(this, &UCAnimInstance::OnDeckTypeChanged);
-=======
-	//UCActionComponent* action = CHelpers::GetComponent<UCActionComponent>(character);
-	//CheckNull(action);
-
-//	action->OnActionTypeChanged.AddDynamic(this, &UCAnimInstance::OnActionTypeChanged);
->>>>>>> 0e1781a0c5016e450e78998f9717c3714d1d314b
 }
 
 void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -45,12 +38,5 @@ void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	IsFalling = character->GetCharacterMovement()->IsFalling();
 }
 
-<<<<<<< HEAD
 void UCAnimInstance::OnPerkTypeChanged(EPerkType InPrevType, EPerkType InNewType) { PerkType = InNewType; }
 void UCAnimInstance::OnStateTypeChanged(EStateTypes InPrevType, EStateTypes InNewType) { StateType = InNewType; }
-=======
-//void UCAnimInstance::OnActionTypeChanged(EActionType InPrevType, EActionType InNewType)
-//{
-//	ActionType = InNewType;
-//}
->>>>>>> 0e1781a0c5016e450e78998f9717c3714d1d314b

@@ -26,10 +26,6 @@ void ACAttachment::BeginPlay()
 
 	OffCollisions();
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 0e1781a0c5016e450e78998f9717c3714d1d314b
 	Super::BeginPlay();
 }
 
