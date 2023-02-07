@@ -11,6 +11,10 @@ class STILLTHEYALIVE_API UCStatusComponent : public UActorComponent
 
 public:	
 	UCStatusComponent();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0e1781a0c5016e450e78998f9717c3714d1d314b
 	
 //=======================================================
 // [Blueprint]
