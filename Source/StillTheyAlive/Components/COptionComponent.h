@@ -21,9 +21,9 @@ public:
 	FORCEINLINE float GetZoomSpeed() { return ZoomSpeed; }
 	FORCEINLINE FVector2D GetZoomRange() { return ZoomRange; }
 
-// -------------------------------------------------------
-// Variables
-// -------------------------------------------------------
+//=======================================================
+// [Variables]
+//=======================================================
 private:
 	UPROPERTY(EditAnywhere)	float HorizontalLookRate = 90.f;
 	UPROPERTY(EditAnywhere)	float VerticalLookRate = 90.f;
