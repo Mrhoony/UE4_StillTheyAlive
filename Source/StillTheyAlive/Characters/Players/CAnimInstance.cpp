@@ -14,7 +14,6 @@ void UCAnimInstance::NativeBeginPlay()
 	UCStateComponent* state = CHelpers::GetComponent<UCStateComponent>(character);
 	CheckNull(state);
 
-	
 	/*
 	* CurrentPerk의 PerkType에 따라 AnimInstance에서 분기해주려고 함
 	* TODO: 22, 23, 26 해결필요, 해결되면 17~20 주석 삭제
