@@ -21,8 +21,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
-	virtual void DoAction_L() {};
-	virtual void DoAction_R() {};
+	virtual void DoAction() {};
 	virtual void Begin_DoAction() {};
 	virtual void End_DoAction() {};
 

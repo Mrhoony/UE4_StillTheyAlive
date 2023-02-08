@@ -26,7 +26,6 @@ void ACAttachment::BeginPlay()
 
 	OffCollisions();
 
-
 	Super::BeginPlay();
 }
 

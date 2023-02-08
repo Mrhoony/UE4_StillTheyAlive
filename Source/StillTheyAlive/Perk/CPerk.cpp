@@ -1,7 +1,6 @@
 #include "CPerk.h"
 #include "Engine/Texture2D.h"
 #include "Global.h"
-#include "CEquipment.h"
 #include "Components/CStatusComponent.h"
 #include "PerkActionData.h"
 
@@ -13,12 +12,14 @@ void ACPerk::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (!!Data)
-		Data->BeginPlay(OwnerCharacter);
 
 }
 
 void ACPerk::L_Action()
+{
+}
+
+void ACPerk::SelectDeck()
 {
 }
 
@@ -54,14 +55,6 @@ void ACPerk::SetMode(EPerkType InType)
 		SetUnarmed();
 		return;
 	}
-	else if (IsUnarmedMode() == false)
-	{
-		if (!!Data && Data->GetEquipment())
-			Data->GetEquipment()->Unequip();
-	}
-	if (!!Data && Data->GetEquipment())
-		Data->GetEquipment()->Equip();
-
 	ChangeType(InType);
 }
 
