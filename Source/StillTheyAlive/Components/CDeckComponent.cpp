@@ -27,14 +27,19 @@ void UCDeckComponent::BeginPlay()
 
 void UCDeckComponent::PerkAction()
 {
-	ACDoAction* doAction = Perks[DeckNumber]->GetCurrent()->GetDoAction();
+	if (Perks[DeckNumber]->GetCurrent()->GetDoAction())
+	{
+		PrintLine();
+		ACDoAction* doAction = Perks[DeckNumber]->GetCurrent()->GetDoAction();
 
+		doAction->DoAction_L();
+	}
 
 }
 
 void UCDeckComponent::SetCurrentPerk(int index)
 {
-	ChangePerk(Perks[DeckNumber], Perks[index]);
+	//ChangePerk(Perks[DeckNumber], Perks[index]);
 	DeckNumber = index;
 }
 
