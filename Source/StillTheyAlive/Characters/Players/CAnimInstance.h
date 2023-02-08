@@ -20,12 +20,18 @@ private:
 	//UFUNCTION()
 		//void OnActionTypeChanged(EActionType InPrevType, EActionType InNewType);
 
-// -------------------------------------------------------
-// Variables
-// -------------------------------------------------------
+	UFUNCTION()
+		void OnStateTypeChanged(EStateTypes InPrevType, EStateTypes InNewType);
+
+//=======================================================
+// [Variables]
+//=======================================================
 protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) float Speed;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) float Direction;
 	//UPROPERTY(BlueprintReadOnly, EditAnywhere) EActionType ActionType;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) bool IsFalling;
+	
+	UPROPERTY(BlueprintReadOnly, EditAnywhere) EStateTypes StateType;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere) EPerkType PerkType;
 };

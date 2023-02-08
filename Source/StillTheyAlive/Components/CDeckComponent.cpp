@@ -6,8 +6,7 @@
 #include "Perk/CEquipment.h"
 
 UCDeckComponent::UCDeckComponent()
-{	
-
+{
 }
 
 void UCDeckComponent::BeginPlay()
@@ -21,8 +20,22 @@ void UCDeckComponent::BeginPlay()
 		UGameplayStatics::FinishSpawningActor(Perks[0], transform);
 	}
 
+void UCDeckComponent::Begin_Perk(ACPerk* InNewPerk)
+{
+	if (InNewPerk->GetCurrent()->GetAttachment())
+	{
+		InNewPerk->GetCurrent()->GetAttachment()->OnEquip();
+		if (InNewPerk->GetCurrent()->GetEquipment())
+			InNewPerk->GetCurrent()->GetEquipment()->Equip();
+	}
 }
 
+void UCDeckComponent::End_Perk(ACPerk* InPrevPerk)
+{
+	if(InPrevPerk->GetCurrent()->GetAttachment())
+	InPrevPerk->GetCurrent()->GetAttachment()->OnUnequip();
+	//히든 상태 만들기
+}
 
 
 void UCDeckComponent::PerkAction()
