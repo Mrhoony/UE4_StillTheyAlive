@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Components/CDeckComponent.h"
+#include "CAttachment.h"
 #include "CPerk.generated.h"
 
 USTRUCT(BlueprintType)
@@ -25,7 +26,7 @@ enum class EPerkType : uint8
 };
 
 UCLASS()
-class STILLTHEYALIVE_API ACPerk : public AActor
+class STILLTHEYALIVE_API ACPerk : public ACAttachment
 {
 	GENERATED_BODY()
 	
@@ -44,8 +45,8 @@ public:
 	UFUNCTION()
 	virtual void L_Action();
 
-	UFUNCTION()
-	void SelectDeck();  // 덱에서 이 슬롯을 가리킬 때
+	UFUNCTION(BlueprintPure)
+		FORCEINLINE bool IsUnarmedMode() { return Type == EPerkType::Unarmed; }
 
 public:
 	void SetUnarmed();
@@ -80,10 +81,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 		class UPerkActionData* Data;
-protected:
-	UPROPERTY(BlueprintReadOnly)
-		class ACharacter* OwnerCharacter;
 
 private:
 	class UCDeckComponent* Deck;
+
+
 };
