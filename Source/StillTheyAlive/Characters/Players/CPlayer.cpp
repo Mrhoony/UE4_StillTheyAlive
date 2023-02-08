@@ -3,7 +3,6 @@
 #include "Components/CStatusComponent.h"
 #include "Components/COptionComponent.h"
 #include "Components/CDeckComponent.h"
-
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
@@ -47,9 +46,6 @@ ACPlayer::ACPlayer()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
-// -------------------------------------------------------
-// Blueprintable Methods
-// -------------------------------------------------------
 void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
@@ -60,9 +56,6 @@ void ACPlayer::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-// -------------------------------------------------------
-// CPPOnly Methods
-// -------------------------------------------------------
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -75,6 +68,17 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACPlayer::OnJump);
 	PlayerInputComponent->BindAction("Action", EInputEvent::IE_Pressed, this, &ACPlayer::DoAction);
+	
+	PlayerInputComponent->BindAction("Deck1", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck1);
+	PlayerInputComponent->BindAction("Deck2", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck2);
+	PlayerInputComponent->BindAction("Deck3", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck3);
+	PlayerInputComponent->BindAction("Deck4", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck4);
+	PlayerInputComponent->BindAction("Deck5", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck5);
+	PlayerInputComponent->BindAction("Deck6", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck6);
+	PlayerInputComponent->BindAction("Deck7", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck7);
+	PlayerInputComponent->BindAction("Deck8", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck8);
+	PlayerInputComponent->BindAction("Deck9", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck9);
+	PlayerInputComponent->BindAction("Deck0", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck0);
 }
 
 void ACPlayer::OnMoveForward(float InAxis)
@@ -86,7 +90,6 @@ void ACPlayer::OnMoveForward(float InAxis)
 
 	AddMovementInput(direction, InAxis);
 }
-
 void ACPlayer::OnMoveRight(float InAxis)
 {
 	CheckFalse(Status->IsCanMove());
@@ -102,25 +105,27 @@ void ACPlayer::OnHorizontalLook(float InAxis)
 	float rate = Option->GetHorizontalLookRate();
 	AddControllerYawInput(InAxis * rate * GetWorld()->GetDeltaSeconds());
 }
-
 void ACPlayer::OnVerticalLook(float InAxis)
 {
 	float rate = Option->GetVerticalLookRate();
 	AddControllerPitchInput(InAxis * rate * GetWorld()->GetDeltaSeconds());
 }
-
 void ACPlayer::OnZoom(float InAxis)
 {
 	SpringArm->TargetArmLength += Option->GetZoomSpeed() * InAxis * GetWorld()->GetDeltaSeconds();
 	SpringArm->TargetArmLength = FMath::Clamp(SpringArm->TargetArmLength, Option->GetZoomRange().X, Option->GetZoomRange().Y);
 }
 
-void ACPlayer::OnJump()
-{
-	this->Jump();
-}
+void ACPlayer::OnJump() { this->Jump(); }
+void ACPlayer::DoAction() { Deck->PerkAction(); }
 
-void ACPlayer::DoAction()
-{
-	Deck->PerkAction();
-}
+void ACPlayer::SelectDeck1() { Deck->SetCurrentPerk(0); }
+void ACPlayer::SelectDeck2() { Deck->SetCurrentPerk(1); }
+void ACPlayer::SelectDeck3() { Deck->SetCurrentPerk(2); }
+void ACPlayer::SelectDeck4() { Deck->SetCurrentPerk(3); }
+void ACPlayer::SelectDeck5() { Deck->SetCurrentPerk(4); }
+void ACPlayer::SelectDeck6() { Deck->SetCurrentPerk(5); }
+void ACPlayer::SelectDeck7() { Deck->SetCurrentPerk(6); }
+void ACPlayer::SelectDeck8() { Deck->SetCurrentPerk(7); }
+void ACPlayer::SelectDeck9() { Deck->SetCurrentPerk(8); }
+void ACPlayer::SelectDeck0() { Deck->SetCurrentPerk(9); }
