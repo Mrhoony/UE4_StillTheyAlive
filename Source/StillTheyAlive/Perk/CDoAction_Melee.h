@@ -27,6 +27,7 @@ public:
 private:
 	UFUNCTION()
 		void RestoreGlobalTimeDilation();
+
 private:
 	int32 ComboCount;
 	bool bCanCombo;
