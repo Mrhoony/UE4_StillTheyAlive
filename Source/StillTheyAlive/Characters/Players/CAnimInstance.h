@@ -2,9 +2,8 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
-
-//#include "Components/CActionComponent.h"
-
+#include "Perk/CPerk.h"
+#include "Components/CStateComponent.h"
 #include "CAnimInstance.generated.h"
 
 UCLASS()
@@ -20,8 +19,8 @@ private:
 	//UFUNCTION()
 		//void OnActionTypeChanged(EActionType InPrevType, EActionType InNewType);
 
-	UFUNCTION()
-		void OnStateTypeChanged(EStateTypes InPrevType, EStateTypes InNewType);
+	//UFUNCTION()
+	//	void OnStateTypeChanged(EStateTypes InPrevType, EStateTypes InNewType);
 
 //=======================================================
 // [Variables]
