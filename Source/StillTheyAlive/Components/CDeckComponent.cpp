@@ -19,18 +19,40 @@ void UCDeckComponent::BeginPlay()
 	
 		UGameplayStatics::FinishSpawningActor(Perks[0], transform);
 	}
+
+void UCDeckComponent::Begin_Perk(ACPerk* InNewPerk)
+{
+	if (InNewPerk->GetCurrent()->GetAttachment())
+	{
+		InNewPerk->GetCurrent()->GetAttachment()->OnEquip();
+		if (InNewPerk->GetCurrent()->GetEquipment())
+			InNewPerk->GetCurrent()->GetEquipment()->Equip();
+	}
 }
+
+void UCDeckComponent::End_Perk(ACPerk* InPrevPerk)
+{
+	if(InPrevPerk->GetCurrent()->GetAttachment())
+	InPrevPerk->GetCurrent()->GetAttachment()->OnUnequip();
+	//히든 상태 만들기
+}
+
 
 void UCDeckComponent::PerkAction()
 {
-	ACDoAction* doAction = Perks[DeckNumber]->GetCurrent()->GetDoAction();
+	if (Perks[DeckNumber]->GetCurrent()->GetDoAction())
+	{
+		PrintLine();
+		ACDoAction* doAction = Perks[DeckNumber]->GetCurrent()->GetDoAction();
 
-	//TODO: Perk 동작에 대한 코드 없음
+		doAction->DoAction_L();
+	}
+
 }
 
 void UCDeckComponent::SetCurrentPerk(int index)
 {
-	ChangePerk(Perks[DeckNumber], Perks[index]);
+	//ChangePerk(Perks[DeckNumber], Perks[index]);
 	DeckNumber = index;
 }
 
@@ -56,3 +78,4 @@ void UCDeckComponent::ChangePerk(ACPerk* InPrevPerk, ACPerk* InNewPerk)
 	End_Perk(InPrevPerk);
 	Begin_Perk(InNewPerk);
 }
+
