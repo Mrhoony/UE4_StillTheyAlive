@@ -16,21 +16,26 @@ void UCDeckComponent::BeginPlay()
 	if (!!PerkClass)
 	{
 		Perks.Add(GetOwner()->GetWorld()->SpawnActorDeferred<ACPerk>(PerkClass, transform, GetOwner()));
-	
+
 		UGameplayStatics::FinishSpawningActor(Perks[0], transform);
 	}
 }
 
 void UCDeckComponent::PerkAction()
 {
-	ACDoAction* doAction = Perks[DeckNumber]->GetCurrent()->GetDoAction();
+	if (Perks[DeckNumber]->GetCurrent()->GetDoAction())
+	{
+		PrintLine();
+		ACDoAction* doAction = Perks[DeckNumber]->GetCurrent()->GetDoAction();
 
-	//TODO: Perk 동작에 대한 코드 없음
+		doAction->DoAction_L();
+	}
+
 }
 
 void UCDeckComponent::SetCurrentPerk(int index)
 {
-	ChangePerk(Perks[DeckNumber], Perks[index]);
+	//ChangePerk(Perks[DeckNumber], Perks[index]);
 	DeckNumber = index;
 }
 
@@ -56,3 +61,4 @@ void UCDeckComponent::ChangePerk(ACPerk* InPrevPerk, ACPerk* InNewPerk)
 	End_Perk(InPrevPerk);
 	Begin_Perk(InNewPerk);
 }
+

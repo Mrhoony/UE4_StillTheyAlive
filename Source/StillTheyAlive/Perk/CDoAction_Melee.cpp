@@ -4,9 +4,9 @@
 #include "Components/CStatusComponent.h"
 #include "GameFrameWork/Character.h"
 
-void ACDoAction_Melee::DoAction()
+void ACDoAction_Melee::DoAction_L()
 {
-	Super::DoAction();
+	Super::DoAction_L();
 	CheckFalse(Datas.Num() > 0);
 
 	if (bCanCombo == true)
