@@ -11,19 +11,10 @@ void UCAnimInstance::NativeBeginPlay()
 	ACharacter* character = Cast<ACharacter>(TryGetPawnOwner());
 	CheckNull(character);
 
-	UCStateComponent* state = CHelpers::GetComponent<UCStateComponent>(character);
-	CheckNull(state);
+	//UCActionComponent* action = CHelpers::GetComponent<UCActionComponent>(character);
+	//CheckNull(action);
 
-	/*
-	* CurrentPerk의 PerkType에 따라 AnimInstance에서 분기해주려고 함
-	* TODO: 22, 23, 26 해결필요, 해결되면 17~20 주석 삭제
-	*/
-
-	//UDeckComponent* deck = CHelpers::GetComponent<UDeckComponent>(character);
-	//CheckNull(deck);
-
-	state->OnStateTypeChanged.AddDynamic(this, &UCAnimInstance::OnStateTypeChanged);
-	//deck->OnPerkTypeChanged.AddDynamic(this, &UCAnimInstance::OnDeckTypeChanged);
+//	action->OnActionTypeChanged.AddDynamic(this, &UCAnimInstance::OnActionTypeChanged);
 }
 
 void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -38,5 +29,7 @@ void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	IsFalling = character->GetCharacterMovement()->IsFalling();
 }
 
-void UCAnimInstance::OnPerkTypeChanged(EPerkType InPrevType, EPerkType InNewType) { PerkType = InNewType; }
-void UCAnimInstance::OnStateTypeChanged(EStateTypes InPrevType, EStateTypes InNewType) { StateType = InNewType; }
+//void UCAnimInstance::OnActionTypeChanged(EActionType InPrevType, EActionType InNewType)
+//{
+//	ActionType = InNewType;
+//}

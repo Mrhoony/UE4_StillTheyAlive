@@ -9,7 +9,7 @@ class STILLTHEYALIVE_API ACDoAction_Melee : public ACDoAction
 {
 	GENERATED_BODY()
 public:
-	virtual void DoAction() override;
+	virtual void DoAction_L() override;
 	virtual void Begin_DoAction() override;
 	virtual void End_DoAction() override;
 
@@ -27,6 +27,7 @@ public:
 private:
 	UFUNCTION()
 		void RestoreGlobalTimeDilation();
+
 private:
 	int32 ComboCount;
 	bool bCanCombo;
