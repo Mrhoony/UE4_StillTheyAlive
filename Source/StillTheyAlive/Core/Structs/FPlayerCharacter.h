@@ -9,7 +9,7 @@ struct FPlayerCharacter
 {
 	GENERATED_BODY()
 
-		UPROPERTY(BlueprintReadWrite, EditAnywhere) FString	Name;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere) FString	Name;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)	TArray<TSubclassOf<class ACPerk>> HasPerks;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)	TArray<bool> HasSkins;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)	TSubclassOf<class ACPlayer> character;
