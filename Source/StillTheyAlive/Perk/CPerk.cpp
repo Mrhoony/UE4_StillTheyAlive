@@ -4,6 +4,7 @@
 #include "CEquipment.h"
 #include "Components/CStatusComponent.h"
 #include "PerkActionData.h"
+#include "GameFramework/Character.h"
 
 ACPerk::ACPerk()
 {
@@ -12,10 +13,6 @@ ACPerk::ACPerk()
 void ACPerk::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (!!Data)
-		Data->BeginPlay(OwnerCharacter);
-
 }
 
 void ACPerk::L_Action()
@@ -45,6 +42,12 @@ void ACPerk::SetSpawn()
 void ACPerk::SetTrinket()
 {
 	SetMode(EPerkType::Trinket);
+}
+
+void ACPerk::BeginData(class ACharacter* DeckCharacter)
+{
+	if (!!Data)
+		Data->BeginPlay(OwnerCharacter);
 }
 
 void ACPerk::SetMode(EPerkType InType)

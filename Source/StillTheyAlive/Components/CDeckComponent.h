@@ -30,6 +30,7 @@ public:
 //=======================================================
 public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Perk")	TSubclassOf<class ACPerk> PerkClass;
+	class ACharacter* OwnerCharacter;
 
 private:
 	uint32 DeckNumber;

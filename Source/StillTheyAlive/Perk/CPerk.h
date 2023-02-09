@@ -55,6 +55,7 @@ public:
 	void SetSpawn();
 	void SetTrinket();
 
+	void BeginData(class ACharacter* DeckCharacter);
 private:
 	void SetMode(EPerkType InType);
 	void ChangeType(EPerkType InType);

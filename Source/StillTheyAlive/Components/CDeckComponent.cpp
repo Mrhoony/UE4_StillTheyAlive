@@ -4,6 +4,7 @@
 #include "Perk/CDoAction.h"
 #include "Perk/CAttachment.h"
 #include "Perk/CEquipment.h"
+#include "GameFramework/Character.h"
 
 UCDeckComponent::UCDeckComponent()
 {
@@ -12,11 +13,14 @@ UCDeckComponent::UCDeckComponent()
 void UCDeckComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	OwnerCharacter = Cast<ACharacter>(GetOwner());
+
 	FTransform transform;
 	if (!!PerkClass)
 	{
-		Perks.Add(GetOwner()->GetWorld()->SpawnActorDeferred<ACPerk>(PerkClass, transform, GetOwner()));
-
+		ACPerk* perk = GetOwner()->GetWorld()->SpawnActorDeferred<ACPerk>(PerkClass, transform, GetOwner());
+		perk->BeginData(OwnerCharacter);
+		Perks.Add(perk);
 		UGameplayStatics::FinishSpawningActor(Perks[0], transform);
 	}
 }

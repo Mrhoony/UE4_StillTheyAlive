@@ -22,8 +22,6 @@ void ACDoAction_Melee::DoAction_L()
 
 	OwnerCharacter->PlayAnimMontage(Datas[0].AnimMontage, Datas[0].PlayRate, Datas[0].StartSection);
 	Datas[0].bCanMove ? Status->SetMove() : Status->SetStop();
-
-
 }
 
 void ACDoAction_Melee::Begin_DoAction()

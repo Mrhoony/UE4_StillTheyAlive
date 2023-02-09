@@ -18,6 +18,8 @@ class STILLTHEYALIVE_API ACTrap : public ACPerk
 {
 	GENERATED_BODY()
 
+protected:
+	virtual void BeginPlay() override;
 //=======================================================
 // [Variables]
 //=======================================================
