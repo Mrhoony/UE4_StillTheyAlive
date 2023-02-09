@@ -2,11 +2,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "Core/Structs/FStoryMapData.h"
 #include "CStoryGameMode.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FScoreValueChanged, int32, PrevValue, int32, NewValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FMoneyValueChanged, int32, PrevValue, int32, NewValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLifeValueChanged, int32, PrevValue, int32, NewValue);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FRoundStateChanged, bool, NewValue);
 
 UCLASS()
 class STILLTHEYALIVE_API ACStoryGameMode : public AGameModeBase
@@ -18,7 +21,8 @@ protected:
 
 public:
 	//void Initialize(DataTable data);
-	void PlayNextRound(); // 다음 라운드 실행
+	void StartNextRound(); // 다음 라운드 실행
+	void FinishThisRound();
 
 public:
 	void IncreaseScore(const int32& InAmount);
@@ -31,6 +35,7 @@ public:
 	FScoreValueChanged OnScoreValueChanged;
 	FMoneyValueChanged OnMoneyValueChanged;
 	FLifeValueChanged OnLifeValueChanged;
+	FRoundStateChanged OnRoundStateChanged;
 
 private:
 	int32 Score;
@@ -38,4 +43,8 @@ private:
 	int32 Lifes;
 
 	TArray<class AActor*> SpawnMonsters;
+	
+	FStoryMapData Datas;
+
+	bool bStarted;
 };

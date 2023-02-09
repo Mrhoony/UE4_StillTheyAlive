@@ -2,17 +2,19 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "Engine/DataTable.h"
 #include "FSpawnData.generated.h"
 
-USTRUCT(BlueprintType)
-struct FSpawnData
+USTRUCT(BlueprintType) 
+struct FSpawnData : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere) int	Round;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere) int	Wave;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere) TSubclassOf<class ACharacter> Monster;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere) int Num;
+public:
+	UPROPERTY(EditAnywhere) int	Round;
+	UPROPERTY(EditAnywhere) int	Wave;
+	UPROPERTY(EditAnywhere) TSubclassOf<class ACharacter> Monster;
+	UPROPERTY(EditAnywhere) int Num;
 };
 
 UCLASS()
