@@ -51,7 +51,39 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		FString SpecificCollisionName = "None";
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class ACThrow> ThrowClass;
 };
+
+USTRUCT(BlueprintType)
+struct FTechDoAction : public FEquipmentData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere)
+		float Power = 5.f;
+
+	UPROPERTY(EditAnywhere)
+		float HitStop;
+
+	UPROPERTY(EditAnywhere)
+		class UParticleSystem* Effect;
+
+	UPROPERTY(EditAnywhere)
+		FTransform EffectTransform;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class UCameraShake> ShakeClass;
+
+	UPROPERTY(EditAnywhere)
+		FString SpecificCollisionName = "None";
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class ACThrow> ThrowClass;
+};
+
 
 UCLASS()
 class STILLTHEYALIVE_API UPerkActionData : public UDataAsset
@@ -89,6 +121,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DoAction")
 		TArray<FDoAction> DoActionDatas;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "TechDoAction")
+		TArray<FTechDoAction> TechDoActionDatas;
 
 private:
 	class ACAttachment* Attachment;

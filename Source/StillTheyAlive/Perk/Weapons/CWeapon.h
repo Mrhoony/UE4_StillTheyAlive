@@ -7,7 +7,7 @@
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
 {
-	Melee,Magic,Max
+	Rifle,Magic,Max
 };
 
 UCLASS()
@@ -18,8 +18,8 @@ class STILLTHEYALIVE_API ACWeapon : public ACPerk
 public:
 	ACWeapon();	
 	
-public:
-	virtual void L_Action() override;
+protected:
+	virtual void BeginPlay() override;
 
 public:
 	UPROPERTY(EditDefaultsOnly)

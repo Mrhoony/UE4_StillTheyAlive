@@ -43,37 +43,9 @@ public:
 
 public:
 	UFUNCTION()
-	virtual void L_Action();
+		virtual void TechAction() {};
 
-	UFUNCTION(BlueprintPure)
-		FORCEINLINE bool IsUnarmedMode() { return Type == EPerkType::Unarmed; }
-
-public:
-	void SetUnarmed();
-	void SetWeapon();
-	void SetTrap();
-	void SetSpawn();
-	void SetTrinket();
-
-private:
-	void SetMode(EPerkType InType);
-	void ChangeType(EPerkType InType);
-
-public:
-	UFUNCTION(BlueprintPure)
-		FORCEINLINE bool IsPerkUnarmed() { return Type == EPerkType::Unarmed; }
-
-	UFUNCTION(BlueprintPure)
-		FORCEINLINE bool IsPerkWeapon() { return Type == EPerkType::Weapon; }
-
-	UFUNCTION(BlueprintPure)
-		FORCEINLINE bool IsPerkTrap() { return Type == EPerkType::Trap; }
-
-	UFUNCTION(BlueprintPure)
-		FORCEINLINE bool IsPerkSpawn() { return Type == EPerkType::Spawn; }
-
-	UFUNCTION(BlueprintPure)
-		FORCEINLINE bool IsPerkTrinket() { return Type == EPerkType::Trinket; }
+	void BeginData(class ACharacter* DeckCharacter);
 	
 public:
 	UPROPERTY(EditDefaultsOnly)

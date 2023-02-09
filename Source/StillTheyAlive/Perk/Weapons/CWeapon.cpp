@@ -6,7 +6,7 @@ ACWeapon::ACWeapon()
 
 }
 
-void ACWeapon::L_Action()
+void ACWeapon::BeginPlay()
 {
-	CLog::Log("Hi");
+	Super::BeginPlay();
 }

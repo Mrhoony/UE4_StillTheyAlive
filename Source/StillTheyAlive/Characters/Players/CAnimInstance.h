@@ -4,6 +4,7 @@
 #include "Animation/AnimInstance.h"
 #include "Perk/CPerk.h"
 #include "Components/CStateComponent.h"
+#include "Components/CDeckComponent.h"
 #include "CAnimInstance.generated.h"
 
 UCLASS()
@@ -28,9 +29,12 @@ private:
 protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) float Speed;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) float Direction;
-	//UPROPERTY(BlueprintReadOnly, EditAnywhere) EActionType ActionType;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere) EPerkType PerkType;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) bool IsFalling;
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) EStateTypes StateType;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) EPerkType PerkType;
+private:
+	UFUNCTION()
+	void OnPerkTypeChanged(EPerkType InPrevType, EPerkType InNewType);
 };
