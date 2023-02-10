@@ -19,8 +19,10 @@ void ACDoAction_Throw::DoAction_L()
 	
 	//CheckFalse(State->IsIdleMode());
 	//State->SetActionMode();
-
-	OwnerCharacter->PlayAnimMontage(Datas[0].AnimMontage, Datas[0].PlayRate, Datas[0].StartSection);
+	if (Datas[0].Diversity)
+		OwnerCharacter->PlayAnimMontage(Datas[0].DivMontage.AnimMontage, Datas[0].DivMontage.PlayRate, Datas[0].DivMontage.StartSection);
+	else
+		OwnerCharacter->PlayAnimMontage(Datas[0].Montage.AnimMontage, Datas[0].Montage.PlayRate, Datas[0].Montage.StartSection);
 
 	Datas[0].bCanMove ? Status->SetMove() : Status->SetStop();
 

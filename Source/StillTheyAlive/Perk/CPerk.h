@@ -2,8 +2,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Components/CDeckComponent.h"
 #include "CAttachment.h"
+#include "Components/CDeckComponent.h"
 #include "CPerk.generated.h"
 
 USTRUCT(BlueprintType)
@@ -19,11 +19,6 @@ public:
 		TSubclassOf<class ACPerk> PerkClass;
 };
 
-UENUM(BlueprintType)
-enum class EPerkType : uint8
-{
-	Unarmed, Weapon, Trap, Spawn, Trinket, Max
-};
 
 UCLASS()
 class STILLTHEYALIVE_API ACPerk : public ACAttachment
@@ -41,6 +36,7 @@ public:
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE class UPerkActionData* GetCurrent() { return Data; }
 
+	FORCEINLINE EPerkType GetPerkType() { return PerkType; }
 public:
 	UFUNCTION()
 		virtual void TechAction() {};
@@ -49,13 +45,9 @@ public:
 	
 public:
 	UPROPERTY(EditDefaultsOnly)
-		EPerkType Type;
+		EPerkType PerkType;
 
 	UPROPERTY(EditDefaultsOnly)
 		class UPerkActionData* Data;
-
-private:
-	class UCDeckComponent* Deck;
-
 
 };

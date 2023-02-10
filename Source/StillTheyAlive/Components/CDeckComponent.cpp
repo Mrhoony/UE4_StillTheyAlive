@@ -1,36 +1,44 @@
 #include "CDeckComponent.h"
 #include "Global.h"
 #include "Perk/CDoAction.h"
-#include "Perk/CAttachment.h"
 #include "Perk/CEquipment.h"
+#include "Perk/Weapons/CWeapon.h"
 #include "GameFramework/Character.h"
+#include "Characters/Players/CAnimInstance.h"
 
 
 
 UCDeckComponent::UCDeckComponent()
 {
+
 }
 
 void UCDeckComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
-
 	FTransform transform;
-	if (!!PerkClass)
+	for (int32 i = 0; i < PerkClass.Num(); i++)
 	{
-		ACPerk* perk = GetOwner()->GetWorld()->SpawnActorDeferred<ACPerk>(PerkClass, transform, GetOwner());
-		perk->BeginData(OwnerCharacter);
-		Perks.Add(perk);
-		UGameplayStatics::FinishSpawningActor(Perks[0], transform);
+		if (!!PerkClass[i])
+		{
+			ACPerk* perk = GetOwner()->GetWorld()->SpawnActorDeferred<ACPerk>(PerkClass[i], transform, GetOwner());
+			perk->BeginData(OwnerCharacter);
+			Perks.Add(perk);
+			UGameplayStatics::FinishSpawningActor(Perks[i], transform);
+		}
 	}
+	CheckNull(Perks[0]);
+	CurrentPerk = Perks[0];
+	ChangePerk(nullptr, CurrentPerk);
 }
 
 void UCDeckComponent::PerkAction()
 {
+	CheckFalse(CurrentPerk);
+	CheckTrue(IsPerkUnarmed());
 	if (!!Perks[DeckNumber]->GetCurrent()->GetDoAction())
 	{
-		PrintLine();
 		ACDoAction* doAction = Perks[DeckNumber]->GetCurrent()->GetDoAction();
 
 		doAction->DoAction_L();
@@ -51,12 +59,30 @@ void UCDeckComponent::PerkTechAction()
 
 void UCDeckComponent::SetCurrentPerk(int index)
 {
-	//ChangePerk(Perks[DeckNumber], Perks[index]);
-	DeckNumber = index;
-	switch (Perks[DeckNumber]->Type)
+	if (Perks.Num() <= index) return;
+	if (DeckNumber == index && !!CurrentPerk)
 	{
-	case EPerkType::Unarmed:SetUnarmed();
-		break;
+		SetUnarmed(); 
+		return;
+	}
+	else
+	{
+		DeckNumber = index;
+
+		BeforePerk = CurrentPerk;
+
+		CurrentPerk = Perks[DeckNumber];
+	}
+	ChangePerk(BeforePerk, CurrentPerk);
+}
+
+void UCDeckComponent::ChangePerk(ACPerk* InPrevPerk, ACPerk* InNewPerk)
+{
+	if(!!InPrevPerk)
+	InPrevPerk->GetCurrent()->GetEquipment()->Unequip();
+	InNewPerk->GetCurrent()->GetEquipment()->Equip();
+	switch (InNewPerk->GetPerkType())
+	{
 	case EPerkType::Weapon:SetWeapon();
 		break;
 	case EPerkType::Trap:SetTrap();
@@ -68,71 +94,34 @@ void UCDeckComponent::SetCurrentPerk(int index)
 	}
 }
 
-void UCDeckComponent::Begin_Perk(ACPerk* InNewPerk)
-{
-	if (InNewPerk->GetCurrent()->GetAttachment())
-	{
-		InNewPerk->GetCurrent()->GetAttachment()->OnEquip();
-		if (InNewPerk->GetCurrent()->GetEquipment())
-			InNewPerk->GetCurrent()->GetEquipment()->Equip();
-	}
-}
-
-void UCDeckComponent::End_Perk(ACPerk* InPrevPerk)
-{
-	if(InPrevPerk->GetCurrent()->GetAttachment())
-	InPrevPerk->GetCurrent()->GetAttachment()->OnUnequip();
-	//히든 상태 만들기
-}
-
-void UCDeckComponent::ChangePerk(ACPerk* InPrevPerk, ACPerk* InNewPerk)
-{
-	End_Perk(InPrevPerk);
-	Begin_Perk(InNewPerk);
-}
-
 
 void UCDeckComponent::SetUnarmed()
 {
-	SetMode(EPerkType::Unarmed);
+	CheckFalse(CurrentPerk);
+	if(CurrentPerk->GetCurrent()->GetEquipment())
+		CurrentPerk->GetCurrent()->GetEquipment()->Unequip();
+	CurrentPerk = nullptr;
+	ChangeType(EPerkType::Unarmed);
 }
 
 void UCDeckComponent::SetWeapon()
 {
-	SetMode(EPerkType::Weapon);
+	ChangeType(EPerkType::Weapon);
 }
 
 void UCDeckComponent::SetTrap()
 {
-	SetMode(EPerkType::Trap);
+	ChangeType(EPerkType::Trap);
 }
 
 void UCDeckComponent::SetSpawn()
 {
-	SetMode(EPerkType::Spawn);
+	ChangeType(EPerkType::Spawn);
 }
 
 void UCDeckComponent::SetTrinket()
 {
-	SetMode(EPerkType::Trinket);
-}
-
-void UCDeckComponent::SetMode(EPerkType InType)
-{
-	if (Type == InType)
-	{
-		SetUnarmed();
-		return;
-	}
-	else if (IsUnarmedMode() == false)
-	{
-		if (!!Perks[DeckNumber]->Data->GetEquipment())
-			Perks[DeckNumber]->Data->GetEquipment()->Unequip();
-	}
-	if (Perks[DeckNumber]->Data->GetEquipment())
-		Perks[DeckNumber]->Data->GetEquipment()->Equip();
-
-	ChangeType(InType);
+	ChangeType(EPerkType::Trinket);
 }
 
 void UCDeckComponent::ChangeType(EPerkType InType)
@@ -142,4 +131,12 @@ void UCDeckComponent::ChangeType(EPerkType InType)
 
 	if (OnPerkTypeChanged.IsBound())
 		OnPerkTypeChanged.Broadcast(prevType, InType);
+
+
+	if (Type == EPerkType::Weapon)
+	{
+		UCAnimInstance* oweneranim = Cast<UCAnimInstance>(OwnerCharacter->GetMesh()->GetAnimInstance());
+		oweneranim->OnWeaponTypeChanged(Cast<ACWeapon>(CurrentPerk)->GetWeaponType());
+	}
+
 }

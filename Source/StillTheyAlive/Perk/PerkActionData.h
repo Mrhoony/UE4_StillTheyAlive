@@ -5,10 +5,9 @@
 #include "PerkActionData.generated.h"
 
 USTRUCT(BlueprintType)
-struct FEquipmentData
+struct FAnimontage
 {
 	GENERATED_BODY()
-
 public:
 	UPROPERTY(EditAnywhere)
 		class UAnimMontage* AnimMontage;
@@ -18,6 +17,16 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		FName StartSection;
+};
+
+USTRUCT(BlueprintType)
+struct FEquipmentData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere)
+		FAnimontage Montage;
 
 	UPROPERTY(EditAnywhere)
 		bool bCanMove = true;
@@ -37,16 +46,16 @@ public:
 	UPROPERTY(EditAnywhere)
 		float Power = 5.f;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Effect")
 		float HitStop;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Effect")
 		class UParticleSystem* Effect;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Effect")
 		FTransform EffectTransform;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Effect")
 		TSubclassOf<class UCameraShake> ShakeClass;
 
 	UPROPERTY(EditAnywhere)
@@ -54,6 +63,12 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ACThrow> ThrowClass;
+
+	UPROPERTY(EditAnywhere)
+		bool Diversity;
+
+	UPROPERTY(EditAnywhere)
+		FAnimontage DivMontage;
 };
 
 USTRUCT(BlueprintType)
@@ -65,16 +80,16 @@ public:
 	UPROPERTY(EditAnywhere)
 		float Power = 5.f;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Effect")
 		float HitStop;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Effect")
 		class UParticleSystem* Effect;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Effect")
 		FTransform EffectTransform;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Effect")
 		TSubclassOf<class UCameraShake> ShakeClass;
 
 	UPROPERTY(EditAnywhere)

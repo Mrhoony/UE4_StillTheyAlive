@@ -1,6 +1,5 @@
 #include "CAnimInstance.h"
 #include "Global.h"
-
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -13,8 +12,9 @@ void UCAnimInstance::NativeBeginPlay()
 
 	UCDeckComponent* deck = CHelpers::GetComponent<UCDeckComponent>(character);
 	CheckNull(deck);
-
+	
 	deck->OnPerkTypeChanged.AddDynamic(this, &UCAnimInstance::OnPerkTypeChanged);
+	
 }
 
 void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -34,7 +34,7 @@ void UCAnimInstance::OnPerkTypeChanged(EPerkType InPrevType, EPerkType InNewType
 	PerkType = InNewType;
 }
 
-//void UCAnimInstance::OnActionTypeChanged(EActionType InPrevType, EActionType InNewType)
-//{
-//	ActionType = InNewType;
-//}
+void UCAnimInstance::OnWeaponTypeChanged(EWeaponType InNewType)
+{
+	WeaponType = InNewType;
+}

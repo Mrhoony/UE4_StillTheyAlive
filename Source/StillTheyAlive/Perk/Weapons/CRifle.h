@@ -9,6 +9,11 @@ class STILLTHEYALIVE_API ACRifle : public ACWeapon
 {
 	GENERATED_BODY()
 	
+public:
+	ACRifle();
+
+	virtual void WeaponTypeChanged() override;
+
 protected:
 	virtual void BeginPlay() override;
 

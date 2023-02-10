@@ -2,10 +2,17 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "Perk/CPerk.h"
 #include "CDeckComponent.generated.h"
 
+UENUM(BlueprintType)
+enum class EPerkType : uint8
+{
+	Unarmed, Weapon, Trap, Spawn, Trinket, Max
+};
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FPerkTypeChanged, EPerkType, InPrevType, EPerkType, InNewType);
+
+
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class STILLTHEYALIVE_API UCDeckComponent : public UActorComponent
@@ -19,13 +26,9 @@ protected:
 	virtual void BeginPlay() override;
 	
 public:
-	UFUNCTION(BlueprintPure)
-		FORCEINLINE bool IsUnarmedMode() { return Type == EPerkType::Unarmed; }
-
-	void GetCurrentPerkData();
+	FORCEINLINE class ACPerk* GetCurrentPerk() { return CurrentPerk; }
 
 private:
-	void SetMode(EPerkType InType);
 	void ChangeType(EPerkType InType);
 
 
@@ -57,22 +60,26 @@ public:
 	void PerkAction();
 	void PerkTechAction();
 	void SetCurrentPerk(int index);
-	void Begin_Perk(ACPerk* InNewPerk);
-	void End_Perk(ACPerk* InPrevPerk);
 
-	void ChangePerk(ACPerk* InPrevPerk, ACPerk* InNewPerk);
+	void ChangePerk(class ACPerk* InPrevPerk, class  ACPerk* InNewPerk);
 //=======================================================
 // [Variables]
 //=======================================================
+private:
+	UPROPERTY(EditAnywhere, Category = "Perk")	TArray<TSubclassOf<class ACPerk>> PerkClass;
 public:
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Perk")	TSubclassOf<ACPerk> PerkClass;
+	
 	class ACharacter* OwnerCharacter;
 
 	UPROPERTY(BlueprintAssignable)
 	FPerkTypeChanged OnPerkTypeChanged;
+
 private:
 	uint32 DeckNumber;
-	TArray<ACPerk*> Perks;
-	ACPerk* CurrentPerk;
+	  TArray<class ACPerk*> DeckPerks;
+	  TArray<class ACPerk*> Perks;
+	class ACPerk* CurrentPerk;
+	class ACPerk* BeforePerk;
+
 	EPerkType Type;
 };
