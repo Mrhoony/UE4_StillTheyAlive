@@ -11,11 +11,11 @@ struct FStoryMapData : public FTableRowBase
 	GENERATED_BODY()
 
 		/*
-		* 몇라운드
-		* 몇웨이브
-		* 소환위치인덱스
-		* 몇마리
-		* 무슨몬스터
+		* // 몇라운드
+		* // 몇웨이브
+		* // 소환위치인덱스
+		* // 몇마리
+		* // 무슨몬스터
 		*/
 
 public:
