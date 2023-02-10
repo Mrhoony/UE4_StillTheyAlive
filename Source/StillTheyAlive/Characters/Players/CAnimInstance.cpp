@@ -1,6 +1,5 @@
 #include "CAnimInstance.h"
 #include "Global.h"
-
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -11,10 +10,10 @@ void UCAnimInstance::NativeBeginPlay()
 	ACharacter* character = Cast<ACharacter>(TryGetPawnOwner());
 	CheckNull(character);
 
-	//UCActionComponent* action = CHelpers::GetComponent<UCActionComponent>(character);
-	//CheckNull(action);
-
-//	action->OnActionTypeChanged.AddDynamic(this, &UCAnimInstance::OnActionTypeChanged);
+	UCDeckComponent* deck = CHelpers::GetComponent<UCDeckComponent>(character);
+	CheckNull(deck);
+	
+	deck->OnPerkTypeChanged.AddDynamic(this, &UCAnimInstance::OnPerkTypeChanged);
 }
 
 void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -29,7 +28,12 @@ void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	IsFalling = character->GetCharacterMovement()->IsFalling();
 }
 
-//void UCAnimInstance::OnActionTypeChanged(EActionType InPrevType, EActionType InNewType)
-//{
-//	ActionType = InNewType;
-//}
+void UCAnimInstance::OnPerkTypeChanged(EPerkType InPrevType, EPerkType InNewType)
+{
+	PerkType = InNewType;
+}
+
+void UCAnimInstance::OnWeaponTypeChanged(EWeaponType InNewType)
+{
+	WeaponType = InNewType;
+}

@@ -20,7 +20,7 @@ void ACDoAction_Melee::DoAction_L()
 	/*CheckFalse(State->IsIdleMode());
 	State->SetActionMode();*/
 
-	OwnerCharacter->PlayAnimMontage(Datas[0].AnimMontage, Datas[0].PlayRate, Datas[0].StartSection);
+	OwnerCharacter->PlayAnimMontage(Datas[0].Montage.AnimMontage, Datas[0].Montage.PlayRate, Datas[0].Montage.StartSection);
 	Datas[0].bCanMove ? Status->SetMove() : Status->SetStop();
 
 
@@ -38,7 +38,7 @@ void ACDoAction_Melee::Begin_DoAction()
 	ComboCount++;
 	ComboCount = FMath::Clamp(ComboCount, 0, Datas.Num() - 1);
 
-	OwnerCharacter->PlayAnimMontage(Datas[ComboCount].AnimMontage, Datas[ComboCount].PlayRate, Datas[ComboCount].StartSection);
+	OwnerCharacter->PlayAnimMontage(Datas[ComboCount].Montage.AnimMontage, Datas[ComboCount].Montage.PlayRate, Datas[ComboCount].Montage.StartSection);
 	Datas[ComboCount].bCanMove ? Status->SetMove() : Status->SetStop();
 }
 

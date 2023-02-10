@@ -3,10 +3,16 @@
 
 ACWeapon::ACWeapon()
 {
-
+	PerkType = EPerkType::Weapon;
 }
 
-void ACWeapon::L_Action()
+void ACWeapon::WeaponTypeChanged()
 {
-	CLog::Log("Hi");
+	if (OnWeaponTypeChanged.IsBound())
+		OnWeaponTypeChanged.Broadcast(WeaponType);
+}
+
+void ACWeapon::BeginPlay()
+{
+	Super::BeginPlay();
 }

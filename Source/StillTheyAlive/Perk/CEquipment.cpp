@@ -25,8 +25,8 @@ void ACEquipment::Equip_Implementation()
 {
 	//State->SetEquipMode();
 
-	if (!!Data.AnimMontage)
-		OwnerCharacter->PlayAnimMontage(Data.AnimMontage, Data.PlayRate, Data.StartSection);
+	if (!!Data.Montage.AnimMontage)
+		OwnerCharacter->PlayAnimMontage(Data.Montage.AnimMontage, Data.Montage.PlayRate, Data.Montage.StartSection);
 	else
 	{
 		Begin_Equip();

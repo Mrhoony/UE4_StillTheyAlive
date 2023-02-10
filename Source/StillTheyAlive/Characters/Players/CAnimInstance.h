@@ -2,8 +2,9 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
-#include "Perk/CPerk.h"
 #include "Components/CStateComponent.h"
+#include "Components/CDeckComponent.h"
+#include "Perk/Weapons/CWeapon.h"
 #include "CAnimInstance.generated.h"
 
 UCLASS()
@@ -15,6 +16,8 @@ public:
 	virtual void NativeBeginPlay() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
+	UFUNCTION()
+		void OnWeaponTypeChanged(EWeaponType InNewType);
 private:
 	//UFUNCTION()
 		//void OnActionTypeChanged(EActionType InPrevType, EActionType InNewType);
@@ -28,9 +31,12 @@ private:
 protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) float Speed;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) float Direction;
-	//UPROPERTY(BlueprintReadOnly, EditAnywhere) EActionType ActionType;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere) EPerkType PerkType;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere) EWeaponType WeaponType;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) bool IsFalling;
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) EStateTypes StateType;
-	UPROPERTY(BlueprintReadOnly, EditAnywhere) EPerkType PerkType;
+private:
+	UFUNCTION()
+	void OnPerkTypeChanged(EPerkType InPrevType, EPerkType InNewType);
 };

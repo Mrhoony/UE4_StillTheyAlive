@@ -5,10 +5,9 @@
 #include "PerkActionData.generated.h"
 
 USTRUCT(BlueprintType)
-struct FEquipmentData
+struct FAnimontage
 {
 	GENERATED_BODY()
-
 public:
 	UPROPERTY(EditAnywhere)
 		class UAnimMontage* AnimMontage;
@@ -18,6 +17,16 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		FName StartSection;
+};
+
+USTRUCT(BlueprintType)
+struct FEquipmentData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere)
+		FAnimontage Montage;
 
 	UPROPERTY(EditAnywhere)
 		bool bCanMove = true;
@@ -37,21 +46,59 @@ public:
 	UPROPERTY(EditAnywhere)
 		float Power = 5.f;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Effect")
 		float HitStop;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Effect")
 		class UParticleSystem* Effect;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Effect")
 		FTransform EffectTransform;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Effect")
 		TSubclassOf<class UCameraShake> ShakeClass;
 
 	UPROPERTY(EditAnywhere)
 		FString SpecificCollisionName = "None";
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class ACThrow> ThrowClass;
+
+	UPROPERTY(EditAnywhere)
+		bool Diversity;
+
+	UPROPERTY(EditAnywhere)
+		FAnimontage DivMontage;
 };
+
+USTRUCT(BlueprintType)
+struct FTechDoAction : public FEquipmentData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere)
+		float Power = 5.f;
+
+	UPROPERTY(EditAnywhere, Category = "Effect")
+		float HitStop;
+
+	UPROPERTY(EditAnywhere, Category = "Effect")
+		class UParticleSystem* Effect;
+
+	UPROPERTY(EditAnywhere, Category = "Effect")
+		FTransform EffectTransform;
+
+	UPROPERTY(EditAnywhere, Category = "Effect")
+		TSubclassOf<class UCameraShake> ShakeClass;
+
+	UPROPERTY(EditAnywhere)
+		FString SpecificCollisionName = "None";
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class ACThrow> ThrowClass;
+};
+
 
 UCLASS()
 class STILLTHEYALIVE_API UPerkActionData : public UDataAsset
@@ -89,6 +136,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DoAction")
 		TArray<FDoAction> DoActionDatas;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "TechDoAction")
+		TArray<FTechDoAction> TechDoActionDatas;
 
 private:
 	class ACAttachment* Attachment;
