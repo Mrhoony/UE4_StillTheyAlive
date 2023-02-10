@@ -13,6 +13,7 @@ class STILLTHEYALIVE_API ACDoAction : public AActor
 public:	
 	ACDoAction();
 	FORCEINLINE void SetDatas(TArray<FDoAction> InDatas) { Datas = InDatas; }
+	FORCEINLINE void SetTechDatas(TArray<FTechDoAction> InDatas) { TechDatas = InDatas; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -21,7 +22,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
-	virtual void DoAction() {};
+	virtual void DoAction_L() {};
+	virtual void DoAction_R(class ACPerk* InPerk);
 	virtual void Begin_DoAction() {};
 	virtual void End_DoAction() {};
 
@@ -40,6 +42,10 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly)
 		class UCStatusComponent* Status;
+
 protected:
 	TArray<FDoAction> Datas;
+
+public:
+	TArray<FTechDoAction> TechDatas;
 };

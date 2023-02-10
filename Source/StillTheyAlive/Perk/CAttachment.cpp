@@ -31,6 +31,7 @@ void ACAttachment::BeginPlay()
 
 void ACAttachment::AttachTo(FName InSocketName)
 {
+	if(OwnerCharacter->GetMesh())
 	AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), InSocketName);
 }
 

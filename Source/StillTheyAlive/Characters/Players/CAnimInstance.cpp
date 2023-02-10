@@ -1,6 +1,5 @@
 #include "CAnimInstance.h"
 #include "Global.h"
-
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -11,19 +10,10 @@ void UCAnimInstance::NativeBeginPlay()
 	ACharacter* character = Cast<ACharacter>(TryGetPawnOwner());
 	CheckNull(character);
 
-	UCStateComponent* state = CHelpers::GetComponent<UCStateComponent>(character);
-	CheckNull(state);
-
-	/*
-	* CurrentPerk의 PerkType에 따라 AnimInstance에서 분기해주려고 함
-	* TODO: 22, 23, 26 해결필요, 해결되면 17~20 주석 삭제
-	*/
-
-	//UDeckComponent* deck = CHelpers::GetComponent<UDeckComponent>(character);
-	//CheckNull(deck);
-
-	state->OnStateTypeChanged.AddDynamic(this, &UCAnimInstance::OnStateTypeChanged);
-	//deck->OnPerkTypeChanged.AddDynamic(this, &UCAnimInstance::OnDeckTypeChanged);
+	UCDeckComponent* deck = CHelpers::GetComponent<UCDeckComponent>(character);
+	CheckNull(deck);
+	
+	deck->OnPerkTypeChanged.AddDynamic(this, &UCAnimInstance::OnPerkTypeChanged);
 }
 
 void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -38,5 +28,12 @@ void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	IsFalling = character->GetCharacterMovement()->IsFalling();
 }
 
-void UCAnimInstance::OnPerkTypeChanged(EPerkType InPrevType, EPerkType InNewType) { PerkType = InNewType; }
-void UCAnimInstance::OnStateTypeChanged(EStateTypes InPrevType, EStateTypes InNewType) { StateType = InNewType; }
+void UCAnimInstance::OnPerkTypeChanged(EPerkType InPrevType, EPerkType InNewType)
+{
+	PerkType = InNewType;
+}
+
+void UCAnimInstance::OnWeaponTypeChanged(EWeaponType InNewType)
+{
+	WeaponType = InNewType;
+}

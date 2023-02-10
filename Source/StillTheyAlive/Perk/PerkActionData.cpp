@@ -21,7 +21,7 @@ void UPerkActionData::BeginPlay(ACharacter* InOwnerCharacter)
 		Equipment->AttachToComponent(InOwnerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true));
 		Equipment->SetData(EquipmentData);
 		UGameplayStatics::FinishSpawningActor(Equipment, transform);
-
+	
 		if (!!Attachment)
 		{
 			Equipment->OnEquipmentDelegate.AddDynamic(Attachment, &ACAttachment::OnEquip);
@@ -34,6 +34,7 @@ void UPerkActionData::BeginPlay(ACharacter* InOwnerCharacter)
 		DoAction = InOwnerCharacter->GetWorld()->SpawnActorDeferred<ACDoAction>(DoActionClass, transform, InOwnerCharacter);
 		DoAction->AttachToComponent(InOwnerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true));
 		DoAction->SetDatas(DoActionDatas);
+		DoAction->SetTechDatas(TechDoActionDatas);
 		UGameplayStatics::FinishSpawningActor(DoAction, transform);
 
 		if (!!Attachment)

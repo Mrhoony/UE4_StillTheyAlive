@@ -2,7 +2,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "CAttachment.h"
 #include "Components/CDeckComponent.h"
+#include "CAttachment.h"
 #include "CPerk.generated.h"
 
 USTRUCT(BlueprintType)
@@ -18,14 +20,8 @@ public:
 		TSubclassOf<class ACPerk> PerkClass;
 };
 
-UENUM(BlueprintType)
-enum class EPerkType : uint8
-{
-	Unarmed, Weapon, Trap, Spawn, Trinket, Max
-};
-
 UCLASS()
-class STILLTHEYALIVE_API ACPerk : public AActor
+class STILLTHEYALIVE_API ACPerk : public ACAttachment
 {
 	GENERATED_BODY()
 	
@@ -35,48 +31,20 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-
 public:
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE class UPerkActionData* GetCurrent() { return Data; }
 
+	FORCEINLINE EPerkType GetPerkType() { return PerkType; }
 public:
 	UFUNCTION()
-	virtual void L_Action();
+		virtual void TechAction() {};
 
-	UFUNCTION()
-	void SelectDeck();  // 덱에서 이 슬롯을 가리킬 때
-
-public:
-	void SetUnarmed();
-	void SetWeapon();
-	void SetTrap();
-	void SetSpawn();
-	void SetTrinket();
-
-private:
-	void SetMode(EPerkType InType);
-	void ChangeType(EPerkType InType);
-
-public:
-	UFUNCTION(BlueprintPure)
-		FORCEINLINE bool IsPerkUnarmed() { return Type == EPerkType::Unarmed; }
-
-	UFUNCTION(BlueprintPure)
-		FORCEINLINE bool IsPerkWeapon() { return Type == EPerkType::Weapon; }
-
-	UFUNCTION(BlueprintPure)
-		FORCEINLINE bool IsPerkTrap() { return Type == EPerkType::Trap; }
-
-	UFUNCTION(BlueprintPure)
-		FORCEINLINE bool IsPerkSpawn() { return Type == EPerkType::Spawn; }
-
-	UFUNCTION(BlueprintPure)
-		FORCEINLINE bool IsPerkTrinket() { return Type == EPerkType::Trinket; }
+	void BeginData(class ACharacter* DeckCharacter);
 	
 public:
 	UPROPERTY(EditDefaultsOnly)
-		EPerkType Type;
+		EPerkType PerkType;
 
 	UPROPERTY(EditDefaultsOnly)
 		class UPerkActionData* Data;
