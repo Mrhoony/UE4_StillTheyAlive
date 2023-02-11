@@ -18,12 +18,6 @@ public:
 
 	UFUNCTION()
 		void OnWeaponTypeChanged(EWeaponType InNewType);
-private:
-	//UFUNCTION()
-		//void OnActionTypeChanged(EActionType InPrevType, EActionType InNewType);
-
-	//UFUNCTION()
-	//	void OnStateTypeChanged(EStateTypes InPrevType, EStateTypes InNewType);
 
 //=======================================================
 // [Variables]
@@ -36,6 +30,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) bool IsFalling;
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) EStateTypes StateType;
+
 private:
 	UFUNCTION()
 	void OnPerkTypeChanged(EPerkType InPrevType, EPerkType InNewType);

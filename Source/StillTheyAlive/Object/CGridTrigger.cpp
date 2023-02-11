@@ -16,10 +16,10 @@ ACGridTrigger::ACGridTrigger()
 
 	InstanceMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>("InstanceMesh");
 	InstanceMesh->SetupAttachment(Scene);
-	ConstructorHelpers::FObjectFinder<UStaticMesh> meshAsset(TEXT("StaticMesh'/Game/Meshes/Plane.Plane'"));
+	ConstructorHelpers::FObjectFinder<UStaticMesh> meshAsset(TEXT("StaticMesh'/Game/_Project/Meshes/Plane.Plane'"));
 	if (meshAsset.Succeeded())
 		InstanceMesh->SetStaticMesh(meshAsset.Object);
-	ConstructorHelpers::FObjectFinder<UMaterialInstance> materialAsset(TEXT("MaterialInstanceConstant'/Game/Material/MAT_Demo_Inst.MAT_Demo_Inst'"));
+	ConstructorHelpers::FObjectFinder<UMaterialInstance> materialAsset(TEXT("MaterialInstanceConstant'/Game/_Project/Material/MAT_Demo_Inst.MAT_Demo_Inst'"));
 	if (materialAsset.Succeeded())
 		InstanceMesh->SetMaterial(0, materialAsset.Object);
 

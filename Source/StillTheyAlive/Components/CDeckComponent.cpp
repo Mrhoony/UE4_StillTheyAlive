@@ -6,11 +6,8 @@
 #include "GameFramework/Character.h"
 #include "Characters/Players/CAnimInstance.h"
 
-
-
 UCDeckComponent::UCDeckComponent()
 {
-
 }
 
 void UCDeckComponent::BeginPlay()
@@ -28,6 +25,7 @@ void UCDeckComponent::BeginPlay()
 			UGameplayStatics::FinishSpawningActor(Perks[i], transform);
 		}
 	}
+
 	CheckNull(Perks[0]);
 	CurrentPerk = Perks[0];
 	ChangePerk(nullptr, CurrentPerk);

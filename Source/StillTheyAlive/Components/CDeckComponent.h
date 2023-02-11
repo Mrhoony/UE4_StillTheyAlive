@@ -12,8 +12,6 @@ enum class EPerkType : uint8
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FPerkTypeChanged, EPerkType, InPrevType, EPerkType, InNewType);
 
-
-
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class STILLTHEYALIVE_API UCDeckComponent : public UActorComponent
 {
