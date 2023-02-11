@@ -48,9 +48,6 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 		class UPerkActionData* Data;
-protected:
-	UPROPERTY(BlueprintReadOnly)
-		class ACharacter* OwnerCharacter;
 
 private:
 	class UCDeckComponent* Deck;
