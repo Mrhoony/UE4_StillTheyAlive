@@ -17,6 +17,7 @@ ACGridSection::ACGridSection()
 	ConstructorHelpers::FObjectFinder<UStaticMesh> meshAsset(TEXT("StaticMesh'/Game/Meshes/Sphere.Sphere'"));
 	if (meshAsset.Succeeded())
 		Mesh->SetStaticMesh(meshAsset.Object);
+	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void ACGridSection::BeginPlay()
@@ -29,6 +30,8 @@ void ACGridSection::BeginPlay()
 	
 	DynamicMaterial = UMaterialInstanceDynamic::Create(materialInstance, nullptr);
 	Mesh->SetMaterial(0, DynamicMaterial);
+
+
 }
 
 void ACGridSection::SetScale(float scale)
