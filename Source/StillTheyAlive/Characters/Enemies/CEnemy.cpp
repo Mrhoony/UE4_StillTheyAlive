@@ -1,6 +1,8 @@
 #include "CEnemy.h"
 #include "Global.h"
 
+#include "AIController.h"
+
 ACEnemy::ACEnemy()
 {
 	// Component Settings
@@ -19,4 +21,11 @@ ACEnemy::ACEnemy()
 void ACEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+
+	SpawnDefaultController();
+}
+
+void ACEnemy::Move(FVector GoalPoint)
+{
+	Cast<AAIController>(GetController())->MoveToLocation(GoalPoint);
 }

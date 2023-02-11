@@ -1,6 +1,17 @@
 #include "CStoryGameMode.h"
 #include "Global.h"
 #include "Core/CGameInstance.h"
+#include "Maps/CSpawnPoint.h"
+#include "Engine/DataTable.h"
+#include "Maps/CGoalPoint.h"
+#include "Characters/Enemies/CEnemy.h"
+
+ACStoryGameMode::ACStoryGameMode()
+{
+	CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/BP_CPlayer.BP_CPlayer_C'");
+
+	CHelpers::GetAsset<UDataTable>(&DataTable, "DataTable'/Game/_Project/DataTables/DT_SpawnTest.DT_SpawnTest'");
+}
 
 void ACStoryGameMode::BeginPlay()
 {
@@ -9,10 +20,23 @@ void ACStoryGameMode::BeginPlay()
 	Score = 0;
 	// Moeny = // CGameInstance에서 데이터테이블의 값을 읽어온다.
 	// Lifes = // CGameInstance에서 데이터테이블의 값을 읽어온다.
-
 	//GetGameInstance()->SetCurrnetGameMode();
-
 	// Cast<UCGameInstance>(GetGameInstance())->SetGameModeTypeStory();
+
+	// Find & Save SpawnPoints
+	TArray<AActor*> actors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACSpawnPoint::StaticClass(), actors);
+	for (AActor* actor : actors)
+		SpawnPoints.Add(Cast<ACSpawnPoint>(actor));
+
+	// Find & Save GoalPoints
+	actors.Empty();
+	actors.Shrink();
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACGoalPoint::StaticClass(), actors);
+	for (AActor* actor : actors)
+		GoalPoints.Add(Cast<ACGoalPoint>(actor));
+
+	UdpateCurrentRoundDatas();
 }
 
 void ACStoryGameMode::StartNextRound()
@@ -21,6 +45,26 @@ void ACStoryGameMode::StartNextRound()
 	// 시작 음악 재생
 	// 데이터테이블에서 라운드에 해당하는 몬스터 불러오기
 	// 겹치지 않게 소환
+
+	for (FStoryMapData* data : RoundDatas)
+	{
+		ACEnemy* enemy = GetWorld()->SpawnActor<ACEnemy>(data->MonsterRef, SpawnPoints[data->SpawnLocationIndex]->GetTransform());
+		enemy->Move(GoalPoints[0]->GetActorLocation());
+	}	
+}
+
+void ACStoryGameMode::UdpateCurrentRoundDatas()
+{
+	TArray<FStoryMapData*> datas;
+	DataTable->GetAllRows<FStoryMapData>("", datas);
+
+	for (FStoryMapData* data : datas)
+	{
+		if (data->Round == CurrentRound)
+		{
+			RoundDatas.Add(data);
+		}
+	}
 }
 
 /*

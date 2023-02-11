@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameModeBase.h"
+#include "Core/GameModes/CPlayGameMode.h"
 #include "Core/Structs/FStoryMapData.h"
 #include "CStoryGameMode.generated.h"
 
@@ -12,16 +12,19 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLifeValueChanged, int32, PrevValue
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FRoundStateChanged, bool, NewValue);
 
 UCLASS()
-class STILLTHEYALIVE_API ACStoryGameMode : public AGameModeBase
+class STILLTHEYALIVE_API ACStoryGameMode : public ACPlayGameMode
 {
 	GENERATED_BODY()
+
+public:
+	ACStoryGameMode();
 
 protected:
 	virtual void BeginPlay() override;
 
 public:
 	//void Initialize(DataTable data);
-	void StartNextRound(); // 다음 라운드 실행
+	virtual void StartNextRound() override; // 다음 라운드 실행
 	void FinishThisRound();
 
 public:
@@ -31,6 +34,9 @@ public:
 	void IncreaseLifes(const int32& InAmount);
 	void DecreaseLifes(const int32& InAmount);
 
+private:
+	void UdpateCurrentRoundDatas();
+
 public:
 	FScoreValueChanged OnScoreValueChanged;
 	FMoneyValueChanged OnMoneyValueChanged;
@@ -38,15 +44,24 @@ public:
 	FRoundStateChanged OnRoundStateChanged;
 
 private:
+	UPROPERTY(EditDefaultsOnly)
+		class UDataTable* DataTable;
+
+private:
 	int32 Score;
 	int32 Money;
 	int32 Lifes;
 
+	TArray<class ACSpawnPoint*> SpawnPoints;
+	TArray<class ACGoalPoint*> GoalPoints;
+
 	TArray<class AActor*> SpawnMonsters;
 	
-	FStoryMapData Datas;
+	TArray<FStoryMapData*> RoundDatas;
 
 	bool bStarted;
+
+	int CurrentRound = 1;
 };
 
 // 플레이레벨 시작시 해당 레벨에 해당하는 스폰데이터테이블을 불러온다

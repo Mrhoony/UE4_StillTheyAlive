@@ -14,16 +14,8 @@ public:
 	ACEnemy();
 
 public:
-protected:
-private:
+	void Move(FVector GoalPoint);
 
-public:
 protected:
 	virtual void BeginPlay() override;
-private:
-
-public:
-protected:
-private:
-
 };

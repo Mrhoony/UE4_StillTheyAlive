@@ -39,8 +39,7 @@ private:
 	void OnJump();
 
 	void DoAction();
-	void TechDoAction();
-	
+	void TechDoAction();	
 
 	void SelectDeck1();
 	void SelectDeck2();

@@ -8,5 +8,7 @@ UCLASS()
 class STILLTHEYALIVE_API ACPlayGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	virtual void StartNextRound() {};
 };

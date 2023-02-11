@@ -6,6 +6,7 @@
 #include "Components/CDeckComponent.h"
 #include "Core/CGameInstance.h"
 #include "Core/GameModes/CStoryGameMode.h"
+#include "Core/GameModes/CPlayGameMode.h"
 
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -133,18 +134,21 @@ void ACPlayer::SelectDeck0() { Deck->SetCurrentPerk(9); }
 
 void ACPlayer::StartNextRound()
 {
-	EGameModeTypes type = Cast<UCGameInstance>(GetGameInstance())->GetGameModeType();
+	ACPlayGameMode* playGameMode = Cast<ACPlayGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	playGameMode->StartNextRound();
 
-	switch (type)
-	{
-		case EGameModeTypes::Story:
-		{
-			ACStoryGameMode* storyMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-			storyMode->StartNextRound();
-		}break;
-		case EGameModeTypes::Endless:
-		{
-			//Cast<ACEndlessGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->StartNextRound();
-		}break;
-	} // switch (type)
+	//EGameModeTypes type = Cast<UCGameInstance>(GetGameInstance())->GetGameModeType();
+
+	//switch (type)
+	//{
+	//	case EGameModeTypes::Story:
+	//	{
+	//		ACStoryGameMode* storyMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	//		storyMode->StartNextRound();
+	//	}break;
+	//	case EGameModeTypes::Endless:
+	//	{
+	//		//Cast<ACEndlessGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->StartNextRound();
+	//	}break;
+	//} // switch (type)
 }
