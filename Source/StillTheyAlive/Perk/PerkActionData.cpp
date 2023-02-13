@@ -18,7 +18,7 @@ void UPerkActionData::BeginPlay(ACharacter* InOwnerCharacter, class ACAttachment
 		Equipment->AttachToComponent(InOwnerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true));
 		Equipment->SetData(EquipmentData);
 		UGameplayStatics::FinishSpawningActor(Equipment, transform);
-	
+
 		if (!!Attachment)
 		{
 			Equipment->OnEquipmentDelegate.AddDynamic(Attachment, &ACAttachment::OnEquip);
@@ -53,4 +53,3 @@ FString UPerkActionData::GetLabelName(ACharacter* InOwnerCharacter, FString InMi
 	
 	return name;
 }
-

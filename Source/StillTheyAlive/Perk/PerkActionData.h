@@ -33,7 +33,6 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		bool bPawnControl = true;
-
 };
 
 
@@ -98,7 +97,6 @@ public:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ACThrow> ThrowClass;
 };
-
 
 UCLASS()
 class STILLTHEYALIVE_API UPerkActionData : public UDataAsset

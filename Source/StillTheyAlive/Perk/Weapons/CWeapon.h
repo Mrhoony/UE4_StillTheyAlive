@@ -35,6 +35,5 @@ public:
 	UPROPERTY(BlueprintAssignable)
 		FWeaponTypeChanged OnWeaponTypeChanged;
 
-
 	float Damage = 5.f;
 };
