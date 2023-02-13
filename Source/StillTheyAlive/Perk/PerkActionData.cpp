@@ -10,6 +10,7 @@ void UPerkActionData::BeginPlay(ACharacter* InOwnerCharacter, class ACAttachment
 	FTransform transform;
 
 	Attachment = AttachPerk;
+	UGameplayStatics::FinishSpawningActor(Attachment, transform);
 
 
 	if (!!EquipmentClass)
