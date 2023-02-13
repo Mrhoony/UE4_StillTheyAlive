@@ -9,7 +9,6 @@
 ACDoAction::ACDoAction()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 void ACDoAction::BeginPlay()
@@ -25,13 +24,9 @@ void ACDoAction::BeginPlay()
 void ACDoAction::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void ACDoAction::DoAction_R(ACPerk* InPerk)
 {
 	InPerk->TechAction();
 }
-
-
-

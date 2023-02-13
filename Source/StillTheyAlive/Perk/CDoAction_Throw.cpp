@@ -15,7 +15,6 @@ void ACDoAction_Throw::BeginPlay()
 void ACDoAction_Throw::DoAction_L()
 {
 	Super::DoAction_L();
-
 	
 	//CheckFalse(State->IsIdleMode());
 	//State->SetActionMode();
@@ -43,9 +42,7 @@ void ACDoAction_Throw::Begin_DoAction()
 	ThrowObject = GetWorld()->SpawnActorDeferred<ACThrow>(Datas[0].ThrowClass, transform, OwnerCharacter, OwnerCharacter, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 	ThrowObject->OnThrowBeginOverlap.AddDynamic(this, &ACDoAction_Throw::OnThrowBeginOverlap);
 	UGameplayStatics::FinishSpawningActor(ThrowObject, transform);
-
 }
-
 
 void ACDoAction_Throw::End_DoAction()
 {
@@ -54,8 +51,6 @@ void ACDoAction_Throw::End_DoAction()
 	//State->SetIdleMode();
 	Status->SetMove();
 }
-
-
 
 void ACDoAction_Throw::OnThrowBeginOverlap(FHitResult InHitResult)
 {

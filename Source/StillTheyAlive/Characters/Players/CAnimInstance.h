@@ -5,6 +5,7 @@
 #include "Components/CStateComponent.h"
 #include "Components/CDeckComponent.h"
 #include "Perk/Weapons/CWeapon.h"
+#include "Perk/CPerk.h"
 #include "CAnimInstance.generated.h"
 
 UCLASS()

@@ -15,8 +15,6 @@ void ACPerk::BeginPlay()
 	Super::BeginPlay();
 }
 
-
-
 void ACPerk::BeginData(ACharacter* DeckCharacter)
 {
 	if (!!Data)

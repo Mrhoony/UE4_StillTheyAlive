@@ -19,8 +19,6 @@ private:
 	UFUNCTION()
 		void OnThrowBeginOverlap(FHitResult InHitResult);
 
-
 private:
-
 	class ACThrow* ThrowObject;
 };
