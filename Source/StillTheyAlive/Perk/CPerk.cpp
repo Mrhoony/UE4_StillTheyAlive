@@ -18,5 +18,5 @@ void ACPerk::BeginPlay()
 void ACPerk::BeginData(ACharacter* DeckCharacter)
 {
 	if (!!Data)
-		Data->BeginPlay(DeckCharacter);
+		Data->BeginPlay(DeckCharacter, this);
 }
