@@ -5,15 +5,12 @@
 #include "CDoAction.h"
 #include "GameFramework/Character.h"
 
-void UPerkActionData::BeginPlay(ACharacter* InOwnerCharacter)
+void UPerkActionData::BeginPlay(ACharacter* InOwnerCharacter, class ACAttachment* AttachPerk)
 {
 	FTransform transform;
-	if (!!AttachmentClass)
-	{
 
-		Attachment = InOwnerCharacter->GetWorld()->SpawnActorDeferred<ACAttachment>(AttachmentClass, transform, InOwnerCharacter);
-		UGameplayStatics::FinishSpawningActor(Attachment, transform);
-	}
+	Attachment = AttachPerk;
+
 
 	if (!!EquipmentClass)
 	{

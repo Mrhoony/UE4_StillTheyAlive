@@ -106,7 +106,7 @@ class STILLTHEYALIVE_API UPerkActionData : public UDataAsset
 	GENERATED_BODY()
 	
 public:
-	void BeginPlay(class ACharacter* InOwnerCharacter);
+	void BeginPlay(class ACharacter* InOwnerCharacter, class ACAttachment* AttachPerk);
 
 public:
 	FORCEINLINE class ACEquipment* GetEquipment() { return Equipment; }
@@ -118,8 +118,6 @@ private:
 	FString GetLabelName(class ACharacter* InOwnerCharacter, FString InMiddleName);
 
 public:
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attachment")
-		TSubclassOf<class ACAttachment> AttachmentClass;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Equipment")
 		TSubclassOf<class ACEquipment> EquipmentClass;
