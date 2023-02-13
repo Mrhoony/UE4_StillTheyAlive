@@ -8,9 +8,8 @@
 void UPerkActionData::BeginPlay(ACharacter* InOwnerCharacter, class ACAttachment* AttachPerk)
 {
 	FTransform transform;
-
 	Attachment = AttachPerk;
-
+	UGameplayStatics::FinishSpawningActor(Attachment, transform);
 
 	if (!!EquipmentClass)
 	{

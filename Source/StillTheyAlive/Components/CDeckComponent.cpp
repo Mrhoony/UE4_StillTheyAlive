@@ -21,8 +21,8 @@ void UCDeckComponent::BeginPlay()
 		{
 			ACPerk* perk = GetOwner()->GetWorld()->SpawnActorDeferred<ACPerk>(PerkClass[i], transform, GetOwner());
 			perk->BeginData(OwnerCharacter);
+			UGameplayStatics::FinishSpawningActor(perk, transform);
 			Perks.Add(perk);
-			UGameplayStatics::FinishSpawningActor(Perks[i], transform);
 		}
 	}
 
