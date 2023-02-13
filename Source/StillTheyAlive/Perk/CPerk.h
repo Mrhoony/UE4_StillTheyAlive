@@ -4,6 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "CAttachment.h"
 #include "Components/CDeckComponent.h"
+#include "CAttachment.h"
 #include "CPerk.generated.h"
 
 USTRUCT(BlueprintType)
@@ -19,7 +20,6 @@ public:
 		TSubclassOf<class ACPerk> PerkClass;
 };
 
-
 UCLASS()
 class STILLTHEYALIVE_API ACPerk : public ACAttachment
 {
@@ -30,7 +30,6 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
-
 
 public:
 	UFUNCTION(BlueprintPure)
@@ -49,5 +48,4 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 		class UPerkActionData* Data;
-
 };

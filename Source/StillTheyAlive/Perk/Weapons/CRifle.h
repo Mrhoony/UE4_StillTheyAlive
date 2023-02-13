@@ -19,5 +19,4 @@ protected:
 
 public:
 	virtual void TechAction() override;
-
 };

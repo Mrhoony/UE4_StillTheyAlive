@@ -6,11 +6,8 @@
 #include "GameFramework/Character.h"
 #include "Characters/Players/CAnimInstance.h"
 
-
-
 UCDeckComponent::UCDeckComponent()
 {
-
 }
 
 void UCDeckComponent::BeginPlay()
@@ -28,6 +25,7 @@ void UCDeckComponent::BeginPlay()
 			UGameplayStatics::FinishSpawningActor(Perks[i], transform);
 		}
 	}
+
 	CheckNull(Perks[0]);
 	CurrentPerk = Perks[0];
 	ChangePerk(nullptr, CurrentPerk);
@@ -43,7 +41,6 @@ void UCDeckComponent::PerkAction()
 
 		doAction->DoAction_L();
 	}
-
 }
 
 void UCDeckComponent::PerkTechAction()
@@ -54,7 +51,6 @@ void UCDeckComponent::PerkTechAction()
 
 		doAction->DoAction_R(Perks[DeckNumber]);
 	}
-
 }
 
 void UCDeckComponent::SetCurrentPerk(int index)
@@ -93,7 +89,6 @@ void UCDeckComponent::ChangePerk(ACPerk* InPrevPerk, ACPerk* InNewPerk)
 		break;
 	}
 }
-
 
 void UCDeckComponent::SetUnarmed()
 {
@@ -138,5 +133,4 @@ void UCDeckComponent::ChangeType(EPerkType InType)
 		UCAnimInstance* oweneranim = Cast<UCAnimInstance>(OwnerCharacter->GetMesh()->GetAnimInstance());
 		oweneranim->OnWeaponTypeChanged(Cast<ACWeapon>(CurrentPerk)->GetWeaponType());
 	}
-
 }

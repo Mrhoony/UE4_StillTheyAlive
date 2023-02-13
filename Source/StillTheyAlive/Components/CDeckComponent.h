@@ -12,8 +12,6 @@ enum class EPerkType : uint8
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FPerkTypeChanged, EPerkType, InPrevType, EPerkType, InNewType);
 
-
-
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class STILLTHEYALIVE_API UCDeckComponent : public UActorComponent
 {
@@ -62,6 +60,7 @@ public:
 	void SetCurrentPerk(int index);
 
 	void ChangePerk(class ACPerk* InPrevPerk, class  ACPerk* InNewPerk);
+
 //=======================================================
 // [Variables]
 //=======================================================
@@ -76,8 +75,8 @@ public:
 
 private:
 	uint32 DeckNumber;
-	  TArray<class ACPerk*> DeckPerks;
-	  TArray<class ACPerk*> Perks;
+	TArray<class ACPerk*> DeckPerks;
+	TArray<class ACPerk*> Perks;
 	class ACPerk* CurrentPerk;
 	class ACPerk* BeforePerk;
 

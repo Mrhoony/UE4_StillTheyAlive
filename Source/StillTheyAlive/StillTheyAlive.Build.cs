@@ -12,7 +12,8 @@ public class StillTheyAlive : ModuleRules
 			"CoreUObject",
 			"Engine",
 			"InputCore",
-			"UMG"
+			"UMG",
+			"AIModule"
 		});
 
 		PublicIncludePaths.Add(ModuleDirectory);

@@ -13,8 +13,8 @@ void ACTrap_Brimstone::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CurMana = MaxMana;
-	UKismetSystemLibrary::K2_SetTimer(this, "RegenerateUseResource", 1.0f, true);
+	//CurMana = MaxMana;
+	//UKismetSystemLibrary::K2_SetTimer(this, "RegenerateUseResource", 1.0f, true);
 }
 
 void ACTrap_Brimstone::Burn(AActor* OtherActor)

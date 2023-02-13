@@ -14,7 +14,6 @@ void UCAnimInstance::NativeBeginPlay()
 	CheckNull(deck);
 	
 	deck->OnPerkTypeChanged.AddDynamic(this, &UCAnimInstance::OnPerkTypeChanged);
-	
 }
 
 void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
