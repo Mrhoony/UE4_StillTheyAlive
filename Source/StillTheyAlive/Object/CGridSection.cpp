@@ -14,7 +14,7 @@ ACGridSection::ACGridSection()
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 	Mesh->SetupAttachment(Scene);
 
-	ConstructorHelpers::FObjectFinder<UStaticMesh> meshAsset(TEXT("StaticMesh'/Game/Meshes/Sphere.Sphere'"));
+	ConstructorHelpers::FObjectFinder<UStaticMesh> meshAsset(TEXT("StaticMesh'/Game/_Project/Meshes/Sphere.Sphere'"));
 	if (meshAsset.Succeeded())
 		Mesh->SetStaticMesh(meshAsset.Object);
 	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);

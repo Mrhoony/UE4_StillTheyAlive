@@ -26,12 +26,12 @@ void ACAttachment::BeginPlay()
 
 	OffCollisions();
 
-
 	Super::BeginPlay();
 }
 
 void ACAttachment::AttachTo(FName InSocketName)
 {
+	if(OwnerCharacter->GetMesh())
 	AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), InSocketName);
 }
 
@@ -45,18 +45,17 @@ void ACAttachment::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedCompon
 	CheckTrue(OtherActor == OwnerCharacter);
 	CheckTrue(OtherActor->GetClass() == OwnerCharacter->GetClass())
 
-		if (OnAttachmentBeginOverlap.IsBound())
-		{
-			ACharacter* otherCharacter = Cast<ACharacter>(OtherActor);
-			CheckNull(otherCharacter);
+	if (OnAttachmentBeginOverlap.IsBound())
+	{
+		ACharacter* otherCharacter = Cast<ACharacter>(OtherActor);
+		CheckNull(otherCharacter);
 
-			OnAttachmentBeginOverlap.Broadcast(OwnerCharacter, this, otherCharacter);
-		}
+		OnAttachmentBeginOverlap.Broadcast(OwnerCharacter, this, otherCharacter);
+	}
 }
 
 void ACAttachment::OnComponentEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-
 	if (OnAttachmentEndOverlap.IsBound())
 	{
 		ACharacter* otherCharacter = Cast<ACharacter>(OtherActor);

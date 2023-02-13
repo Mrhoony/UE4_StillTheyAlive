@@ -34,6 +34,7 @@ void UPerkActionData::BeginPlay(ACharacter* InOwnerCharacter)
 		DoAction = InOwnerCharacter->GetWorld()->SpawnActorDeferred<ACDoAction>(DoActionClass, transform, InOwnerCharacter);
 		DoAction->AttachToComponent(InOwnerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true));
 		DoAction->SetDatas(DoActionDatas);
+		DoAction->SetTechDatas(TechDoActionDatas);
 		UGameplayStatics::FinishSpawningActor(DoAction, transform);
 
 		if (!!Attachment)
@@ -55,4 +56,3 @@ FString UPerkActionData::GetLabelName(ACharacter* InOwnerCharacter, FString InMi
 	
 	return name;
 }
-

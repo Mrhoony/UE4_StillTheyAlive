@@ -39,6 +39,7 @@ private:
 	void OnJump();
 
 	void DoAction();
+	void TechDoAction();
 
 	void SelectDeck1();
 	void SelectDeck2();
@@ -50,6 +51,8 @@ private:
 	void SelectDeck8();
 	void SelectDeck9();
 	void SelectDeck0();
+
+	void StartNextRound();
 
 //=======================================================
 // [Variables]

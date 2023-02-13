@@ -1,8 +1,13 @@
 #include "CPlayer.h"
 #include "Global.h"
+
 #include "Components/CStatusComponent.h"
 #include "Components/COptionComponent.h"
 #include "Components/CDeckComponent.h"
+#include "Core/CGameInstance.h"
+#include "Core/GameModes/CStoryGameMode.h"
+#include "Core/GameModes/CPlayGameMode.h"
+
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
@@ -46,15 +51,8 @@ ACPlayer::ACPlayer()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
-void ACPlayer::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
-void ACPlayer::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
+void ACPlayer::BeginPlay() { Super::BeginPlay(); }
+void ACPlayer::Tick(float DeltaTime) { Super::Tick(DeltaTime); }
 
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -68,6 +66,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACPlayer::OnJump);
 	PlayerInputComponent->BindAction("Action", EInputEvent::IE_Pressed, this, &ACPlayer::DoAction);
+	PlayerInputComponent->BindAction("TechAction", EInputEvent::IE_Pressed, this, &ACPlayer::TechDoAction);
 	
 	PlayerInputComponent->BindAction("Deck1", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck1);
 	PlayerInputComponent->BindAction("Deck2", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck2);
@@ -79,6 +78,8 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Deck8", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck8);
 	PlayerInputComponent->BindAction("Deck9", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck9);
 	PlayerInputComponent->BindAction("Deck0", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck0);
+	
+	PlayerInputComponent->BindAction("StartRound", EInputEvent::IE_Pressed, this, &ACPlayer::StartNextRound);
 }
 
 void ACPlayer::OnMoveForward(float InAxis)
@@ -118,6 +119,7 @@ void ACPlayer::OnZoom(float InAxis)
 
 void ACPlayer::OnJump() { this->Jump(); }
 void ACPlayer::DoAction() { Deck->PerkAction(); }
+void ACPlayer::TechDoAction() { Deck->PerkTechAction(); }
 
 void ACPlayer::SelectDeck1() { Deck->SetCurrentPerk(0); }
 void ACPlayer::SelectDeck2() { Deck->SetCurrentPerk(1); }
@@ -129,3 +131,24 @@ void ACPlayer::SelectDeck7() { Deck->SetCurrentPerk(6); }
 void ACPlayer::SelectDeck8() { Deck->SetCurrentPerk(7); }
 void ACPlayer::SelectDeck9() { Deck->SetCurrentPerk(8); }
 void ACPlayer::SelectDeck0() { Deck->SetCurrentPerk(9); }
+
+void ACPlayer::StartNextRound()
+{
+	ACPlayGameMode* playGameMode = Cast<ACPlayGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	playGameMode->StartNextRound();
+
+	//EGameModeTypes type = Cast<UCGameInstance>(GetGameInstance())->GetGameModeType();
+
+	//switch (type)
+	//{
+	//	case EGameModeTypes::Story:
+	//	{
+	//		ACStoryGameMode* storyMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	//		storyMode->StartNextRound();
+	//	}break;
+	//	case EGameModeTypes::Endless:
+	//	{
+	//		//Cast<ACEndlessGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->StartNextRound();
+	//	}break;
+	//} // switch (type)
+}
