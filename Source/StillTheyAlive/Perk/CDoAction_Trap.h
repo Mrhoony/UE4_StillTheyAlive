@@ -25,7 +25,6 @@ private:
 
 private:
 	class APlayerController* PlayerController;
-	class UDecalComponent* Decal;
 	class UStaticMeshComponent* StaticMesh;
 
 	class ACTrap* TrapObject;
