@@ -15,6 +15,7 @@ void ACDoAction_Trap::BeginPlay()
 	{
 		if (actor->IsA<ACAttachment>() && actor->GetActorLabel().Contains("Trap"))
 		{
+		
 			Decal = CHelpers::GetComponent<UDecalComponent>(actor);
 			StaticMesh = CHelpers::GetComponent<UStaticMeshComponent>(actor);
 			break;
