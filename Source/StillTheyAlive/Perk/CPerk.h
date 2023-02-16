@@ -18,7 +18,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	FORCEINLINE class UActionObject* GetCurrent() { return DataObject; }
+	FORCEINLINE class UCActionObject* GetCurrent() { return DataObject; }
 	FORCEINLINE EPerkType GetPerkType() { return PerkType; }
 
 public:
@@ -35,7 +35,7 @@ public:
 		class UPerkActionData* Data;
 
 	UPROPERTY()
-		class UActionObject* DataObject;
+		class UCActionObject* DataObject;
 
 	UPROPERTY(EditAnywhere)
 		class UTexture2D* PerkImage;

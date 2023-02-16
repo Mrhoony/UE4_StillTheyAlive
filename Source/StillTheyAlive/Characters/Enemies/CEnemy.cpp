@@ -4,7 +4,7 @@
 #include "Components/CStateComponent.h"
 #include "Components/COptionComponent.h"
 #include "Components/CDeckComponent.h"
-#include "AIController.h"
+#include "CAIController.h"
 
 ACEnemy::ACEnemy()
 {
@@ -35,7 +35,7 @@ void ACEnemy::BeginPlay()
 
 void ACEnemy::Move(FVector GoalPoint)
 {
-	Cast<AAIController>(GetController())->MoveToLocation(GoalPoint);
+	Cast<ACAIController>(GetController())->MoveToLocation(GoalPoint);
 }
 
 void ACEnemy::Hitted()

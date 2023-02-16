@@ -25,6 +25,11 @@ EBehaviorType UCBehaviorComponent::GetType()
 }
 
 
+ bool UCBehaviorComponent::IsWaitMode()
+{
+	return GetType() == EBehaviorType::Wait;
+}
+
 bool UCBehaviorComponent::IsApprochMode()
 {
 	return GetType() == EBehaviorType::Approch;
@@ -43,6 +48,16 @@ bool UCBehaviorComponent::IsPatrolMode()
 bool UCBehaviorComponent::IsHittedMode()
 {
 	return GetType() == EBehaviorType::Hitted;
+}
+
+ bool UCBehaviorComponent::IsReturnMode()
+{
+	return GetType() == EBehaviorType::Return;
+}
+
+void UCBehaviorComponent::SetWaitMode()
+{
+	ChangeType(EBehaviorType::Wait);
 }
 
 void UCBehaviorComponent::SetApprochMode()
@@ -65,9 +80,19 @@ void UCBehaviorComponent::SetHittedMode()
 	ChangeType(EBehaviorType::Hitted);
 }
 
+void UCBehaviorComponent::SetReturnMode()
+{
+	ChangeType(EBehaviorType::Return);
+}
+
 ACPlayer* UCBehaviorComponent::GetTargetPlayer()
 {
 	return Cast<ACPlayer>(Blackboard->GetValueAsObject(PlayerKey));
+}
+
+FVector UCBehaviorComponent::GetLocation()
+{
+	return Blackboard->GetValueAsVector(LocationKey);
 }
 
 

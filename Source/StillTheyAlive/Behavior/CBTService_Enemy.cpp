@@ -29,15 +29,17 @@ void UCBTService_Enemy::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	}
 
 	ACPlayer* target = behavior->GetTargetPlayer();
-	if (target == nullptr) return;
-
+	if (target == nullptr)
+	{
+		behavior->SetWaitMode();
+		return;
+	}
 	float distane = aiPawn->GetDistanceTo(target);
 
 
 	if (distane < controller->GetBehaviorRange())
 	{
 		behavior->SetActionMode();
-		PrintLine();
 		return;
 	}
 
