@@ -1,8 +1,25 @@
 #include "CGameInstance.h"
 #include "Global.h"
+
 #include "CSaveGame.h"
+#include "Widgets/CUserWidget_MainMenu.h"
 
 #include "GameFramework/SaveGame.h"
+
+UCGameInstance::UCGameInstance(const FObjectInitializer& ObjectInitializer)
+{
+	CHelpers::GetClass(&MainMenuClass, "WidgetBlueprint'/Game/_Project/Widgets/WB_MainMenu.WB_MainMenu_C'");
+}
+
+void UCGameInstance::LoadMainMenu()
+{
+	if (MainMenuClass == nullptr) return;
+
+	MainMenu = CreateWidget<UCUserWidget_MainMenu>(this, MainMenuClass);
+	if (MainMenu == nullptr) return;
+	MainMenu->Setup();
+	MainMenu->SetMenuInterface(this);
+}
 
 void UCGameInstance::Save()
 {

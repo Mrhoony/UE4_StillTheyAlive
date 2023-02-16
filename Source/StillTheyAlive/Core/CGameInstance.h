@@ -18,15 +18,22 @@ UCLASS()
 class STILLTHEYALIVE_API UCGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
-	
+public:
+	UCGameInstance(const FObjectInitializer& ObjectInitializer);
+
+public:
+	UFUNCTION(BlueprintCallable, Exec)
+		void LoadMainMenu();
+
+public:
+	FORCEINLINE FPlayerCharacter& GetPlayerCharacter() { return PlayerCharacter; }
+	FORCEINLINE EGameModeTypes GetGameModeType() { return GameModeType; }
+
 public:
 	void Save();
 	bool Load();
-	FPlayerCharacter& GetPlayerCharacter() { return PlayerCharacter; }
 	void CreateNewCharacter(FString Name, TSubclassOf<ACPlayer> Character);
 	void DeleteCharacter(int32 Index);
-
-	EGameModeTypes GetGameModeType() { return GameModeType; }
 
 private:
 	FORCEINLINE void SetGameModeTypeStory() { GameModeType = EGameModeTypes::Story; }
@@ -41,6 +48,8 @@ private:
 	float MasterVolume = 1.f;
 	float MusicVolume = 1.f;
 	float EffectVolume = 1.f;
-
 	EGameModeTypes GameModeType;
+
+	TSubclassOf<class UUserWidget> MainMenuClass;
+	class UCUserWidget_MainMenu* MainMenu;
 };
