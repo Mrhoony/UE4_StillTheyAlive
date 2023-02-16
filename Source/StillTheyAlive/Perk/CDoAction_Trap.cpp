@@ -18,7 +18,6 @@ void ACDoAction_Trap::BeginPlay()
 		
 			Decal = CHelpers::GetComponent<UDecalComponent>(actor);
 			StaticMesh = CHelpers::GetComponent<UStaticMeshComponent>(actor);
-
 			break;
 		}
 	}
@@ -30,15 +29,13 @@ void ACDoAction_Trap::Tick(float DeltaTime)
 	if (Decal == nullptr || StaticMesh == nullptr) return;
 	if (GetCursorLocationAndRotation(DecalLocation, DecalRotation))
 	{
-		Decal->SetVisibility(true);
-		Decal->SetWorldLocation(DecalLocation);
-		Decal->SetWorldRotation(DecalRotation);
-
 		StaticMesh->SetVisibility(true);
 		StaticMesh->SetWorldLocation(DecalLocation);
+		StaticMesh->SetWorldRotation(DecalRotation);
 	}
 	else
 	{
+		PrintLine();
 		Decal->SetVisibility(false);
 		StaticMesh->SetVisibility(false);
 	}
@@ -70,9 +67,14 @@ bool ACDoAction_Trap::GetCursorLocationAndRotation(FVector& OutLocation, FRotato
 	FHitResult hitResult;
 	if (PlayerController->GetHitResultUnderCursorForObjects(objects, true, hitResult))
 	{
-		OutLocation = hitResult.Location;
-		OutRotation = Cast<ACGridTrigger>(hitResult.GetActor())->GetActorRotation();
-
+		ACGridTrigger* gridTrigger = Cast<ACGridTrigger>(hitResult.GetActor());
+		float snapX = UKismetMathLibrary::GridSnap_Float(hitResult.Location.X, gridTrigger->GetGridSize() * 2);
+		float snapY = UKismetMathLibrary::GridSnap_Float(hitResult.Location.Y, gridTrigger->GetGridSize() * 2);
+		
+		
+		OutLocation = FVector(snapX, snapY, 0);
+		OutRotation = gridTrigger->GetActorRotation();
+		
 		return true;
 	}
 
