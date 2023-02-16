@@ -30,6 +30,8 @@ public:
 	FORCEINLINE float GetWalkSpeed() { return WalkSpeed; }
 	FORCEINLINE float GetRunSpeed() { return RunSpeed; }
 	FORCEINLINE bool IsCanMove() { return bCanMove; }
+	FORCEINLINE float GetMaxHealth() { return MaxHealth; }
+	FORCEINLINE float GetHealth() { return Health; }
 
 	void SetMove();
 	void SetStop();

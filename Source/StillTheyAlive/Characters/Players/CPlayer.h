@@ -3,11 +3,12 @@
 #include "CoreMinimal.h"
 
 #include "GameFramework/Character.h"
-
+#include "Characters/ICharacter.h"
+#include "GenericTeamAgentInterface.h"
 #include "CPlayer.generated.h"
 
 UCLASS()
-class STILLTHEYALIVE_API ACPlayer : public ACharacter
+class STILLTHEYALIVE_API ACPlayer : public ACharacter , public IICharacter, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
@@ -28,6 +29,9 @@ public:
 //=======================================================
 public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void Hitted() override;
+	virtual void Dead() override;
+	FGenericTeamId GetGenericTeamId() const override;
 
 private:
 	// Axis Mapping
@@ -67,4 +71,8 @@ private:
 	UPROPERTY(VisibleDefaultsOnly) class UCOptionComponent* Option;
 	UPROPERTY(VisibleDefaultsOnly) class UCDeckComponent* Deck;
 	UPROPERTY(VisibleDefaultsOnly) class UCStateComponent* State;
+
+private:
+	UPROPERTY(EditDefaultsOnly)
+		uint8 TeamID = 0;
 };

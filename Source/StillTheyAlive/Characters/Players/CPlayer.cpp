@@ -1,6 +1,6 @@
 #include "CPlayer.h"
 #include "Global.h"
-
+#include "Components/CStateComponent.h"
 #include "Components/CStatusComponent.h"
 #include "Components/COptionComponent.h"
 #include "Components/CDeckComponent.h"
@@ -22,6 +22,7 @@ ACPlayer::ACPlayer()
 
 	// Create ActorComponent
 	CHelpers::CreateActorComponent(this, &Status, "Status");
+	CHelpers::CreateActorComponent(this, &State, "State");
 	CHelpers::CreateActorComponent(this, &Option, "Option");
 	CHelpers::CreateActorComponent(this, &Deck, "Deck");
 
@@ -80,6 +81,14 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Deck0", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck0);
 	
 	PlayerInputComponent->BindAction("StartRound", EInputEvent::IE_Pressed, this, &ACPlayer::StartNextRound);
+}
+
+void ACPlayer::Hitted()
+{
+}
+
+void ACPlayer::Dead()
+{
 }
 
 void ACPlayer::OnMoveForward(float InAxis)
@@ -151,4 +160,9 @@ void ACPlayer::StartNextRound()
 	//		//Cast<ACEndlessGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->StartNextRound();
 	//	}break;
 	//} // switch (type)
+}
+
+FGenericTeamId ACPlayer::GetGenericTeamId() const
+{
+	return FGenericTeamId(TeamID);
 }

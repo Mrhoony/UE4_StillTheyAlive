@@ -4,21 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "CAttachment.h"
 #include "Components/CDeckComponent.h"
-#include "CAttachment.h"
 #include "CPerk.generated.h"
-
-USTRUCT(BlueprintType)
-struct FPerkInfo
-{
-	GENERATED_BODY()
-
-public:
-	UPROPERTY(EditAnywhere)
-		class UTexture2D* PerkImage;
-
-	UPROPERTY(EditAnywhere)
-		TSubclassOf<class ACPerk> PerkClass;
-};
 
 UCLASS()
 class STILLTHEYALIVE_API ACPerk : public ACAttachment
@@ -32,10 +18,9 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	UFUNCTION(BlueprintPure)
-		FORCEINLINE class UPerkActionData* GetCurrent() { return Data; }
-
+	FORCEINLINE class UCActionObject* GetCurrent() { return DataObject; }
 	FORCEINLINE EPerkType GetPerkType() { return PerkType; }
+
 public:
 	UFUNCTION()
 		virtual void TechAction() {};
@@ -48,4 +33,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 		class UPerkActionData* Data;
+
+	UPROPERTY()
+		class UCActionObject* DataObject;
+
+	UPROPERTY(EditAnywhere)
+		class UTexture2D* PerkImage;
 };
