@@ -5,11 +5,14 @@
 #include "CDoAction.h"
 #include "GameFramework/Character.h"
 
-void UPerkActionData::BeginPlay(ACharacter* InOwnerCharacter, class ACAttachment* AttachPerk)
+void UPerkActionData::BeginPlay(ACharacter* InOwnerCharacter, class ACAttachment* AttachPerk, UCActionObject** OutObject)
 {
-	FTransform transform;
+	ACAttachment* Attachment = nullptr;
+	ACEquipment* Equipment = nullptr;
+	ACDoAction* DoAction = nullptr;
 
 	Attachment = AttachPerk;
+	FTransform transform;
 	UGameplayStatics::FinishSpawningActor(Attachment, transform);
 
 
@@ -41,6 +44,11 @@ void UPerkActionData::BeginPlay(ACharacter* InOwnerCharacter, class ACAttachment
 			Attachment->OnAttachmentEndOverlap.AddDynamic(DoAction, &ACDoAction::OnAttachmentEndOverlap);
 		}
 	}
+
+	*OutObject = NewObject<UCActionObject>();
+	(*OutObject)->Attachment = Attachment;   
+	(*OutObject)->Equipment = Equipment;
+	(*OutObject)->DoAction = DoAction;
 
 }
 

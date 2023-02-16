@@ -13,7 +13,8 @@ public class StillTheyAlive : ModuleRules
 			"Engine",
 			"InputCore",
 			"UMG",
-			"AIModule"
+			"AIModule",
+			"GameplayTasks"
 		});
 
 		PublicIncludePaths.Add(ModuleDirectory);

@@ -39,7 +39,6 @@ void ACDoAction_Trap::Tick(float DeltaTime)
 	}
 	else
 	{
-		PrintLine();
 		Decal->SetVisibility(false);
 		StaticMesh->SetVisibility(false);
 	}
