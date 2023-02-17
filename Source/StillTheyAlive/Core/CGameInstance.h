@@ -18,12 +18,12 @@ UCLASS()
 class STILLTHEYALIVE_API UCGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
+
 public:
 	UCGameInstance(const FObjectInitializer& ObjectInitializer);
 
 public:
-	UFUNCTION(BlueprintCallable, Exec)
-		void LoadMainMenu();
+	UFUNCTION(BlueprintCallable, Exec)		void LoadMainMenu();
 
 public:
 	FORCEINLINE FPlayerCharacter& GetPlayerCharacter() { return PlayerCharacter; }

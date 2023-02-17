@@ -11,10 +11,11 @@ struct FSpawnData : public FTableRowBase
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere) int	Round;
-	UPROPERTY(EditAnywhere) int	Wave;
-	UPROPERTY(EditAnywhere) TSubclassOf<class ACharacter> Monster;
-	UPROPERTY(EditAnywhere) int Num;
+	UPROPERTY(EditAnywhere)		int Round;
+	UPROPERTY(EditAnywhere)		int Wave;
+	UPROPERTY(EditAnywhere)		int SpawnLocationIndex;
+	UPROPERTY(EditAnywhere)		int SpawnCount;
+	UPROPERTY(EditAnywhere)		TSubclassOf<AActor> MonsterRef;
 };
 
 UCLASS()

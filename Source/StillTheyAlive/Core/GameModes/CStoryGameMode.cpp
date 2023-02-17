@@ -10,7 +10,7 @@ ACStoryGameMode::ACStoryGameMode()
 {
 	CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/BP_CPlayer.BP_CPlayer_C'");
 
-	CHelpers::GetAsset<UDataTable>(&DataTable, "DataTable'/Game/_Project/DataTables/DT_SpawnTest.DT_SpawnTest'");
+	//CHelpers::GetAsset<UDataTable>(&DataTable, "DataTable'/Game/_Project/DataTables/DT_SpawnTest.DT_SpawnTest'");
 }
 
 void ACStoryGameMode::BeginPlay()
@@ -46,25 +46,25 @@ void ACStoryGameMode::StartNextRound()
 	// 데이터테이블에서 라운드에 해당하는 몬스터 불러오기
 	// 겹치지 않게 소환
 
-	for (FStoryMapData* data : RoundDatas)
+	for (FSpawnData* data : RoundDatas)
 	{
 		ACEnemy* enemy = GetWorld()->SpawnActor<ACEnemy>(data->MonsterRef, SpawnPoints[data->SpawnLocationIndex]->GetTransform());
 		enemy->Move(GoalPoints[0]->GetActorLocation());
-	}	
+	}
 }
 
 void ACStoryGameMode::UdpateCurrentRoundDatas()
 {
-	TArray<FStoryMapData*> datas;
-	DataTable->GetAllRows<FStoryMapData>("", datas);
+	/*TArray<FSpawnData*> datas;
+	DataTable->GetAllRows<FSpawnData>("GetAllRows", datas);
 
-	for (FStoryMapData* data : datas)
+	for (FSpawnData* data : datas)
 	{
 		if (data->Round == CurrentRound)
 		{
 			RoundDatas.Add(data);
 		}
-	}
+	}*/
 }
 
 /*

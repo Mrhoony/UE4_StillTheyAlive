@@ -14,11 +14,10 @@ UCGameInstance::UCGameInstance(const FObjectInitializer& ObjectInitializer)
 void UCGameInstance::LoadMainMenu()
 {
 	if (MainMenuClass == nullptr) return;
-
 	MainMenu = CreateWidget<UCUserWidget_MainMenu>(this, MainMenuClass);
+
 	if (MainMenu == nullptr) return;
 	MainMenu->Setup();
-	MainMenu->SetMenuInterface(this);
 }
 
 void UCGameInstance::Save()

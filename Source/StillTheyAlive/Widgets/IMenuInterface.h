@@ -13,6 +13,4 @@ class UIMenuInterface : public UInterface
 class STILLTHEYALIVE_API IIMenuInterface
 {
 	GENERATED_BODY()
-
-public:
 };
