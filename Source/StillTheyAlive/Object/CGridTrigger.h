@@ -12,6 +12,7 @@ class STILLTHEYALIVE_API ACGridTrigger : public AActor
 public:	
 	ACGridTrigger();
 
+	FORCEINLINE float GetGridSize() { return GridSize; }
 protected:
 	virtual void BeginPlay() override;
 
