@@ -24,6 +24,7 @@ void ACDoAction_Trap::BeginPlay()
 void ACDoAction_Trap::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 	if (GetCursorLocationAndRotation(DecalLocation, DecalRotation))
 	{
 		StaticMesh->SetVisibility(true);
