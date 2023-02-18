@@ -15,7 +15,6 @@ void UPerkActionData::BeginPlay(ACharacter* InOwnerCharacter, class ACAttachment
 	FTransform transform;
 	UGameplayStatics::FinishSpawningActor(Attachment, transform);
 
-
 	if (!!EquipmentClass)
 	{
 		Equipment = InOwnerCharacter->GetWorld()->SpawnActorDeferred<ACEquipment>(EquipmentClass, transform, InOwnerCharacter);
@@ -49,7 +48,6 @@ void UPerkActionData::BeginPlay(ACharacter* InOwnerCharacter, class ACAttachment
 	(*OutObject)->Attachment = Attachment;   
 	(*OutObject)->Equipment = Equipment;
 	(*OutObject)->DoAction = DoAction;
-
 }
 
 FString UPerkActionData::GetLabelName(ACharacter* InOwnerCharacter, FString InMiddleName)

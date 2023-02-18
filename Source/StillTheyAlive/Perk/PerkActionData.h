@@ -17,7 +17,6 @@ private:
 	FString GetLabelName(class ACharacter* InOwnerCharacter, FString InMiddleName);
 
 public:
-
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Equipment")
 		TSubclassOf<class ACEquipment> EquipmentClass;
 
@@ -35,5 +34,4 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "TechDoAction")
 		TArray<FTechDoAction> TechDoActionDatas;
-
 };
