@@ -31,11 +31,20 @@ void ACEnemy::BeginPlay()
 	Super::BeginPlay();
 
 	SpawnDefaultController();
+
+	Move(MovePoint);
 }
 
-void ACEnemy::Move(FVector GoalPoint)
+void ACEnemy::Move(FVector InMoveDest)
 {
-	Cast<ACAIController>(GetController())->MoveToLocation(GoalPoint);
+	ACAIController* controller = Cast<ACAIController>(GetController());
+	CheckNull(controller);
+	controller->MoveToLocation(InMoveDest);
+}
+
+void ACEnemy::SetMoveDest(FVector InMoveDest)
+{
+	MovePoint = InMoveDest;
 }
 
 void ACEnemy::Hitted()

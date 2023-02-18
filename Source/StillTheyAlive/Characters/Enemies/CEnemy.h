@@ -24,7 +24,8 @@ public:
 	virtual void Dead() override;
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
-	void Move(FVector GoalPoint);
+	void Move(FVector InMoveDest);
+	void SetMoveDest(FVector InMoveDest);
 
 protected:
 	virtual void BeginPlay() override;
@@ -50,4 +51,5 @@ private:
 	class ACharacter* Attacker;
 	class AActor* Causer;
 	float DamageValue;
+	FVector MovePoint;
 };

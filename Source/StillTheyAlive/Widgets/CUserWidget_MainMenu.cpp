@@ -1,6 +1,8 @@
 #include "CUserWidget_MainMenu.h"
 #include "Global.h"
 
+#include "Core/CGameInstance.h"
+
 #include "Components/Button.h"
 #include "Components/WidgetSwitcher.h"
 #include "Components/VerticalBox.h"
@@ -53,6 +55,10 @@ void UCUserWidget_MainMenu::PlayGame()
 	//APlayerController* controller = MenuInterface->GetFirstLocalPlayerController();
 	CheckNull(controller);
 
+	UCGameInstance* gameInstance = Cast<UCGameInstance>(GetWorld()->GetGameInstance());
+	CheckNull(gameInstance);
+	gameInstance->SetCurrentStoryMap(SelectedStoryMap);
+
 	FInputModeGameOnly inputmode;
 	controller->SetInputMode(inputmode);
 	controller->ClientTravel(SelectedStoryMap->Map, ETravelType::TRAVEL_Absolute);	
@@ -81,10 +87,10 @@ void UCUserWidget_MainMenu::Setup()
 	inputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 
 	UWorld* world = GetWorld();
-	if (world == nullptr) return;
+	CheckNull(world);
 
 	APlayerController* controller = world->GetFirstPlayerController();
-	if (controller == nullptr) return;
+	CheckNull(controller);
 	controller->SetInputMode(inputMode);
 	controller->bShowMouseCursor = true;
 }
@@ -97,10 +103,10 @@ void UCUserWidget_MainMenu::Teardown()
 	FInputModeGameOnly inputMode;
 
 	UWorld* world = GetWorld();
-	if (world == nullptr) return;
+	CheckNull(world);
 
 	APlayerController* controller = world->GetFirstPlayerController();
-	if (controller == nullptr) return;
+	CheckNull(controller);
 	controller->SetInputMode(inputMode);
 	controller->bShowMouseCursor = false;
 }

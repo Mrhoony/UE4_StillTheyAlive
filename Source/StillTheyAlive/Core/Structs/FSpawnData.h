@@ -15,7 +15,7 @@ public:
 	UPROPERTY(EditAnywhere)		int Wave;
 	UPROPERTY(EditAnywhere)		int SpawnLocationIndex;
 	UPROPERTY(EditAnywhere)		int SpawnCount;
-	UPROPERTY(EditAnywhere)		TSubclassOf<AActor> MonsterRef;
+	UPROPERTY(EditAnywhere)		TSubclassOf<class ACharacter> MonsterRef;
 };
 
 UCLASS()
