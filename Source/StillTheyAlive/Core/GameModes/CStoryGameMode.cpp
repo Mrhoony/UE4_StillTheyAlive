@@ -39,6 +39,23 @@ void ACStoryGameMode::BeginPlay()
 	UdpateCurrentRoundDatas(); 
 }
 
+void ACStoryGameMode::DecreaseLifes()
+{
+	Lifes--;
+	CLog::Print(FString::FromInt(Lifes) + " Lifes Left");
+
+	if (Lifes < 1)
+	{
+		UWorld* world = GetWorld();
+		CheckNull(world);
+
+		APlayerController* controller = world->GetFirstPlayerController();
+		CheckNull(controller);
+
+		controller->ConsoleCommand("Quit");
+	}
+}
+
 void ACStoryGameMode::StartNextRound()
 {
 	for (FSpawnData* data : RoundDatas)

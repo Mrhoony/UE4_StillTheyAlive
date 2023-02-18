@@ -18,7 +18,6 @@ public:
 	FORCEINLINE class UBehaviorTree* GetBehaviorTree() { return BehaviorTree; }
 	FORCEINLINE uint8 GetTeamID() { return TeamID; }
 
-
 public:
 	virtual void Hitted() override;
 	virtual void Dead() override;
