@@ -43,8 +43,13 @@ void ACStoryGameMode::StartNextRound()
 {
 	for (FSpawnData* data : RoundDatas)
 	{
-		ACEnemy* enemy = GetWorld()->SpawnActor<ACEnemy>(data->MonsterRef, SpawnPoints[data->SpawnLocationIndex]->GetTransform());
-		enemy->SetMoveDest(GoalPoints[0]->GetActorLocation());
+		for (int i = 0; i < data->SpawnCount; i++)
+		{
+			//ACEnemy* enemy = GetWorld()->SpawnActor<ACEnemy>(data->MonsterRef, SpawnPoints[data->SpawnLocationIndex]->GetTransform());
+			ACEnemy* enemy = GetWorld()->SpawnActorDeferred<ACEnemy>(data->MonsterRef, SpawnPoints[data->SpawnLocationIndex]->GetTransform());
+			enemy->SetMoveDest(GoalPoints[0]->GetActorLocation());
+			UGameplayStatics::FinishSpawningActor(enemy, SpawnPoints[data->SpawnLocationIndex]->GetTransform());
+		}
 	}
 }
 
