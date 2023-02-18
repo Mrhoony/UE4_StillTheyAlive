@@ -12,7 +12,7 @@ class STILLTHEYALIVE_API UCUserWidget_PlayerStatus : public UUserWidget
 public:
 	UFUNCTION(BlueprintImplementableEvent)
 		void Update(float InHealth, float InMaxHealth);
-	
+
 //=======================================================
 // [Variables]
 //=======================================================

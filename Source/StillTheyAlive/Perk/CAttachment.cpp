@@ -1,6 +1,7 @@
 #include "CAttachment.h"
 #include "Global.h"
 #include "Components/CStatusComponent.h"
+#include "Components/CStateComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFrameWork/Character.h"
 
@@ -13,7 +14,7 @@ ACAttachment::ACAttachment()
 void ACAttachment::BeginPlay()
 {
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
-	//State = CHelpers::GetComponent<UCStateComponent>(OwnerCharacter);
+	State = CHelpers::GetComponent<UCStateComponent>(OwnerCharacter);
 	Status = CHelpers::GetComponent<UCStatusComponent>(OwnerCharacter);
 
 	GetComponents<UShapeComponent>(ShapeComponents);

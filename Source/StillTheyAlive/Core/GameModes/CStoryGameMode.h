@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Core/GameModes/CPlayGameMode.h"
-#include "Core/Structs/FStoryMapData.h"
+#include "Core/Structs/FSpawnData.h"
 #include "CStoryGameMode.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FScoreValueChanged, int32, PrevValue, int32, NewValue);
@@ -57,7 +57,7 @@ private:
 
 	TArray<class AActor*> SpawnMonsters;
 	
-	TArray<FStoryMapData*> RoundDatas;
+	TArray<FSpawnData*> RoundDatas;
 
 	bool bStarted;
 

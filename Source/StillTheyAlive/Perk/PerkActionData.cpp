@@ -5,13 +5,15 @@
 #include "CDoAction.h"
 #include "GameFramework/Character.h"
 
-void UPerkActionData::BeginPlay(ACharacter* InOwnerCharacter, class ACAttachment* AttachPerk)
+void UPerkActionData::BeginPlay(ACharacter* InOwnerCharacter, class ACAttachment* AttachPerk, UCActionObject** OutObject)
 {
-	FTransform transform;
+	ACAttachment* Attachment = nullptr;
+	ACEquipment* Equipment = nullptr;
+	ACDoAction* DoAction = nullptr;
 
 	Attachment = AttachPerk;
+	FTransform transform;
 	UGameplayStatics::FinishSpawningActor(Attachment, transform);
-
 
 	if (!!EquipmentClass)
 	{
@@ -42,6 +44,10 @@ void UPerkActionData::BeginPlay(ACharacter* InOwnerCharacter, class ACAttachment
 		}
 	}
 
+	*OutObject = NewObject<UCActionObject>();
+	(*OutObject)->Attachment = Attachment;   
+	(*OutObject)->Equipment = Equipment;
+	(*OutObject)->DoAction = DoAction;
 }
 
 FString UPerkActionData::GetLabelName(ACharacter* InOwnerCharacter, FString InMiddleName)
