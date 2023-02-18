@@ -1,7 +1,7 @@
 #include "CDoAction_Trap.h"
 #include "Global.h"
 #include "Trap/CTrap.h"
-#include "Object/CGridTrigger.h"
+#include "Grid/CGridTrigger.h"
 #include "Components/DecalComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/Character.h"

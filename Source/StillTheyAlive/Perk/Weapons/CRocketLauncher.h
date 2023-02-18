@@ -15,6 +15,7 @@ protected:
 	virtual void BeginPlay() override;
 public:
 	virtual void WeaponTypeChanged() override;
+
 	virtual void TechAction() override;
 
 private:

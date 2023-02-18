@@ -40,6 +40,7 @@ private:
 
 	void DoAction();
 	void TechDoAction();
+	void TechOffAction();
 
 	void SelectDeck1();
 	void SelectDeck2();

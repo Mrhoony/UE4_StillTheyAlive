@@ -23,9 +23,11 @@ public:
 
 public:
 	virtual void DoAction_L() {};
-	virtual void DoAction_R(class ACPerk* InPerk);
 	virtual void Begin_DoAction() {};
 	virtual void End_DoAction() {};
+
+	virtual void DoAction_R() {};
+	virtual void DoOffAction_R() {};
 
 	UFUNCTION()
 		virtual void OnAttachmentBeginOverlap(class ACharacter* InAttacker, class AActor* InCauser, class ACharacter* InOtherCharacter) {};
@@ -37,8 +39,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 		class ACharacter* OwnerCharacter;
 
-	/*UPROPERTY(BlueprintReadOnly)
-		class UCStateComponent* State;*/
+	UPROPERTY(BlueprintReadOnly)
+		class UCStateComponent* State;
 
 	UPROPERTY(BlueprintReadOnly)
 		class UCStatusComponent* Status;
