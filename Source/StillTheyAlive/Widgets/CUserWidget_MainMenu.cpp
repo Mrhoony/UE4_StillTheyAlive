@@ -51,8 +51,11 @@ void UCUserWidget_MainMenu::PlayGame()
 {	
 	APlayerController* controller = GetWorld()->GetGameInstance()->GetFirstLocalPlayerController();
 	//APlayerController* controller = MenuInterface->GetFirstLocalPlayerController();
-	if (controller == nullptr) return;
-	controller->ClientTravel("/Game/_Project/Maps/TwoWays", ETravelType::TRAVEL_Absolute);
+	CheckNull(controller);
+
+	FInputModeGameOnly inputmode;
+	controller->SetInputMode(inputmode);
+	controller->ClientTravel(SelectedStoryMap->Map, ETravelType::TRAVEL_Absolute);	
 }
 
 //void UCUserWidget_MainMenu::Character()
