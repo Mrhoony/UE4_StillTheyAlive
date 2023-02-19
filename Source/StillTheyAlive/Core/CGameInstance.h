@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Structs/FPlayerCharacter.h"
-
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "Core/Structs/FStoryMapData.h"
 #include "CGameInstance.generated.h"
 
 UENUM(BlueprintType)
@@ -28,6 +28,9 @@ public:
 public:
 	FORCEINLINE FPlayerCharacter& GetPlayerCharacter() { return PlayerCharacter; }
 	FORCEINLINE EGameModeTypes GetGameModeType() { return GameModeType; }
+	FORCEINLINE FStoryMapData* GetCurrentStoryMap() { return CurrentStoryMap; }
+
+	FORCEINLINE void SetCurrentStoryMap(FStoryMapData* InStoryMap) { CurrentStoryMap = InStoryMap; }
 
 public:
 	void Save();
@@ -52,4 +55,7 @@ private:
 
 	TSubclassOf<class UUserWidget> MainMenuClass;
 	class UCUserWidget_MainMenu* MainMenu;
+
+private:
+	FStoryMapData* CurrentStoryMap;
 };

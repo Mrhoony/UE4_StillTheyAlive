@@ -3,12 +3,12 @@
 #include "CoreMinimal.h"
 #include "Core/GameModes/CPlayGameMode.h"
 #include "Core/Structs/FSpawnData.h"
+#include "Core/Structs/FStoryMapData.h"
 #include "CStoryGameMode.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FScoreValueChanged, int32, PrevValue, int32, NewValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FMoneyValueChanged, int32, PrevValue, int32, NewValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLifeValueChanged, int32, PrevValue, int32, NewValue);
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FRoundStateChanged, bool, NewValue);
 
 UCLASS()
@@ -21,6 +21,10 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+public:
+	UFUNCTION(BlueprintCallable)
+		void DecreaseLifes();
 
 public:
 	//void Initialize(DataTable data);
@@ -54,17 +58,9 @@ private:
 
 	TArray<class ACSpawnPoint*> SpawnPoints;
 	TArray<class ACGoalPoint*> GoalPoints;
-
-	TArray<class AActor*> SpawnMonsters;
-	
+	TArray<class AActor*> SpawnMonsters;	
 	TArray<FSpawnData*> RoundDatas;
-
 	bool bStarted;
-
 	int CurrentRound = 1;
+	FStoryMapData* StoryMapData;
 };
-
-// 플레이레벨 시작시 해당 레벨에 해당하는 스폰데이터테이블을 불러온다
-// 그다음 1라운드부터 시작하므로 1라운드에 해당하는 구조체타입의 데이터를 배열로 불러온다.
-// 웨이브를 유지해서 웨이브단위로 소환할 것인지
-// 시작 후 소환까지 딜레이시간으로 변경해서 특정 시간이 되면 바로 소환되게끔 할 것인지 고민
