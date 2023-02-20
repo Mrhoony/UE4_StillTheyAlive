@@ -1,6 +1,6 @@
 #include "CDoAction_Melee.h"
 #include "Global.h"
-//#include "Components/CStateComponent.h"
+#include "Components/CStateComponent.h"
 #include "Components/CStatusComponent.h"
 #include "GameFrameWork/Character.h"
 
@@ -17,8 +17,8 @@ void ACDoAction_Melee::DoAction_L()
 		return;
 	}
 
-	/*CheckFalse(State->IsIdleMode());
-	State->SetActionMode();*/
+	CheckFalse(State->IsIdle());
+	State->SetAction();
 
 	OwnerCharacter->PlayAnimMontage(Datas[0].Montage.AnimMontage, Datas[0].Montage.PlayRate, Datas[0].Montage.StartSection);
 	Datas[0].bCanMove ? Status->SetMove() : Status->SetStop();
@@ -47,7 +47,7 @@ void ACDoAction_Melee::End_DoAction()
 	OwnerCharacter->StopAnimMontage();
 	ComboCount = 0;
 
-	//State->SetIdleMode();
+	State->SetIdle();
 	Status->SetMove();
 }
 

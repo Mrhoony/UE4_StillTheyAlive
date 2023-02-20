@@ -7,6 +7,8 @@
 #include "GenericTeamAgentInterface.h"
 #include "CPlayer.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLevelMiniMap);
+
 UCLASS()
 class STILLTHEYALIVE_API ACPlayer : public ACharacter , public IICharacter, public IGenericTeamAgentInterface
 {
@@ -31,7 +33,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Hitted() override;
 	virtual void Dead() override;
-	FGenericTeamId GetGenericTeamId() const override;
+	FGenericTeamId TeamId = FGenericTeamId(0);
+	virtual FGenericTeamId GetGenericTeamId() const override;
 
 private:
 	// Axis Mapping
@@ -41,6 +44,7 @@ private:
 	void OnVerticalLook(float InAxis);
 	void OnZoom(float InAxis);
 	void OnJump();
+	void OnMiniMap();
 
 	void DoAction();
 	void TechDoAction();
@@ -71,8 +75,12 @@ private:
 	UPROPERTY(VisibleDefaultsOnly) class UCOptionComponent* Option;
 	UPROPERTY(VisibleDefaultsOnly) class UCDeckComponent* Deck;
 	UPROPERTY(VisibleDefaultsOnly) class UCStateComponent* State;
+	UPROPERTY(BlueprintAssignable) FLevelMiniMap OnLevelMiniMap;
 
 private:
 	UPROPERTY(EditDefaultsOnly)
-		uint8 TeamID = 0;
+		uint8 TeamNum = 0;
+
+private:
+	
 };

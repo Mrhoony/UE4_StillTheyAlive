@@ -1,7 +1,7 @@
 #include "CBTTaskNode_Action.h"
 #include "Global.h"
-#include "Characters/Enemies/CEnemy.h"
-#include "Characters/Enemies/CAIController.h"
+#include "Characters/CAICharacter.h"
+#include "AIController.h"
 #include "Components/CDeckComponent.h"
 #include "Components/CStateComponent.h"
 
@@ -16,28 +16,26 @@ EBTNodeResult::Type UCBTTaskNode_Action::ExecuteTask(UBehaviorTreeComponent& Own
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
 
-	ACAIController* controller = Cast<ACAIController>(OwnerComp.GetOwner());
+	AAIController* controller = Cast<AAIController>(OwnerComp.GetOwner());
 
-	ACEnemy* aiPawn = Cast<ACEnemy>(controller->GetPawn());
+	ACAICharacter* aiPawn = Cast<ACAICharacter>(controller->GetPawn());
 	UCDeckComponent* deck = CHelpers::GetComponent<UCDeckComponent>(aiPawn);
 
-	TotalTime = 0.f;
-
+	aiPawn->ActionCoolTime = aiPawn->ActionMaxCoolTime;
+	controller->StopMovement();
 	deck->PerkAction();
-
 	return EBTNodeResult::InProgress;
 }
 
 void UCBTTaskNode_Action::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 
-	ACAIController* controller = Cast<ACAIController>(OwnerComp.GetOwner());
+	AAIController* controller = Cast<AAIController>(OwnerComp.GetOwner());
 
-	ACEnemy* aiPawn = Cast<ACEnemy>(controller->GetPawn());
+	ACAICharacter* aiPawn = Cast<ACAICharacter>(controller->GetPawn());
+	UCDeckComponent* deck = CHelpers::GetComponent<UCDeckComponent>(aiPawn);
 	UCStateComponent* state = CHelpers::GetComponent<UCStateComponent>(aiPawn);
 
-	TotalTime += DeltaSeconds;
-
-	if (state->IsIdle() && TotalTime > Delay)
+	if (state->IsIdle() && aiPawn->ActionCoolTime == 0)
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 }

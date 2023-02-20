@@ -1,0 +1,47 @@
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Components/ActorComponent.h"
+#include "Components/TimelineComponent.h"
+#include "CDissolveComponent.generated.h"
+
+
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+class STILLTHEYALIVE_API UCDissolveComponent : public UActorComponent
+{
+	GENERATED_BODY()
+
+public:	
+
+	UCDissolveComponent();
+
+protected:
+	virtual void BeginPlay() override;
+
+public:	
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+public:
+	void Play();
+	void Stop();
+
+private:
+	UFUNCTION()
+		void OnStartTimeline(float Output);
+
+private:
+	UPROPERTY(EditDefaultsOnly)
+		class UMaterialInstanceConstant* Material;
+
+	UPROPERTY(EditDefaultsOnly)
+		class UCurveFloat* Curve;
+
+	UPROPERTY(EditDefaultsOnly)
+		float PlayRate = 0.2f;
+
+	UPROPERTY()
+		class UMaterialInstanceDynamic* DynamicMaterial;
+private:
+	FTimeline Timeline;
+
+};

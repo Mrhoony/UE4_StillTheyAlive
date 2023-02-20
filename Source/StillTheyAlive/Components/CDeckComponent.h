@@ -58,8 +58,11 @@ public:
 	void PerkAction();
 	void PerkTechAction();
 	void SetCurrentPerk(int index);
-
 	void ChangePerk(class ACPerk* InPrevPerk, class  ACPerk* InNewPerk);
+
+	void Dead();
+	void EndDead();
+
 
 //=======================================================
 // [Variables]

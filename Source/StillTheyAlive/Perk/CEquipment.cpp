@@ -1,7 +1,6 @@
 #include "CEquipment.h"
 #include "Global.h"
-//#include "Characters/ICharacter.h"
-//#include "Components/CStateComponent.h"
+#include "Components/CStateComponent.h"
 #include "Components/CStatusComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -17,13 +16,13 @@ void ACEquipment::BeginPlay()
 	Super::BeginPlay();
 
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
-//	State = CHelpers::GetComponent<UCStateComponent>(OwnerCharacter);
+	State = CHelpers::GetComponent<UCStateComponent>(OwnerCharacter);
 	Status = CHelpers::GetComponent<UCStatusComponent>(OwnerCharacter);
 }
 
 void ACEquipment::Equip_Implementation()
 {
-	//State->SetEquipMode();
+	State->SetEquip();
 
 	if (!!Data.Montage.AnimMontage)
 		OwnerCharacter->PlayAnimMontage(Data.Montage.AnimMontage, Data.Montage.PlayRate, Data.Montage.StartSection);
@@ -38,10 +37,6 @@ void ACEquipment::Equip_Implementation()
 		OwnerCharacter->bUseControllerRotationYaw = true;
 		OwnerCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 	}
-
-	/*IICharacter* characterInterface = Cast<IICharacter>(OwnerCharacter);
-	CheckNull(characterInterface);
-	characterInterface->ChangeColor(Color);*/
 }
 
 void ACEquipment::Begin_Equip_Implementation()
@@ -52,7 +47,7 @@ void ACEquipment::Begin_Equip_Implementation()
 
 void ACEquipment::End_Equip_Implementation()
 {
-	//State->SetIdleMode();
+	State->SetIdle();
 }
 
 void ACEquipment::Unequip_Implementation()

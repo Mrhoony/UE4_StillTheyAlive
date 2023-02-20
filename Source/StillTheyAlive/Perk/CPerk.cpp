@@ -6,6 +6,7 @@
 #include "Components/CStatusComponent.h"
 #include "GameFramework/Character.h"
 #include "CActionObject.h"
+#include "CDoAction.h"
 
 ACPerk::ACPerk()
 {
@@ -20,4 +21,21 @@ void ACPerk::BeginData(ACharacter* DeckCharacter)
 {
 	if (!!Data)
 		Data->BeginPlay(DeckCharacter, this, &DataObject);
+}
+
+void ACPerk::Dead()
+{
+	OffAllCollisions();
+}
+
+void ACPerk::End_Dead()
+{
+	DataObject->GetDoAction()->Destroy();
+	DataObject->GetEquipment()->Destroy();
+	DataObject->GetAttachment()->Destroy();
+}
+
+void ACPerk::OffAllCollisions()
+{
+	DataObject->GetAttachment()->OffCollisions();
 }

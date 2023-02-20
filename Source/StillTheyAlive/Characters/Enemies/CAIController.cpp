@@ -1,12 +1,15 @@
 #include "CAIController.h"
 #include "Global.h"
 #include "Components/CBehaviorComponent.h"
+#include "Components/CStateComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "CEnemy.h"
 #include "Characters/Players/CPlayer.h"
+#include "Characters/Players/CSpawnCharacter.h"
+#include "GameFrameWork/Character.h"
 
 ACAIController::ACAIController()
 {
@@ -15,8 +18,7 @@ ACAIController::ACAIController()
 	CHelpers::CreateActorComponent<UBlackboardComponent>(this, &Blackboard, "Blackboard");
 	CHelpers::CreateActorComponent<UCBehaviorComponent>(this, &Behavior, "Behavior");
 	CHelpers::CreateActorComponent<UAIPerceptionComponent>(this, &Perception, "Perception");
-
-
+	
 	Sight = CreateDefaultSubobject<UAISenseConfig_Sight>("Sight");
 	Sight->SightRadius = 1000.f;
 	Sight->LoseSightRadius = 1000.f;
@@ -31,24 +33,47 @@ ACAIController::ACAIController()
 	
 	Perception->ConfigureSense(*Sight);
 	Perception->SetDominantSense(Sight->GetSenseImplementation());
+
+	SetGenericTeamId(FGenericTeamId(1));
 }
 
 void ACAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
+
 	OwnerEnemy = Cast<ACEnemy>(InPawn);
 	UseBlackboard(OwnerEnemy->GetBehaviorTree()->BlackboardAsset, Blackboard);
 
-	SetGenericTeamId(OwnerEnemy->GetTeamID());
 	Perception->OnPerceptionUpdated.AddDynamic(this, &ACAIController::OnPerceptionUpdated);
 
 	Behavior->SetBlackBoard(Blackboard);
 
 	RunBehaviorTree(OwnerEnemy->GetBehaviorTree());
+}
 
+ETeamAttitude::Type ACAIController::GetTeamAttitudeTowards(const AActor& Other) const
+{
+	if (APawn const* OtherPawn = Cast<APawn>(&Other))
+	{
+		if (auto const TeamAgent = Cast<IGenericTeamAgentInterface>(OtherPawn->GetController()))
+		{
+			if (TeamAgent->GetGenericTeamId() == FGenericTeamId(1))
+			{
+				return ETeamAttitude::Friendly;
+			}
+			else
+			{
+				return ETeamAttitude::Hostile;
+			}
+		}
+	}
+	return ETeamAttitude::Neutral;
+}
 
-	//MoveToLocation(FVector(-2300, 2000, 100));
+void ACAIController::SetLoactionKey(FVector InLoaction)
+{
+	Blackboard->SetValueAsVector("Location", InLoaction);
 }
 
 void ACAIController::BeginPlay()
@@ -73,14 +98,16 @@ void ACAIController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 	TArray<AActor*> actors;
 	Perception->GetCurrentlyPerceivedActors(nullptr, actors);
 
-	ACPlayer* player = nullptr;
+	ACharacter* target = nullptr;
+
 	for (AActor* actor : actors)
 	{
-		player = Cast<ACPlayer>(actor);
+	
+		target = Cast<ACharacter>(actor);
 
-		if (!!player)
+		if(!!target)
 			break;
 	}
 
-	Blackboard->SetValueAsObject("Player", player);
+	Blackboard->SetValueAsObject("Target", target);
 }

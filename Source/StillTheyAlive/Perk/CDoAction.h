@@ -37,8 +37,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 		class ACharacter* OwnerCharacter;
 
-	/*UPROPERTY(BlueprintReadOnly)
-		class UCStateComponent* State;*/
+	UPROPERTY(BlueprintReadOnly)
+		class UCStateComponent* State;
 
 	UPROPERTY(BlueprintReadOnly)
 		class UCStatusComponent* Status;

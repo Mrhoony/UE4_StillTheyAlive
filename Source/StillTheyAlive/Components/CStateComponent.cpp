@@ -13,6 +13,7 @@ void UCStateComponent::SetIdle()	{ ChangeType(EStateTypes::Idle); }
 void UCStateComponent::SetAction()	{ ChangeType(EStateTypes::Action); }
 void UCStateComponent::SetHit()		{ ChangeType(EStateTypes::Hit); }
 void UCStateComponent::SetDead()	{ ChangeType(EStateTypes::Dead); }
+void UCStateComponent::SetEquip()   { ChangeType(EStateTypes::Equip); }
 
 void UCStateComponent::ChangeType(EStateTypes InNewType)
 {
@@ -22,3 +23,4 @@ void UCStateComponent::ChangeType(EStateTypes InNewType)
 	if (OnStateTypeChanged.IsBound())
 		OnStateTypeChanged.Broadcast(prevType, Type);
 }
+

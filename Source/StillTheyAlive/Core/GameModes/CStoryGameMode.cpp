@@ -1,10 +1,9 @@
 #include "CStoryGameMode.h"
 #include "Global.h"
 #include "Core/CGameInstance.h"
-#include "Maps/CSpawnPoint.h"
 #include "Engine/DataTable.h"
-#include "Maps/CGoalPoint.h"
 #include "Characters/Enemies/CEnemy.h"
+#include "Maps/CSpawnPoint.h"
 
 ACStoryGameMode::ACStoryGameMode()
 {
@@ -17,11 +16,15 @@ void ACStoryGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (DataTable == nullptr) return;
 	Score = 0;
 	// Moeny = // CGameInstance에서 데이터테이블의 값을 읽어온다.
 	// Lifes = // CGameInstance에서 데이터테이블의 값을 읽어온다.
 	//GetGameInstance()->SetCurrnetGameMode();
-	// Cast<UCGameInstance>(GetGameInstance())->SetGameModeTypeStory();
+	//Cast<UCGameInstance>(GetGameInstance())->SetGameModeTypeStory();
+
+	DataTable->GetAllRows<FStoryMapData>("", RoundDatas);
+
 
 	// Find & Save SpawnPoints
 	TArray<AActor*> actors;
@@ -29,14 +32,14 @@ void ACStoryGameMode::BeginPlay()
 	for (AActor* actor : actors)
 		SpawnPoints.Add(Cast<ACSpawnPoint>(actor));
 
-	// Find & Save GoalPoints
-	actors.Empty();
-	actors.Shrink();
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACGoalPoint::StaticClass(), actors);
-	for (AActor* actor : actors)
-		GoalPoints.Add(Cast<ACGoalPoint>(actor));
+	//// Find & Save GoalPoints
+	//actors.Empty();
+	//actors.Shrink();
+	//UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACGoalPoint::StaticClass(), actors);
+	//for (AActor* actor : actors)
+	//	GoalPoints.Add(Cast<ACGoalPoint>(actor));
 
-	UdpateCurrentRoundDatas();
+	//UdpateCurrentRoundDatas();
 }
 
 void ACStoryGameMode::StartNextRound()
@@ -45,26 +48,45 @@ void ACStoryGameMode::StartNextRound()
 	// 시작 음악 재생
 	// 데이터테이블에서 라운드에 해당하는 몬스터 불러오기
 	// 겹치지 않게 소환
+	TArray<FStoryMapData*> roundDatas;
 
 	for (FStoryMapData* data : RoundDatas)
 	{
-		ACEnemy* enemy = GetWorld()->SpawnActor<ACEnemy>(data->MonsterRef, SpawnPoints[data->SpawnLocationIndex]->GetTransform());
-		enemy->Move(GoalPoints[0]->GetActorLocation());
+		if (data->Round == CurrentRound)
+			roundDatas.Add(data);
 	}	
+
+	for (int32 i = 0; i < roundDatas.Num(); i++)
+	{
+		RoundAmount += roundDatas[i]->SpawnCount;
+		for (int32 z = 0; z < roundDatas[i]->SpawnCount; z++)
+		{
+			FTimerHandle waitHandle;
+		
+				FTransform transform;
+				for (int32 x = 0; x < SpawnPoints.Num(); x++) 
+				{
+					if(SpawnPoints[x]->PathNum == (int32)roundDatas[i]->SpawnLocationIndex) 
+					transform.SetLocation(SpawnPoints[x]->GetActorLocation() + FVector(0,0,300));
+				}
+					
+				ACEnemy* enemy = GetWorld()->SpawnActor<ACEnemy>(roundDatas[i]->MonsterRef, transform);
+		}
+	}
 }
 
 void ACStoryGameMode::UdpateCurrentRoundDatas()
 {
-	TArray<FStoryMapData*> datas;
-	DataTable->GetAllRows<FStoryMapData>("", datas);
+	//TArray<FStoryMapData*> datas;
+	//DataTable->GetAllRows<FStoryMapData>("", datas);
 
-	for (FStoryMapData* data : datas)
-	{
-		if (data->Round == CurrentRound)
-		{
-			RoundDatas.Add(data);
-		}
-	}
+	//for (FStoryMapData* data : datas)
+	//{
+	//	if (data->Round == CurrentRound)
+	//	{
+	//		RoundDatas.Add(data);
+	//	}
+	//}
 }
 
 /*

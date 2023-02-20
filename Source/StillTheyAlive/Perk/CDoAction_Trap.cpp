@@ -16,7 +16,7 @@ void ACDoAction_Trap::BeginPlay()
 		if (actor->IsA<ACAttachment>() && actor->GetActorLabel().Contains("Trap"))
 		{
 		
-			Decal = CHelpers::GetComponent<UDecalComponent>(actor);
+			
 			StaticMesh = CHelpers::GetComponent<UStaticMeshComponent>(actor);
 			break;
 		}
@@ -26,7 +26,7 @@ void ACDoAction_Trap::BeginPlay()
 void ACDoAction_Trap::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (Decal == nullptr || StaticMesh == nullptr) return;
+	CheckNull(StaticMesh);
 	if (GetCursorLocationAndRotation(DecalLocation, DecalRotation))
 	{
 		StaticMesh->SetVisibility(true);
@@ -35,8 +35,7 @@ void ACDoAction_Trap::Tick(float DeltaTime)
 	}
 	else
 	{
-		PrintLine();
-		Decal->SetVisibility(false);
+
 		StaticMesh->SetVisibility(false);
 	}
 }

@@ -34,6 +34,7 @@ public:
 	void IncreaseLifes(const int32& InAmount);
 	void DecreaseLifes(const int32& InAmount);
 
+	FORCEINLINE void DecreaseRoundAmount() { --RoundAmount; }
 private:
 	void UdpateCurrentRoundDatas();
 
@@ -54,13 +55,13 @@ private:
 
 	TArray<class ACSpawnPoint*> SpawnPoints;
 	TArray<class ACGoalPoint*> GoalPoints;
-
+	TArray<FVector> SpawnLocation;
 	TArray<class AActor*> SpawnMonsters;
 	
 	TArray<FStoryMapData*> RoundDatas;
 
 	bool bStarted;
-
+	int RoundAmount = 0;
 	int CurrentRound = 1;
 };
 
