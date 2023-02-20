@@ -14,7 +14,6 @@ ACDoAction::ACDoAction()
 void ACDoAction::BeginPlay()
 {
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
-	CLog::Print(OwnerCharacter->GetName());
 	State = CHelpers::GetComponent<UCStateComponent>(OwnerCharacter);
 	Status = CHelpers::GetComponent<UCStatusComponent>(OwnerCharacter);
 

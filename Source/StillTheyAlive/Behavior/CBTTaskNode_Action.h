@@ -18,9 +18,5 @@ protected:
 	virtual void TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 
 private:
-	UPROPERTY(EditAnywhere)
-		float Delay = 2.f;
-
-private:
 	float TotalTime;
 };

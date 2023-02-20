@@ -1,6 +1,6 @@
 #include "CStatusComponent.h"
 #include "Global.h"
-
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Widgets/CUserWidget_PlayerStatus.h"
 
 #include "Blueprint/UserWidget.h"
@@ -33,6 +33,13 @@ void UCStatusComponent::SetStop()
 {
 	bCanMove = false;
 }
+
+void UCStatusComponent::SetSpeed(EWalkSpeedTpye InType)
+{
+	UCharacterMovementComponent* movement = CHelpers::GetComponent<UCharacterMovementComponent>(GetOwner());
+	movement->MaxWalkSpeed = Speed[(int32)InType];
+}
+
 
 void UCStatusComponent::IncreaseHealth(float InAmount)
 {

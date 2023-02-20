@@ -7,7 +7,6 @@
 #include "Core/CGameInstance.h"
 #include "Core/GameModes/CStoryGameMode.h"
 #include "Core/GameModes/CPlayGameMode.h"
-
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
@@ -69,6 +68,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Action", EInputEvent::IE_Pressed, this, &ACPlayer::DoAction);
 	PlayerInputComponent->BindAction("TechAction", EInputEvent::IE_Pressed, this, &ACPlayer::TechDoAction);
 	PlayerInputComponent->BindAction("TechAction", EInputEvent::IE_Released, this, &ACPlayer::TechOffAction);
+	PlayerInputComponent->BindAction("MiniMap", EInputEvent::IE_Pressed, this, &ACPlayer::OnMiniMap);
 	
 	PlayerInputComponent->BindAction("Deck1", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck1);
 	PlayerInputComponent->BindAction("Deck2", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck2);
@@ -128,7 +128,13 @@ void ACPlayer::OnZoom(float InAxis)
 }
 
 void ACPlayer::OnJump() { this->Jump(); }
-void ACPlayer::DoAction() { Deck->PerkAction();}
+
+void ACPlayer::OnMiniMap()
+{
+	if (OnLevelMiniMap.IsBound())
+		OnLevelMiniMap.Broadcast();
+}
+void ACPlayer::DoAction() { Deck->PerkAction(); }
 void ACPlayer::TechDoAction() { Deck->PerkTechAction(); }
 void ACPlayer::TechOffAction() { Deck->PerkTechOffAction(); }
 
@@ -166,5 +172,5 @@ void ACPlayer::StartNextRound()
 
 FGenericTeamId ACPlayer::GetGenericTeamId() const
 {
-	return FGenericTeamId(TeamID);
+	return TeamId;
 }

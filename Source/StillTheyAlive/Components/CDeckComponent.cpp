@@ -82,6 +82,8 @@ void UCDeckComponent::SetCurrentPerk(int index)
 	ChangePerk(BeforePerk, CurrentPerk);
 }
 
+
+
 void UCDeckComponent::ChangePerk(ACPerk* InPrevPerk, ACPerk* InNewPerk)
 {
 	if(!!InPrevPerk)
@@ -142,5 +144,21 @@ void UCDeckComponent::ChangeType(EPerkType InType)
 	{
 		UCAnimInstance* oweneranim = Cast<UCAnimInstance>(OwnerCharacter->GetMesh()->GetAnimInstance());
 		oweneranim->OnWeaponTypeChanged(Cast<ACWeapon>(CurrentPerk)->GetWeaponType());
+	}
+}
+
+void UCDeckComponent::Dead()
+{
+	for (int32 i = 0; i < Perks.Num(); i++)
+	{
+		Perks[i]->Dead();
+	}
+}
+
+void UCDeckComponent::EndDead()
+{
+	for (int32 i = 0; i < Perks.Num(); i++)
+	{
+		Perks[i]->End_Dead();
 	}
 }

@@ -25,8 +25,14 @@ public:
 	UFUNCTION()
 		virtual void TechAction() {};
 
+public:
 	void BeginData(class ACharacter* DeckCharacter);
 	
+	void OffAllCollisions();
+
+	void Dead();
+	void End_Dead();
+
 public:
 	UPROPERTY(EditDefaultsOnly)
 		EPerkType PerkType;

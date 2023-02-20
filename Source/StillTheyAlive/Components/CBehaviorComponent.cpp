@@ -1,8 +1,10 @@
 #include "CBehaviorComponent.h"
 #include "Global.h"
 #include "Characters/Players/CPlayer.h"
+#include "Characters/Enemies/CEnemy.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
+#include "GameFrameWork/Character.h"
 
 
 void UCBehaviorComponent::BeginPlay()
@@ -30,9 +32,9 @@ EBehaviorType UCBehaviorComponent::GetType()
 	return GetType() == EBehaviorType::Wait;
 }
 
-bool UCBehaviorComponent::IsApprochMode()
+bool UCBehaviorComponent::IsApproachMode()
 {
-	return GetType() == EBehaviorType::Approch;
+	return GetType() == EBehaviorType::Approach;
 }
 
 bool UCBehaviorComponent::IsActionMode()
@@ -60,9 +62,9 @@ void UCBehaviorComponent::SetWaitMode()
 	ChangeType(EBehaviorType::Wait);
 }
 
-void UCBehaviorComponent::SetApprochMode()
+void UCBehaviorComponent::SetApproachMode()
 {
-	ChangeType(EBehaviorType::Approch);
+	ChangeType(EBehaviorType::Approach);
 }
 
 void UCBehaviorComponent::SetActionMode()
@@ -85,10 +87,11 @@ void UCBehaviorComponent::SetReturnMode()
 	ChangeType(EBehaviorType::Return);
 }
 
-ACPlayer* UCBehaviorComponent::GetTargetPlayer()
+ACharacter* UCBehaviorComponent::GetTarget()
 {
-	return Cast<ACPlayer>(Blackboard->GetValueAsObject(PlayerKey));
+	return Cast<ACharacter>(Blackboard->GetValueAsObject(TargetKey));
 }
+
 
 FVector UCBehaviorComponent::GetLocation()
 {

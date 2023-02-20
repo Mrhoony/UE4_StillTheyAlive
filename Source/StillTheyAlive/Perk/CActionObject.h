@@ -65,6 +65,9 @@ public:
 		TSubclassOf<class ACThrow> ThrowClass;
 
 	UPROPERTY(EditAnywhere)
+		TSubclassOf<class ACSpawnCharacter> SpawnClass;
+
+	UPROPERTY(EditAnywhere)
 		bool Diversity;
 
 	UPROPERTY(EditAnywhere)

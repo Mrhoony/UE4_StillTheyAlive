@@ -7,7 +7,7 @@
 UENUM(BlueprintType)
 enum class EBehaviorType : uint8
 {
-	Wait, Patrol, Approch, Action, Hitted , Return
+	Wait, Patrol, Approach, Action, Hitted , Return
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FBehaviorTypeChanged, EBehaviorType, InPrevType, EBehaviorType, ChangeType);
@@ -23,7 +23,7 @@ protected:
 
 public:
 	UFUNCTION(BlueprintPure) bool IsWaitMode();
-	UFUNCTION(BlueprintPure) bool IsApprochMode();
+	UFUNCTION(BlueprintPure) bool IsApproachMode();
 	UFUNCTION(BlueprintPure) bool IsActionMode();
 	UFUNCTION(BlueprintPure) bool IsPatrolMode();
 	UFUNCTION(BlueprintPure) bool IsHittedMode();
@@ -32,11 +32,11 @@ public:
 public:
 	FORCEINLINE void SetBlackBoard(class UBlackboardComponent* InBlackboard) { Blackboard = InBlackboard; }
 
-	class ACPlayer* GetTargetPlayer();
+	class ACharacter* GetTarget();
 	FVector GetLocation();
 
 	void SetWaitMode();
-	void SetApprochMode();
+	void SetApproachMode();
 	void SetActionMode();
 	void SetPatrolMode();
 	void SetHittedMode(); 
@@ -52,7 +52,7 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere) FName BehaviorKey = "Behavior";
-	UPROPERTY(EditAnywhere) FName PlayerKey = "Player";
+	UPROPERTY(EditAnywhere) FName TargetKey = "Target";
 	UPROPERTY(EditAnywhere) FName LocationKey = "Location";
 
 private:
