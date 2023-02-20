@@ -19,7 +19,7 @@ void UCAimAction::BeginPlay(ACharacter* InOwnerCharacter)
 
 	TimelineFloat.BindUFunction(this, "Zooming");
 	Timeline.AddInterpFloat(Curve, TimelineFloat);
-	Timeline.SetPlayRate(150.0f);
+	Timeline.SetPlayRate(5.0f);
 
 	Aim_Hud = OwnerCharacter->GetWorld()->GetFirstPlayerController()->GetHUD<ACHUD_Aim>();
 	CheckNull(Aim_Hud);
@@ -42,7 +42,7 @@ void UCAimAction::On()
 	Aim_Hud->VisibleAim();
 
 	SpringArm->TargetArmLength = 100.0f;
-	SpringArm->SocketOffset = FVector(0, 30, 15);
+	SpringArm->SocketOffset = FVector(0, 40, 25);
 	SpringArm->bEnableCameraLag = false;
 
 	Timeline.PlayFromStart(); //타임라인 처음부터 시작
