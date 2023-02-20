@@ -68,6 +68,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACPlayer::OnJump);
 	PlayerInputComponent->BindAction("Action", EInputEvent::IE_Pressed, this, &ACPlayer::DoAction);
 	PlayerInputComponent->BindAction("TechAction", EInputEvent::IE_Pressed, this, &ACPlayer::TechDoAction);
+	PlayerInputComponent->BindAction("TechAction", EInputEvent::IE_Released, this, &ACPlayer::TechOffAction);
 	
 	PlayerInputComponent->BindAction("Deck1", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck1);
 	PlayerInputComponent->BindAction("Deck2", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck2);
@@ -127,8 +128,9 @@ void ACPlayer::OnZoom(float InAxis)
 }
 
 void ACPlayer::OnJump() { this->Jump(); }
-void ACPlayer::DoAction() { Deck->PerkAction(); }
+void ACPlayer::DoAction() { Deck->PerkAction();}
 void ACPlayer::TechDoAction() { Deck->PerkTechAction(); }
+void ACPlayer::TechOffAction() { Deck->PerkTechOffAction(); }
 
 void ACPlayer::SelectDeck1() { Deck->SetCurrentPerk(0); }
 void ACPlayer::SelectDeck2() { Deck->SetCurrentPerk(1); }

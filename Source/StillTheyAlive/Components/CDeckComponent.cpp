@@ -49,7 +49,17 @@ void UCDeckComponent::PerkTechAction()
 	{
 		ACDoAction* doAction = Perks[DeckNumber]->GetCurrent()->GetDoAction();
 
-		doAction->DoAction_R(Perks[DeckNumber]);
+		doAction->DoAction_R();
+	}
+}
+
+void UCDeckComponent::PerkTechOffAction()
+{
+	if (Perks[DeckNumber]->GetCurrent()->GetDoAction())
+	{
+		ACDoAction* doAction = Perks[DeckNumber]->GetCurrent()->GetDoAction();
+
+		doAction->DoOffAction_R();
 	}
 }
 

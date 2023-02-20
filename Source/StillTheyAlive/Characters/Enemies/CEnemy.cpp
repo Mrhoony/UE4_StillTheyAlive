@@ -5,6 +5,7 @@
 #include "Components/COptionComponent.h"
 #include "Components/CDeckComponent.h"
 #include "CAIController.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 ACEnemy::ACEnemy()
 {
@@ -61,17 +62,32 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 	Causer = DamageCauser;
 	Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
 
-	CLog::Print(DamageValue);
+	//AddImpulse를 위한 준비
+	FVector attackerForward = Attacker->GetActorForwardVector();
+	FVector attackerUp = Attacker->GetActorUpVector();
+	attackerForward.Normalize();
+	attackerUp.Normalize();
 
-	Status->DecreaseHealth(DamageValue);
-
-	if (Status->GetHealth() <= 0.f)
+	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
 	{
-		State->SetDead();
-		return DamageValue;
+		const FRadialDamageEvent* radialDamageEvent = static_cast<const FRadialDamageEvent*>(&DamageEvent);
+		GetCharacterMovement()->AddImpulse((attackerForward + attackerUp) * 300.0f, true);
+		CLog::Print("TakeRadialDamage");
+		CLog::Print(DamageValue);
 	}
+	else
+	{
+		CLog::Print("TakeNormalDamage");
+		Status->DecreaseHealth(DamageValue);
 
-	State->SetHit();
+		if (Status->GetHealth() <= 0.f)
+		{
+			State->SetDead();
+			return DamageValue;
+		}
+
+		State->SetHit();
+	}
 
 	return DamageValue;
 }

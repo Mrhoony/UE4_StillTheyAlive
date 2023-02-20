@@ -7,7 +7,7 @@
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
 {
-	Rifle,Magic, GreatSword, Max
+	Rifle, Magic, GreatSword, RocketLauncher, Max
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWeaponTypeChanged, EWeaponType, InNewType);
@@ -19,10 +19,11 @@ class STILLTHEYALIVE_API ACWeapon : public ACPerk
 
 public:
 	ACWeapon();	
-	
+		
 public:
 	UFUNCTION()
-	virtual void WeaponTypeChanged();
+		virtual void WeaponTypeChanged();
+
 	FORCEINLINE EWeaponType GetWeaponType() { return WeaponType; }
 
 protected:
@@ -30,7 +31,7 @@ protected:
 
 public:
 	UPROPERTY(EditDefaultsOnly)
-	EWeaponType WeaponType;
+		EWeaponType WeaponType;
 
 	UPROPERTY(BlueprintAssignable)
 		FWeaponTypeChanged OnWeaponTypeChanged;
