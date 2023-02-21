@@ -8,15 +8,14 @@ UCLASS()
 class STILLTHEYALIVE_API ACDoAction_Melee : public ACDoAction
 {
 	GENERATED_BODY()
+
 public:
 	virtual void DoAction_L() override;
 	virtual void Begin_DoAction() override;
 	virtual void End_DoAction() override;
 
 	virtual void OnAttachmentBeginOverlap(class ACharacter* InAttacker, class AActor* InCauser, class ACharacter* InOtherCharacter) override;
-
 	virtual void OnAttachmentEndOverlap(class ACharacter* InAttacker, class AActor* InCauser, class ACharacter* InOtherCharacter) override;
-
 
 public:
 	FORCEINLINE void EnableCombo() { bCanCombo = true; }

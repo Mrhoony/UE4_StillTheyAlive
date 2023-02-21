@@ -30,8 +30,6 @@ void ACGridSection::BeginPlay()
 	
 	DynamicMaterial = UMaterialInstanceDynamic::Create(materialInstance, nullptr);
 	Mesh->SetMaterial(0, DynamicMaterial);
-
-
 }
 
 void ACGridSection::SetScale(float scale)

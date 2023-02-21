@@ -6,7 +6,6 @@
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/Character.h"
 
-
 void ACDoAction_Trap::BeginPlay()
 {
 	Super::BeginPlay();
@@ -47,12 +46,10 @@ void ACDoAction_Trap::DoAction_L()
 
 void ACDoAction_Trap::Begin_DoAction()
 {
-
 }
 
 void ACDoAction_Trap::End_DoAction()
 {
-
 }
 
 bool ACDoAction_Trap::GetCursorLocationAndRotation(FVector& OutLocation, FRotator& OutRotation)

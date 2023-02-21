@@ -31,4 +31,3 @@ void ACPatrolPath::BeginPlay()
 
 	Text->SetVisibility(false);
 }
-

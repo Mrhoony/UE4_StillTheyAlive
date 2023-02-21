@@ -1,10 +1,12 @@
 #include "CBTService_Enemy.h"
 #include "Global.h"
+
 #include "Characters/Players/CPlayer.h"
 #include "Characters/Enemies/CEnemy.h"
 #include "Characters/Enemies/CAIController.h"
 #include "Components/CBehaviorComponent.h"
 #include "Components/CStateComponent.h"
+
 #include "GameFrameWork/Character.h"
 
 UCBTService_Enemy::UCBTService_Enemy()
@@ -63,5 +65,4 @@ void UCBTService_Enemy::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 		behavior->SetApproachMode();
 		return;
 	}
-
 }

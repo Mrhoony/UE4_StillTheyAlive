@@ -17,7 +17,6 @@ ACAICharacter::ACAICharacter()
 	CHelpers::CreateActorComponent(this, &State, "State");
 	CHelpers::CreateActorComponent(this, &Deck, "Deck");
 
-
 	// Component Settings
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -88));
 	GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
@@ -58,6 +57,3 @@ void ACAICharacter::Tick(float DeltaTime)
 	if (ActionCoolTime < 0)
 		ActionCoolTime = 0.f;
 }
-
-
-

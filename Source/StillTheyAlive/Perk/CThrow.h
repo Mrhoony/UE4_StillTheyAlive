@@ -16,6 +16,7 @@ public:
 
 	FORCEINLINE bool IsRadial() { return bRadial; }
 	FORCEINLINE void SetRadial() { bRadial = true; }
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -46,5 +47,4 @@ public:
 
 private:
 	bool bRadial = false;
-
 };

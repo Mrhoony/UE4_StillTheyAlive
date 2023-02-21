@@ -29,7 +29,6 @@ EBTNodeResult::Type UCBTTaskNode_Action::ExecuteTask(UBehaviorTreeComponent& Own
 
 void UCBTTaskNode_Action::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
-
 	AAIController* controller = Cast<AAIController>(OwnerComp.GetOwner());
 
 	ACAICharacter* aiPawn = Cast<ACAICharacter>(controller->GetPawn());

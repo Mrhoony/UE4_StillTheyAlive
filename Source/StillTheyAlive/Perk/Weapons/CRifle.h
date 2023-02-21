@@ -12,11 +12,10 @@ class STILLTHEYALIVE_API ACRifle : public ACWeapon
 public:
 	ACRifle();
 
-	virtual void WeaponTypeChanged() override;
-
 protected:
 	virtual void BeginPlay() override;
 
 public:
 	virtual void TechAction() override;
+	virtual void WeaponTypeChanged() override;
 };

@@ -20,7 +20,6 @@ class STILLTHEYALIVE_API UCStateComponent : public UActorComponent
 public:	
 	UCStateComponent();
 
-
 protected:
 	virtual void BeginPlay() override;
 

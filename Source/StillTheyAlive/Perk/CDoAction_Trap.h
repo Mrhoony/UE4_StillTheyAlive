@@ -9,7 +9,6 @@ class STILLTHEYALIVE_API ACDoAction_Trap : public ACDoAction
 {
 	GENERATED_BODY()
 	
-
 protected:
 	virtual void BeginPlay() override;
 

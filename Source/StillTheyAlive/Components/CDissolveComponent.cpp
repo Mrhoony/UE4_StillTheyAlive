@@ -14,7 +14,6 @@ UCDissolveComponent::UCDissolveComponent()
 	CHelpers::GetAsset<UCurveFloat>(&Curve, "CurveFloat'/Game/Material/Dissolve/Curve_Dissolve.Curve_Dissolve'");
 }
 
-
 void UCDissolveComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -26,7 +25,6 @@ void UCDissolveComponent::BeginPlay()
 	Timeline.AddInterpFloat(Curve, startTimeline);
 	Timeline.SetPlayRate(PlayRate);
 }
-
 
 void UCDissolveComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {

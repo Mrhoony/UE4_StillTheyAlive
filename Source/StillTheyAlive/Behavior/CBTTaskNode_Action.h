@@ -8,6 +8,7 @@ UCLASS()
 class STILLTHEYALIVE_API UCBTTaskNode_Action : public UBTTaskNode
 {
 	GENERATED_BODY()
+
 public:
 	UCBTTaskNode_Action();
 

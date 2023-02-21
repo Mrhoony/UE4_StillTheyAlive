@@ -5,14 +5,12 @@
 #include "Components/TimelineComponent.h"
 #include "CDissolveComponent.generated.h"
 
-
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class STILLTHEYALIVE_API UCDissolveComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
-
+public:
 	UCDissolveComponent();
 
 protected:
@@ -41,7 +39,7 @@ private:
 
 	UPROPERTY()
 		class UMaterialInstanceDynamic* DynamicMaterial;
+
 private:
 	FTimeline Timeline;
-
 };

@@ -2,30 +2,12 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "FWaveData.h"
 #include "FRoundData.generated.h"
 
 USTRUCT(BlueprintType)
 struct FRoundData : public FTableRowBase
 {
 	GENERATED_BODY()
-
-		/*
-		* 무슨웨이브
-		*/
-
-public:
-	
-
-public:
-	UPROPERTY(EditAnywhere)
-		FWaveData Wave;
-
-	UPROPERTY(EditAnywhere)
-		int SpawnCount;
-
-	UPROPERTY(EditAnywhere)
-		TSubclassOf<AActor> MonsterRef;
 };
 
 UCLASS()

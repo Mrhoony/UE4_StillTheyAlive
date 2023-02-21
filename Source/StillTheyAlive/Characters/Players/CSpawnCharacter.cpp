@@ -1,17 +1,17 @@
 #include "CSpawnCharacter.h"
 #include "Global.h"
+
 #include "Components/CStatusComponent.h"
 #include "Components/COptionComponent.h"
 #include "Components/CDeckComponent.h"
 #include "CAIControllerSpawn.h"
+
 #include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Widgets/CUserWidget_Health.h"
 
 ACSpawnCharacter::ACSpawnCharacter()
 {
-
-
 }
 
 void ACSpawnCharacter::BeginPlay()
@@ -27,7 +27,7 @@ void ACSpawnCharacter::OnStateTypeChanged(EStateTypes InPrevType, EStateTypes In
 {
 	switch (InNewType)
 	{
-	case EStateTypes::Hit:	Hitted();	break;
+	case EStateTypes::Hit:		Hitted();	break;
 	case EStateTypes::Dead:		Dead();		break;
 	}
 }
@@ -36,21 +36,20 @@ void ACSpawnCharacter::Dead()
 {
 	CheckFalse(State->IsDead());
 
-	//Widget Visible false
+	// Widget Visible false
 	//NameWidget->SetVisibility(false);
 	HealthWidget->SetVisibility(false);
 
-	//All Weapon Collision Disable
+	// All Weapon Collision Disable
 	Deck->Dead();
 
-	//Ragdoll
+	// Ragdoll
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->GlobalAnimRateScale = 0.f;
 	GetMesh()->SetSimulatePhysics(true);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
-
-	//End_Dead
+	// End_Dead
 	UKismetSystemLibrary::K2_SetTimer(this, "End_Dead", 3.f, false);
 }
 
@@ -80,9 +79,5 @@ float ACSpawnCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent
 	}
 
 	//State->SetHit();
-
-
-
-
 	return DamageValue;
 }

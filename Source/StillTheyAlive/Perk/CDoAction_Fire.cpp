@@ -100,7 +100,6 @@ void ACDoAction_Fire::OnThrowBeginOverlap(FHitResult InHitResult)
 		{
 			CLog::Print("ApplyRadialDamage");
 			CLog::Print(Datas[0].Power);
-			
 		}
 	}
 	else

@@ -20,7 +20,6 @@ class STILLTHEYALIVE_API UCBehaviorComponent : public UActorComponent
 protected:
 	virtual void BeginPlay() override;
 
-
 public:
 	UFUNCTION(BlueprintPure) bool IsWaitMode();
 	UFUNCTION(BlueprintPure) bool IsApproachMode();

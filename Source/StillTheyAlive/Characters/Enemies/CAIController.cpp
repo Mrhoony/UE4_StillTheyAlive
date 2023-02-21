@@ -29,8 +29,7 @@ ACAIController::ACAIController()
 	Sight->DetectionByAffiliation.bDetectEnemies = true;
 	Sight->DetectionByAffiliation.bDetectFriendlies = false;
 	Sight->DetectionByAffiliation.bDetectNeutrals = false;
-
-	
+		
 	Perception->ConfigureSense(*Sight);
 	Perception->SetDominantSense(Sight->GetSenseImplementation());
 
@@ -40,7 +39,6 @@ ACAIController::ACAIController()
 void ACAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-
 
 	OwnerEnemy = Cast<ACEnemy>(InPawn);
 	UseBlackboard(OwnerEnemy->GetBehaviorTree()->BlackboardAsset, Blackboard);
@@ -101,8 +99,7 @@ void ACAIController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 	ACharacter* target = nullptr;
 
 	for (AActor* actor : actors)
-	{
-	
+	{	
 		target = Cast<ACharacter>(actor);
 
 		if(!!target)

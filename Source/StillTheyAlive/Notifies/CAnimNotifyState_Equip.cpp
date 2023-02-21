@@ -31,4 +31,3 @@ void UCAnimNotifyState_Equip::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimS
 
 	deck->GetCurrentPerk()->GetCurrent()->GetEquipment()->End_Equip();
 }
-
