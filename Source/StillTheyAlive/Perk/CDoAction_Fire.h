@@ -19,6 +19,7 @@ public:
 
 	virtual void DoAction_R() override;
 	virtual void DoOffAction_R() override;
+
 private:
 	UFUNCTION()
 		void OnThrowBeginOverlap(FHitResult InHitResult);

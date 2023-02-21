@@ -4,11 +4,11 @@
 #include "UObject/NoExportTypes.h"
 #include "CActionObject.generated.h"
 
-
 USTRUCT(BlueprintType)
 struct FAnimontage
 {
 	GENERATED_BODY()
+
 public:
 	UPROPERTY(EditAnywhere)
 		class UAnimMontage* AnimMontage;
@@ -35,7 +35,6 @@ public:
 	UPROPERTY(EditAnywhere)
 		bool bPawnControl = true;
 };
-
 
 USTRUCT(BlueprintType)
 struct FDoAction : public FEquipmentData
@@ -101,7 +100,6 @@ public:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ACThrow> ThrowClass;
 };
-
 
 UCLASS()
 class STILLTHEYALIVE_API UCActionObject : public UObject

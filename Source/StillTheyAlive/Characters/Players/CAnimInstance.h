@@ -28,11 +28,10 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) float Direction;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) EPerkType PerkType;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) EWeaponType WeaponType;
-	UPROPERTY(BlueprintReadOnly, EditAnywhere) bool IsFalling;
-	
+	UPROPERTY(BlueprintReadOnly, EditAnywhere) bool IsFalling;	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) EStateTypes StateType;
 
 private:
 	UFUNCTION()
-	void OnPerkTypeChanged(EPerkType InPrevType, EPerkType InNewType);
+		void OnPerkTypeChanged(EPerkType InPrevType, EPerkType InNewType);
 };

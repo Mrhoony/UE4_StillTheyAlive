@@ -21,7 +21,7 @@ EBTNodeResult::Type UCBTTaskNode_Patrol::ExecuteTask(UBehaviorTreeComponent& Own
 	UCBehaviorComponent* behavior = CHelpers::GetComponent<UCBehaviorComponent>(controller);
 	UCStateComponent* State = CHelpers::GetComponent<UCStateComponent>(aiPawn);
 	
-	if (State->IsIdle() == false) return  EBTNodeResult::Failed;
+	if (State->IsIdle() == false) return EBTNodeResult::Failed;
 
 	return EBTNodeResult::InProgress;
 }
@@ -48,7 +48,5 @@ void UCBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 	if (type == EPathFollowingRequestResult::AlreadyAtGoal)
 	{
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
-	}
-	
+	}	
 }
-

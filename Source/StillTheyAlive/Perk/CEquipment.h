@@ -8,7 +8,6 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEquipmentDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUnequipmentDelegate);
 
-
 UCLASS()
 class STILLTHEYALIVE_API ACEquipment : public AActor
 {
@@ -16,7 +15,6 @@ class STILLTHEYALIVE_API ACEquipment : public AActor
 	
 public:	
 	ACEquipment();
-
 
 	FORCEINLINE void SetData(FEquipmentData InData) { Data = InData; }
 	FORCEINLINE void SetColor(FLinearColor InColor) { Color = InColor; }

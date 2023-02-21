@@ -8,7 +8,4 @@ UCLASS()
 class STILLTHEYALIVE_API ACTrinket : public ACPerk
 {
 	GENERATED_BODY()
-	
-public:
-
 };

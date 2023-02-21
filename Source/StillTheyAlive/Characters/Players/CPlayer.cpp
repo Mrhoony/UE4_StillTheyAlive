@@ -1,5 +1,6 @@
 #include "CPlayer.h"
 #include "Global.h"
+
 #include "Components/CStateComponent.h"
 #include "Components/CStatusComponent.h"
 #include "Components/COptionComponent.h"
@@ -7,6 +8,7 @@
 #include "Core/CGameInstance.h"
 #include "Core/GameModes/CStoryGameMode.h"
 #include "Core/GameModes/CPlayGameMode.h"
+
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
@@ -152,22 +154,8 @@ void ACPlayer::SelectDeck0() { Deck->SetCurrentPerk(9); }
 void ACPlayer::StartNextRound()
 {
 	ACPlayGameMode* playGameMode = Cast<ACPlayGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	CheckNull(playGameMode);
 	playGameMode->StartNextRound();
-
-	//EGameModeTypes type = Cast<UCGameInstance>(GetGameInstance())->GetGameModeType();
-
-	//switch (type)
-	//{
-	//	case EGameModeTypes::Story:
-	//	{
-	//		ACStoryGameMode* storyMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	//		storyMode->StartNextRound();
-	//	}break;
-	//	case EGameModeTypes::Endless:
-	//	{
-	//		//Cast<ACEndlessGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->StartNextRound();
-	//	}break;
-	//} // switch (type)
 }
 
 FGenericTeamId ACPlayer::GetGenericTeamId() const

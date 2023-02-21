@@ -10,7 +10,6 @@ ACAttachment::ACAttachment()
 	CHelpers::CreateSceneComponent(this, &Scene, "Scene");
 }
 
-
 void ACAttachment::BeginPlay()
 {
 	OwnerCharacter = Cast<ACharacter>(GetOwner());

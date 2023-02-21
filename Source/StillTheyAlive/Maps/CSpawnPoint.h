@@ -11,7 +11,6 @@ class STILLTHEYALIVE_API ACSpawnPoint : public ACGuidePoint
 
 protected:
 	virtual void BeginPlay() override;
-
 	
 private:
 	UFUNCTION()

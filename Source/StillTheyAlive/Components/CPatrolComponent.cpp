@@ -5,9 +5,7 @@
 
 UCPatrolComponent::UCPatrolComponent()
 {
-
 }
-
 
 bool UCPatrolComponent::GetMoveTo(FVector& OutLocation, float& OutAcceptanceRadius)
 {
@@ -67,8 +65,4 @@ void UCPatrolComponent::UpdateNext()
 void UCPatrolComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-
 }
-
-

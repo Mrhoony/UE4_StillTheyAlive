@@ -8,7 +8,6 @@ ACMagic::ACMagic()
 	WeaponType = EWeaponType::Magic;
 }
 
-
 void ACMagic::WeaponTypeChanged()
 {
 	Super::WeaponTypeChanged();

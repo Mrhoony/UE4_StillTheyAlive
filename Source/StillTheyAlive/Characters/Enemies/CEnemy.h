@@ -23,6 +23,7 @@ public:
 
 	UFUNCTION()
 		void End_Dead();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -30,4 +31,6 @@ private:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCDissolveComponent* Dissolve;
 
+private:
+	FVector MovePoint;
 };

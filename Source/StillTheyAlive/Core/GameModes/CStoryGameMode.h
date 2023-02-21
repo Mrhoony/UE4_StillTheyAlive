@@ -38,7 +38,11 @@ public:
 	void IncreaseLifes(const int32& InAmount);
 	void DecreaseLifes(const int32& InAmount);
 
-	FORCEINLINE void DecreaseRoundAmount() { --RoundAmount; }
+public:
+	FORCEINLINE int32 GetScore() const { return Score; }
+	FORCEINLINE int32 GetMoney() const { return Money; }
+	FORCEINLINE int32 GetLife() const { return Life; }
+
 private:
 	void UdpateCurrentRoundDatas();
 
@@ -55,14 +59,14 @@ private:
 private:
 	int32 Score;
 	int32 Money;
-	int32 Lifes;
+	int32 Life;
 
 	TArray<class ACSpawnPoint*> SpawnPoints;
 	TArray<class ACGoalPoint*> GoalPoints;
 	TArray<class AActor*> SpawnMonsters;	
 	TArray<FSpawnData*> RoundDatas;
 	bool bStarted;
-	int RoundAmount = 0;
+	int32 RoundAmount = 0;
 	int CurrentRound = 1;
 	FStoryMapData* StoryMapData;
 };

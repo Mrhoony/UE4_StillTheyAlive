@@ -5,11 +5,9 @@
 #include "Components/CStatusComponent.h"
 #include "GameFrameWork/Character.h"
 
-
 void ACDoAction_Throw::BeginPlay()
 {
 	Super::BeginPlay();
-
 }
 
 void ACDoAction_Throw::DoAction_L()
@@ -29,7 +27,6 @@ void ACDoAction_Throw::DoAction_L()
 
 	Datas[0].bCanMove ? Status->SetMove() : Status->SetStop();
 }
-
 
 void ACDoAction_Throw::Begin_DoAction()
 {

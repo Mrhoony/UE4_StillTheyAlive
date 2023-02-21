@@ -9,6 +9,7 @@ USTRUCT(BlueprintType)
 struct FPerkData : public FTableRowBase
 {
 	GENERATED_BODY()
+
 public:
 	UPROPERTY(EditAnywhere)
 		EPerkType Type;
@@ -24,7 +25,6 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		bool bCanMove = true;
-
 };
 
 UCLASS()

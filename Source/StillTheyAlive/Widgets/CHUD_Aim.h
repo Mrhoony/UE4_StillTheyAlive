@@ -16,6 +16,7 @@ public:
 
 	FORCEINLINE void VisibleAim() { bVisibleAim = true; }
 	FORCEINLINE void VisibleAimHidden() { bVisibleAim = false; }
+
 private:
 	UPROPERTY(EditDefaultsOnly)
 		class UTexture2D* Texture;

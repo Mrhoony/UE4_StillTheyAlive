@@ -8,6 +8,7 @@ UCLASS()
 class STILLTHEYALIVE_API ACDoAction_Spawn : public ACDoAction
 {
 	GENERATED_BODY()
+
 public:
 	virtual void BeginPlay() override;
 	virtual void DoAction_L() override;

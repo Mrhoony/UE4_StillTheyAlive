@@ -4,7 +4,6 @@
 
 ACHUD_Aim::ACHUD_Aim()
 {
-
 }
 
 void ACHUD_Aim::DrawHUD()

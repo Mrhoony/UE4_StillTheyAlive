@@ -21,5 +21,4 @@ void ACRocketLauncher::WeaponTypeChanged()
 
 void ACRocketLauncher::TechAction()
 {
-
 }

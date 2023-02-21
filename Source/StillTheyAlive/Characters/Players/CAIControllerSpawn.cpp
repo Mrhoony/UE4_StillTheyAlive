@@ -17,7 +17,6 @@ ACAIControllerSpawn::ACAIControllerSpawn()
 	CHelpers::CreateActorComponent<UCBehaviorComponent>(this, &Behavior, "Behavior");
 	CHelpers::CreateActorComponent<UAIPerceptionComponent>(this, &Perception, "Perception");
 
-
 	Sight = CreateDefaultSubobject<UAISenseConfig_Sight>("Sight");
 	Sight->SightRadius = 1000.f;
 	Sight->LoseSightRadius = 1000.f;
@@ -29,7 +28,6 @@ ACAIControllerSpawn::ACAIControllerSpawn()
 	Sight->DetectionByAffiliation.bDetectFriendlies = false;
 	Sight->DetectionByAffiliation.bDetectNeutrals = false;
 	
-
 	Perception->ConfigureSense(*Sight);
 	Perception->SetDominantSense(Sight->GetSenseImplementation());
 
@@ -96,7 +94,6 @@ void ACAIControllerSpawn::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActo
 
 	for (AActor* actor : actors)
 	{
-
 		target = Cast<ACharacter>(actor);
 
 		if (!!target)
@@ -105,4 +102,3 @@ void ACAIControllerSpawn::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActo
 
 	Blackboard->SetValueAsObject("Target", target);
 }
-

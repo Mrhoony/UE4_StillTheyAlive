@@ -34,7 +34,7 @@ void ACGridTrigger::BeginPlay()
 
 	CreateGrid(10, 10);
 
-	for (int i = 0; i < GridIndex.Num(); i++)
+	for (int32 i = 0; i < GridIndex.Num(); i++)
 	{
 		FTransform gridTransform;
 		InstanceMesh->GetInstanceTransform(i, gridTransform, true);

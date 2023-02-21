@@ -4,7 +4,6 @@
 #include "Blueprint/UserWidget.h"
 #include "CUserWidget_Health.generated.h"
 
-
 UCLASS()
 class STILLTHEYALIVE_API UCUserWidget_Health : public UUserWidget
 {

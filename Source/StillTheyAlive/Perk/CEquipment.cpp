@@ -8,7 +8,6 @@
 ACEquipment::ACEquipment()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 void ACEquipment::BeginPlay()
@@ -58,4 +57,3 @@ void ACEquipment::Unequip_Implementation()
 	if (OnUnequipmentDelegate.IsBound())
 		OnUnequipmentDelegate.Broadcast();
 }
-

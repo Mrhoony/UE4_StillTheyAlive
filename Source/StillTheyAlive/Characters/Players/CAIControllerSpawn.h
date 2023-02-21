@@ -42,5 +42,4 @@ private:
 private:
 	class ACSpawnCharacter* OwnerCharacter;
 	class UAISenseConfig_Sight* Sight;
-
 };

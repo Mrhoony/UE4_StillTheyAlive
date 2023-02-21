@@ -22,6 +22,7 @@ void UCDeckComponent::BeginPlay()
 			ACPerk* perk = GetOwner()->GetWorld()->SpawnActorDeferred<ACPerk>(PerkClass[i], transform, GetOwner());
 			perk->BeginData(OwnerCharacter);
 			UGameplayStatics::FinishSpawningActor(perk, transform);
+			UKismetSystemLibrary::Delay(GetWorld(), 0.1f, FLatentActionInfo());
 			Perks.Add(perk);
 		}
 	}
@@ -81,8 +82,6 @@ void UCDeckComponent::SetCurrentPerk(int index)
 	}
 	ChangePerk(BeforePerk, CurrentPerk);
 }
-
-
 
 void UCDeckComponent::ChangePerk(ACPerk* InPrevPerk, ACPerk* InNewPerk)
 {

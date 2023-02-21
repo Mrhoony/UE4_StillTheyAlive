@@ -42,6 +42,3 @@ void ACThrow::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 
 	Destroy();
 }
-
-
-

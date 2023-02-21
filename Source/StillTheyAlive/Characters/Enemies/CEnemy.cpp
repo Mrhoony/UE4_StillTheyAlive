@@ -1,5 +1,6 @@
 #include "CEnemy.h"
 #include "Global.h"
+
 #include "Components/CStatusComponent.h"
 #include "Components/COptionComponent.h"
 #include "Components/CDeckComponent.h"
@@ -7,46 +8,45 @@
 #include "Components/CDissolveComponent.h"
 #include "Core/GameModes/CStoryGameMode.h"
 #include "Core/GameModes/CPlayGameMode.h"
+#include "Characters/Enemies/CAIController.h"
+
 #include "Components/WidgetComponent.h"
 #include "Widgets/CUserWidget_Health.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 ACEnemy::ACEnemy()
 {
 	CHelpers::CreateActorComponent(this, &Dissolve, "Dissolve");
-
 }
 
 void ACEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-
-
 }
 
 EPathFollowingRequestResult::Type ACEnemy::Move(FVector GoalPoint)
 {
-	return Cast<AAIController>(GetController())->MoveToLocation(GoalPoint,50.f,false);
+	AAIController* aiController = Cast<AAIController>(GetController());
+	if(aiController == nullptr) return EPathFollowingRequestResult::Failed;
+	return aiController->MoveToLocation(GoalPoint, 50.f, false);
 }
 
 void ACEnemy::OnStateTypeChanged(EStateTypes InPrevType, EStateTypes InNewType)
 {
 	switch (InNewType)
 	{
-	case EStateTypes::Hit:	Hitted();	break;
+	case EStateTypes::Hit:		Hitted();	break;
 	case EStateTypes::Dead:		Dead();		break;
 	}
 }
 
-
 void ACEnemy::Hitted()
 {
-
 }
 
 void ACEnemy::Dead()
 {
 	CheckFalse(State->IsDead());
-
 
 	//NameWidget->SetVisibility(false);
 	HealthWidget->SetVisibility(false);
@@ -64,9 +64,6 @@ void ACEnemy::Dead()
 
 	//End_Dead
 	UKismetSystemLibrary::K2_SetTimer(this, "End_Dead", 3.f, false);
-
-	ACStoryGameMode* GameMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	GameMode->DecreaseRoundAmount();
 }
 
 void ACEnemy::End_Dead()
@@ -74,6 +71,9 @@ void ACEnemy::End_Dead()
 	Dissolve->Stop();
 
 	Deck->EndDead();
+
+	ACStoryGameMode* gameMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	gameMode->DecreaseLifes();
 
 	Destroy();
 }
@@ -101,7 +101,7 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 	{
 		CLog::Print("TakeNormalDamage");
 		Status->DecreaseHealth(DamageValue);
-	Status->DecreaseHealth(DamageValue);
+	}
 
 	UCUserWidget_Health* healthWidgetObject = Cast<UCUserWidget_Health>(HealthWidget->GetUserWidgetObject());
 	if (!!healthWidgetObject)

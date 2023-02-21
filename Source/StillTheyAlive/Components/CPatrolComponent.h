@@ -4,7 +4,6 @@
 #include "Components/ActorComponent.h"
 #include "CPatrolComponent.generated.h"
 
-
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class STILLTHEYALIVE_API UCPatrolComponent : public UActorComponent
 {

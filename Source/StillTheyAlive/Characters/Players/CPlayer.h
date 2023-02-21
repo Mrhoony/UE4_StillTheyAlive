@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
 #include "GameFramework/Character.h"
 #include "Characters/ICharacter.h"
 #include "GenericTeamAgentInterface.h"
