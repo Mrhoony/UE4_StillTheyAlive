@@ -1,6 +1,6 @@
 #include "CDoAction_Trap.h"
 #include "Global.h"
-#include "Trap/CTrap.h"
+#include "Perk/Trap/CTrap.h"
 #include "Grid/CGridTrigger.h"
 #include "Components/DecalComponent.h"
 #include "Components/StaticMeshComponent.h"

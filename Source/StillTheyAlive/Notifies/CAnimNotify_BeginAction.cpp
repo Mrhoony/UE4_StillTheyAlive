@@ -1,9 +1,9 @@
 #include "CAnimNotify_BeginAction.h"
 #include "Global.h"
 #include "Components/CDeckComponent.h"
-#include "Perk/PerkActionData.h"
+#include "Perk/ActionData/PerkActionData.h"
 #include "Perk/CPerk.h"
-#include "Perk/CDoAction.h"
+#include "Perk/ActionData/CDoAction.h"
 
 FString UCAnimNotify_BeginAction::GetNotifyName_Implementation() const
 {

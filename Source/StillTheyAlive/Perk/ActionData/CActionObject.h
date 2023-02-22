@@ -71,6 +71,7 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		FAnimontage DivMontage;
+
 };
 
 USTRUCT(BlueprintType)

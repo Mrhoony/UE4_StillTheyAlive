@@ -29,6 +29,8 @@ public:
 	virtual void DoAction_R() {};
 	virtual void DoOffAction_R() {};
 
+	virtual void UltimateAction() {};
+
 	UFUNCTION()
 		virtual void OnAttachmentBeginOverlap(class ACharacter* InAttacker, class AActor* InCauser, class ACharacter* InOtherCharacter) {};
 
@@ -45,9 +47,10 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 		class UCStatusComponent* Status;
 
+public:
+	TArray<FTechDoAction> TechDatas;
+
 protected:
 	TArray<FDoAction> Datas;
 
-public:
-	TArray<FTechDoAction> TechDatas;
 };

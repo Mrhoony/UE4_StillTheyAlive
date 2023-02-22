@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Perk/CDoAction.h"
+#include "CDoAction.h"
 #include "CDoAction_Fire.generated.h"
 
 UCLASS()

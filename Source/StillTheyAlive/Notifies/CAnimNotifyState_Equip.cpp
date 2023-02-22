@@ -1,9 +1,9 @@
 #include "CAnimNotifyState_Equip.h"
 #include "Global.h"
 #include "Components/CDeckComponent.h"
-#include "Perk/PerkActionData.h"
+#include "Perk/ActionData/PerkActionData.h"
 #include "Perk/CPerk.h"
-#include "Perk/CEquipment.h"
+#include "Perk/ActionData/CEquipment.h"
 
 FString UCAnimNotifyState_Equip::GetNotifyName_Implementation() const
 {

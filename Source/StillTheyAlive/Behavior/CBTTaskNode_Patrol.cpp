@@ -36,7 +36,6 @@ void UCBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 	
 	FVector location;
 	location = behavior->GetLocation();
-
 	EPathFollowingRequestResult::Type type = aiPawn->Move(location);
 
 	if (type == EPathFollowingRequestResult::Failed)

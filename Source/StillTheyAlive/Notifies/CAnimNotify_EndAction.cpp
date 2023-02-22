@@ -1,9 +1,9 @@
 #include "CAnimNotify_EndAction.h"
 #include "Global.h"
 #include "Components/CDeckComponent.h"
-#include "Perk/PerkActionData.h"
+#include "Perk/ActionData/PerkActionData.h"
 #include "Perk/CPerk.h"
-#include "Perk/CDoAction.h"
+#include "Perk/ActionData/CDoAction.h"
 
 FString UCAnimNotify_EndAction::GetNotifyName_Implementation() const
 {

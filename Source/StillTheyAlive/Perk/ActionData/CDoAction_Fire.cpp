@@ -1,6 +1,6 @@
 #include "CDoAction_Fire.h"
 #include "Global.h"
-#include "CAimAction.h"
+#include "Perk/CAimAction.h"
 #include "CThrow.h"
 #include "Characters/Players/CPlayer.h"
 #include "Characters/Enemies/CEnemy.h"

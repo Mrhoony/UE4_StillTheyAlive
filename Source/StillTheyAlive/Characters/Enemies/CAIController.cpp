@@ -52,8 +52,10 @@ void ACAIController::OnPossess(APawn* InPawn)
 
 ETeamAttitude::Type ACAIController::GetTeamAttitudeTowards(const AActor& Other) const
 {
-	if (APawn const* OtherPawn = Cast<APawn>(&Other))
+	if (const APawn* OtherPawn = Cast<APawn>(&Other))
 	{
+		if(Cast<ACPlayer>(OtherPawn))
+		return ETeamAttitude::Hostile;
 		if (auto const TeamAgent = Cast<IGenericTeamAgentInterface>(OtherPawn->GetController()))
 		{
 			if (TeamAgent->GetGenericTeamId() == FGenericTeamId(1))
