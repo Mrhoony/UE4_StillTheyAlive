@@ -9,6 +9,7 @@ USTRUCT(BlueprintType)
 struct FWeaponData : public FTableRowBase
 {
 	GENERATED_BODY()
+
 public:
 	UPROPERTY(EditAnywhere)
 		EWeaponType Type;
@@ -30,7 +31,6 @@ UCLASS()
 class STILLTHEYALIVE_API UCDT_Weapon : public UDataTable
 {
 	GENERATED_BODY()
-
 	
 public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)

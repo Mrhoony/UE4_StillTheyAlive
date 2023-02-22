@@ -71,5 +71,4 @@ void CLog::Log(const FString& InFuncName, int32 InLineNumber)
 	str.Append(", ");
 	str.Append(FString::FromInt(InLineNumber));
 	UE_LOG(GameProject, Display, L"%s", *str);
-
 }

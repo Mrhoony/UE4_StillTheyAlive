@@ -29,7 +29,6 @@ public:
 private:
 	void ChangeType(EPerkType InType);
 
-
 public:
 	void SetUnarmed();
 	void SetWeapon();
@@ -53,23 +52,25 @@ public:
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE bool IsPerkTrinket() { return Type == EPerkType::Trinket; }
 
-
 public:
 	void PerkAction();
 	void PerkTechAction();
+	void PerkTechOffAction();
+	void PerkUltimate();
 	void SetCurrentPerk(int index);
-
 	void ChangePerk(class ACPerk* InPrevPerk, class  ACPerk* InNewPerk);
+
+	void Dead();
+	void EndDead();
 
 //=======================================================
 // [Variables]
 //=======================================================
 private:
 	UPROPERTY(EditAnywhere, Category = "Perk")	TArray<TSubclassOf<class ACPerk>> PerkClass;
-public:
-	
-	class ACharacter* OwnerCharacter;
 
+public:	
+	class ACharacter* OwnerCharacter;
 	UPROPERTY(BlueprintAssignable)
 	FPerkTypeChanged OnPerkTypeChanged;
 
@@ -79,6 +80,6 @@ private:
 	TArray<class ACPerk*> Perks;
 	class ACPerk* CurrentPerk;
 	class ACPerk* BeforePerk;
-
+	class UCStateComponent* OwnerState;
 	EPerkType Type;
 };

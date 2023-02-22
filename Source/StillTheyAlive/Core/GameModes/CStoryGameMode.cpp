@@ -2,10 +2,11 @@
 #include "Global.h"
 
 #include "Core/CGameInstance.h"
-#include "Maps/CSpawnPoint.h"
-#include "Engine/DataTable.h"
-#include "Maps/CGoalPoint.h"
 #include "Characters/Enemies/CEnemy.h"
+#include "Maps/CSpawnPoint.h"
+#include "Maps/CGoalPoint.h"
+
+#include "Engine/DataTable.h"
 
 ACStoryGameMode::ACStoryGameMode()
 {
@@ -21,19 +22,32 @@ void ACStoryGameMode::BeginPlay()
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACSpawnPoint::StaticClass(), actors);
 	for (AActor* actor : actors)
 		SpawnPoints.Add(Cast<ACSpawnPoint>(actor));
-	
-	// Find & Save GoalPoints
+	if (actors.Num() < 1) { UE_LOG(LogTemp, Error, TEXT("Cannot Found SpawnPoints")); return; }
+
 	actors.Empty();
 	actors.Shrink();
+
+	// Find & Save GoalPoints
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACGoalPoint::StaticClass(), actors);
 	for (AActor* actor : actors)
 		GoalPoints.Add(Cast<ACGoalPoint>(actor));
+	if (actors.Num() < 1) { UE_LOG(LogTemp, Error, TEXT("Cannot Found GoalPoints")); return; }
 
 	// Load StoryMapData
-	StoryMapData = Cast<UCGameInstance>(GetGameInstance())->GetCurrentStoryMap();	
-	CHelpers::GetAssetDynamic(&DataTable, StoryMapData->DataPath);
-	Money = StoryMapData->Money;
-	Lifes = StoryMapData->Lifes;
+	StoryMapData = Cast<UCGameInstance>(GetGameInstance())->GetCurrentStoryMap();
+	if (StoryMapData != nullptr)
+	{
+		CHelpers::GetAssetDynamic(&DataTable, StoryMapData->DataPath);
+		Money = StoryMapData->Money;
+		Life = StoryMapData->Lifes;
+	}
+	else // Play PlayLevel In Editor = DEBUG Only
+	{
+		CHelpers::GetAssetDynamic(&DataTable, "DataTable'/Game/_Project/DataTables/DT_StoryMap_Test.DT_StoryMap_Test'");
+		Money = 10000;
+		Life = 30;
+	}
+	
 	Score = 0;
 
 	UdpateCurrentRoundDatas(); 
@@ -41,10 +55,10 @@ void ACStoryGameMode::BeginPlay()
 
 void ACStoryGameMode::DecreaseLifes()
 {
-	Lifes--;
-	CLog::Print(FString::FromInt(Lifes) + " Lifes Left");
+	Life--;
+	CLog::Print(FString::FromInt(Life) + " Life Left");
 
-	if (Lifes < 1)
+	if (Life < 1)
 	{
 		UWorld* world = GetWorld();
 		CheckNull(world);
@@ -58,14 +72,27 @@ void ACStoryGameMode::DecreaseLifes()
 
 void ACStoryGameMode::StartNextRound()
 {
+	TArray<FSpawnData*> roundDatas;
+
 	for (FSpawnData* data : RoundDatas)
 	{
-		for (int i = 0; i < data->SpawnCount; i++)
+		if (data->Round == CurrentRound)
+			roundDatas.Add(data);
+	}
+
+	for (int32 i = 0; i < roundDatas.Num(); i++)
+	{
+		RoundAmount += roundDatas[i]->SpawnCount;
+		for (int32 z = 0; z < roundDatas[i]->SpawnCount; z++)
 		{
-			//ACEnemy* enemy = GetWorld()->SpawnActor<ACEnemy>(data->MonsterRef, SpawnPoints[data->SpawnLocationIndex]->GetTransform());
-			ACEnemy* enemy = GetWorld()->SpawnActorDeferred<ACEnemy>(data->MonsterRef, SpawnPoints[data->SpawnLocationIndex]->GetTransform());
-			enemy->SetMoveDest(GoalPoints[0]->GetActorLocation());
-			UGameplayStatics::FinishSpawningActor(enemy, SpawnPoints[data->SpawnLocationIndex]->GetTransform());
+			FTransform transform;
+			for (int32 x = 0; x < SpawnPoints.Num(); x++)
+			{
+				if (SpawnPoints[x]->PathNum == (int32)roundDatas[i]->SpawnLocationIndex)
+					transform.SetLocation(SpawnPoints[x]->GetActorLocation());
+			}
+
+			ACEnemy* enemy = GetWorld()->SpawnActor<ACEnemy>(roundDatas[i]->MonsterRef, transform);
 		}
 	}
 }

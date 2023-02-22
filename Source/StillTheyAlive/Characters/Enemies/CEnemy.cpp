@@ -1,50 +1,43 @@
 #include "CEnemy.h"
 #include "Global.h"
+
 #include "Components/CStatusComponent.h"
-#include "Components/CStateComponent.h"
 #include "Components/COptionComponent.h"
 #include "Components/CDeckComponent.h"
-#include "CAIController.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/CDissolveComponent.h"
+#include "Core/GameModes/CStoryGameMode.h"
+#include "Core/GameModes/CPlayGameMode.h"
+#include "Characters/Enemies/CAIController.h"
+
+#include "Components/WidgetComponent.h"
+#include "Widgets/CUserWidget_Health.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 ACEnemy::ACEnemy()
 {
-	// Component Settings
-	GetMesh()->SetRelativeLocation(FVector(0, 0, -88));
-	GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
-
-	USkeletalMesh* meshAsset;
-	CHelpers::GetAsset<USkeletalMesh>(&meshAsset, "SkeletalMesh'/Game/_Project/Characters/Players/Mannequin/Mesh/SK_Mannequin.SK_Mannequin'");
-	GetMesh()->SetSkeletalMesh(meshAsset);
-
-	TSubclassOf<UAnimInstance> animInstanceClass;
-	CHelpers::GetClass<UAnimInstance>(&animInstanceClass, "AnimBlueprint'/Game/_Project/Characters/Players/AB_CPlayer.AB_CPlayer_C'");
-	GetMesh()->SetAnimInstanceClass(animInstanceClass);
-
-	// Create ActorComponent
-	CHelpers::CreateActorComponent(this, &Status, "Status");
-	CHelpers::CreateActorComponent(this, &State, "State");
-	CHelpers::CreateActorComponent(this, &Deck, "Deck");
+	CHelpers::CreateActorComponent(this, &Dissolve, "Dissolve");
 }
 
 void ACEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-
-	SpawnDefaultController();
-
-	Move(MovePoint);
 }
 
-void ACEnemy::Move(FVector InMoveDest)
+EPathFollowingRequestResult::Type ACEnemy::Move(FVector GoalPoint)
 {
-	ACAIController* controller = Cast<ACAIController>(GetController());
-	CheckNull(controller);
-	controller->MoveToLocation(InMoveDest);
+	AAIController* aiController = Cast<AAIController>(GetController());
+	if (aiController == nullptr) return EPathFollowingRequestResult::Failed;
+	return aiController->MoveToLocation(GoalPoint, 50.f, false);
 }
 
-void ACEnemy::SetMoveDest(FVector InMoveDest)
+void ACEnemy::OnStateTypeChanged(EStateTypes InPrevType, EStateTypes InNewType)
 {
-	MovePoint = InMoveDest;
+	switch (InNewType)
+	{
+	case EStateTypes::Hit:		Hitted();	break;
+	case EStateTypes::Dead:		Dead();		break;
+	}
 }
 
 void ACEnemy::Hitted()
@@ -53,6 +46,36 @@ void ACEnemy::Hitted()
 
 void ACEnemy::Dead()
 {
+	CheckFalse(State->IsDead());
+
+	//NameWidget->SetVisibility(false);
+	HealthWidget->SetVisibility(false);
+
+	//All Weapon Collision Disable
+	Deck->Dead();
+
+	//Ragdoll
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetMesh()->GlobalAnimRateScale = 0.f;
+	GetMesh()->SetSimulatePhysics(true);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
+	Dissolve->Play();
+
+	//End_Dead
+	UKismetSystemLibrary::K2_SetTimer(this, "End_Dead", 3.f, false);
+}
+
+void ACEnemy::End_Dead()
+{
+	Dissolve->Stop();
+
+	Deck->EndDead();
+
+	ACStoryGameMode* gameMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	gameMode->DecreaseLifes();
+
+	Destroy();
 }
 
 float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -61,9 +84,28 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 	Causer = DamageCauser;
 	Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
 
-	CLog::Print(DamageValue);
+	//AddImpulse를 위한 준비
+	FVector attackerForward = Attacker->GetActorForwardVector();
+	FVector attackerUp = Attacker->GetActorUpVector();
+	attackerForward.Normalize();
+	attackerUp.Normalize();
 
-	Status->DecreaseHealth(DamageValue);
+	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
+	{
+		const FRadialDamageEvent* radialDamageEvent = static_cast<const FRadialDamageEvent*>(&DamageEvent);
+		GetCharacterMovement()->AddImpulse((attackerForward + attackerUp) * 300.0f, true);
+		CLog::Print("TakeRadialDamage");
+		CLog::Print(DamageValue);
+	}
+	else
+	{
+		CLog::Print("TakeNormalDamage");
+		Status->DecreaseHealth(DamageValue);
+	}
+
+	UCUserWidget_Health* healthWidgetObject = Cast<UCUserWidget_Health>(HealthWidget->GetUserWidgetObject());
+	if (!!healthWidgetObject)
+		healthWidgetObject->Update(Status->GetHealth(), Status->GetMaxHealth());
 
 	if (Status->GetHealth() <= 0.f)
 	{
@@ -71,7 +113,7 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 		return DamageValue;
 	}
 
-	State->SetHit();
+	//State->SetHit();
 
 	return DamageValue;
 }

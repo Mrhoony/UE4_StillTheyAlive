@@ -20,7 +20,4 @@ class STILLTHEYALIVE_API ACTrap : public ACPerk
 
 protected:
 	virtual void BeginPlay() override;
-//=======================================================
-// [Variables]
-//=======================================================
 };

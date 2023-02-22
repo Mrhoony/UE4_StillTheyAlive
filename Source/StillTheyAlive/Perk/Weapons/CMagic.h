@@ -11,12 +11,11 @@ class STILLTHEYALIVE_API ACMagic : public ACWeapon
 
 public:
 	ACMagic();
-
-	virtual void WeaponTypeChanged() override;
+	
 protected:
 	virtual void BeginPlay() override;
 
 public:
 	virtual void TechAction() override;
-
+	virtual void WeaponTypeChanged() override;
 };
