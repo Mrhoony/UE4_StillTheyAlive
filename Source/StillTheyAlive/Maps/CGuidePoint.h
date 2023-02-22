@@ -18,6 +18,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Point")
 		int32 PathNum;
+
+	UPROPERTY(EditAnywhere, Category = "Point")
+		class UTextRenderComponent* TextRender;
 private:
 	UPROPERTY(VisibleAnywhere)
 		class USceneComponent* Scene;

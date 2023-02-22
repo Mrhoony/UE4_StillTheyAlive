@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "CAttachment.h"
+#include "ActionData/CAttachment.h"
 #include "Components/CDeckComponent.h"
 #include "CPerk.generated.h"
 
@@ -24,6 +24,7 @@ public:
 public:
 	UFUNCTION()
 		virtual void TechAction() {};
+		virtual void Ultimate() {};
 
 public:
 	void BeginData(class ACharacter* DeckCharacter);

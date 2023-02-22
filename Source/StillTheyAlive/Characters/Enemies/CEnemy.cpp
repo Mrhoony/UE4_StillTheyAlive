@@ -27,7 +27,7 @@ void ACEnemy::BeginPlay()
 EPathFollowingRequestResult::Type ACEnemy::Move(FVector GoalPoint)
 {
 	AAIController* aiController = Cast<AAIController>(GetController());
-	if(aiController == nullptr) return EPathFollowingRequestResult::Failed;
+	if (aiController == nullptr) return EPathFollowingRequestResult::Failed;
 	return aiController->MoveToLocation(GoalPoint, 50.f, false);
 }
 

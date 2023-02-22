@@ -77,10 +77,4 @@ private:
 	UPROPERTY(VisibleDefaultsOnly) class UCStateComponent* State;
 	UPROPERTY(BlueprintAssignable) FLevelMiniMap OnLevelMiniMap;
 
-private:
-	UPROPERTY(EditDefaultsOnly)
-		uint8 TeamNum = 0;
-
-private:
-	
 };

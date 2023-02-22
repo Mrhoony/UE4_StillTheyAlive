@@ -48,16 +48,11 @@ void ACSpawnCharacter::Dead()
 	GetMesh()->GlobalAnimRateScale = 0.f;
 	GetMesh()->SetSimulatePhysics(true);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-
-	// End_Dead
-	UKismetSystemLibrary::K2_SetTimer(this, "End_Dead", 3.f, false);
 }
 
 void ACSpawnCharacter::End_Dead()
 {
-	Deck->EndDead();
 
-	Destroy();
 }
 
 float ACSpawnCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)

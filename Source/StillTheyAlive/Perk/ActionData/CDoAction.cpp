@@ -1,7 +1,7 @@
 #include "CDoAction.h"
 #include "Global.h"
 #include "Components/CStateComponent.h"
-#include "CPerk.h"
+#include "Perk/CPerk.h"
 #include "Components/CStatusComponent.h"
 #include "Components/CDeckComponent.h"
 #include "GameFramework/Character.h"

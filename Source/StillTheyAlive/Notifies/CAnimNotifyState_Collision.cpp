@@ -1,9 +1,9 @@
 #include "CAnimNotifyState_Collision.h"
 #include "Global.h"
 #include "Components/CDeckComponent.h"
-#include "Perk/PerkActionData.h"
+#include "Perk/ActionData/PerkActionData.h"
 #include "Perk/CPerk.h"
-#include "Perk/CDoAction_Melee.h"
+#include "Perk/ActionData/CDoAction_Melee.h"
 
 FString UCAnimNotifyState_Collision::GetNotifyName_Implementation() const
 {

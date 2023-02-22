@@ -1,6 +1,6 @@
 #include "CMagic.h"
 #include "Global.h"
-#include "Perk/PerkActionData.h"
+#include "Perk/ActionData/PerkActionData.h"
 #include "GameFrameWork/Character.h"
 
 ACMagic::ACMagic()

@@ -1,12 +1,12 @@
 #include "CPerk.h"
 #include "Engine/Texture2D.h"
 #include "Global.h"
-#include "CEquipment.h"
-#include "PerkActionData.h"
+#include "ActionData/CEquipment.h"
+#include "ActionData/PerkActionData.h"
 #include "Components/CStatusComponent.h"
 #include "GameFramework/Character.h"
-#include "CActionObject.h"
-#include "CDoAction.h"
+#include "ActionData/CActionObject.h"
+#include "ActionData/CDoAction.h"
 
 ACPerk::ACPerk()
 {

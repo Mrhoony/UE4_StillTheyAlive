@@ -1,6 +1,6 @@
 #include "CRifle.h"
 #include "Global.h"
-#include "Perk/PerkActionData.h"
+#include "Perk/ActionData/PerkActionData.h"
 #include "GameFrameWork/Character.h"
 
 ACRifle::ACRifle()

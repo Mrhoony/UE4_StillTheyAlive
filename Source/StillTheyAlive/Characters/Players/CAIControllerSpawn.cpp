@@ -8,6 +8,7 @@
 #include "Perception/AISenseConfig_Sight.h"
 #include "GameFrameWork/Character.h"
 #include "Characters/Players/CSpawnCharacter.h"
+#include "Characters/Players/CPlayer.h"
 
 ACAIControllerSpawn::ACAIControllerSpawn()
 {
@@ -53,6 +54,8 @@ ETeamAttitude::Type ACAIControllerSpawn::GetTeamAttitudeTowards(const AActor& Ot
 {
 	if (APawn const* OtherPawn = Cast<APawn>(&Other))
 	{
+		if (Cast<ACPlayer>(OtherPawn))
+			return ETeamAttitude::Friendly;
 		if (auto const TeamAgent = Cast<IGenericTeamAgentInterface>(OtherPawn->GetController()))
 		{
 			if (TeamAgent->GetGenericTeamId() == FGenericTeamId(0))
