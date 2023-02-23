@@ -8,5 +8,4 @@ UCLASS()
 class STILLTHEYALIVE_API ACSpawn : public ACPerk
 {
 	GENERATED_BODY()
-	
 };

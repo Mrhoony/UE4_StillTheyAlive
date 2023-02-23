@@ -1,10 +1,11 @@
 #include "CDeckComponent.h"
 #include "Global.h"
-#include "Perk/CDoAction.h"
-#include "Perk/CEquipment.h"
+#include "Perk/ActionData/CDoAction.h"
+#include "Perk/ActionData/CEquipment.h"
 #include "Perk/Weapons/CWeapon.h"
 #include "GameFramework/Character.h"
 #include "Characters/Players/CAnimInstance.h"
+#include "Components/CStateComponent.h"
 
 UCDeckComponent::UCDeckComponent()
 {
@@ -13,7 +14,10 @@ UCDeckComponent::UCDeckComponent()
 void UCDeckComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
+	OwnerState = CHelpers::GetComponent<UCStateComponent>(OwnerCharacter);
+
 	FTransform transform;
 	for (int32 i = 0; i < PerkClass.Num(); i++)
 	{
@@ -22,6 +26,7 @@ void UCDeckComponent::BeginPlay()
 			ACPerk* perk = GetOwner()->GetWorld()->SpawnActorDeferred<ACPerk>(PerkClass[i], transform, GetOwner());
 			perk->BeginData(OwnerCharacter);
 			UGameplayStatics::FinishSpawningActor(perk, transform);
+			UKismetSystemLibrary::Delay(GetWorld(), 0.1f, FLatentActionInfo());
 			Perks.Add(perk);
 		}
 	}
@@ -63,8 +68,19 @@ void UCDeckComponent::PerkTechOffAction()
 	}
 }
 
+void UCDeckComponent::PerkUltimate()
+{
+	if (Perks[DeckNumber]->GetCurrent()->GetDoAction())
+	{
+		ACDoAction* doAction = Perks[DeckNumber]->GetCurrent()->GetDoAction();
+
+		doAction->UltimateAction();
+	}
+}
+
 void UCDeckComponent::SetCurrentPerk(int index)
 {
+	CheckFalse(OwnerState->IsIdle());
 	if (Perks.Num() <= index) return;
 	if (DeckNumber == index && !!CurrentPerk)
 	{
@@ -142,5 +158,21 @@ void UCDeckComponent::ChangeType(EPerkType InType)
 	{
 		UCAnimInstance* oweneranim = Cast<UCAnimInstance>(OwnerCharacter->GetMesh()->GetAnimInstance());
 		oweneranim->OnWeaponTypeChanged(Cast<ACWeapon>(CurrentPerk)->GetWeaponType());
+	}
+}
+
+void UCDeckComponent::Dead()
+{
+	for (int32 i = 0; i < Perks.Num(); i++)
+	{
+		Perks[i]->Dead();
+	}
+}
+
+void UCDeckComponent::EndDead()
+{
+	for (int32 i = 0; i < Perks.Num(); i++)
+	{
+		Perks[i]->End_Dead();
 	}
 }

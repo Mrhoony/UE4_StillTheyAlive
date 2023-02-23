@@ -4,7 +4,6 @@
 #include "GameFramework/Actor.h"
 #include "CGridSection.generated.h"
 
-
 UCLASS()
 class STILLTHEYALIVE_API ACGridSection : public AActor
 {
@@ -12,14 +11,17 @@ class STILLTHEYALIVE_API ACGridSection : public AActor
 	
 public:	
 	ACGridSection();
+			
+protected:
+	virtual void BeginPlay() override;
 
+public:
+	void SetScale(float scale);
+
+public:
 	FORCEINLINE bool IsCanbuild() { return bCanBuild; }
 	FORCEINLINE void SetbuildTrue() { bCanBuild = true; }
 	FORCEINLINE void SetbuildFalse() { bCanBuild = false; }
-
-	void SetScale(float scale);
-protected:
-	virtual void BeginPlay() override;
 
 private:
 	UPROPERTY(VisibleDefaultsOnly)

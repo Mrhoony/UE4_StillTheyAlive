@@ -1,5 +1,6 @@
 #include "CPlayer.h"
 #include "Global.h"
+
 #include "Components/CStateComponent.h"
 #include "Components/CStatusComponent.h"
 #include "Components/COptionComponent.h"
@@ -69,6 +70,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Action", EInputEvent::IE_Pressed, this, &ACPlayer::DoAction);
 	PlayerInputComponent->BindAction("TechAction", EInputEvent::IE_Pressed, this, &ACPlayer::TechDoAction);
 	PlayerInputComponent->BindAction("TechAction", EInputEvent::IE_Released, this, &ACPlayer::TechOffAction);
+	PlayerInputComponent->BindAction("MiniMap", EInputEvent::IE_Pressed, this, &ACPlayer::OnMiniMap);
 	
 	PlayerInputComponent->BindAction("Deck1", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck1);
 	PlayerInputComponent->BindAction("Deck2", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck2);
@@ -128,7 +130,13 @@ void ACPlayer::OnZoom(float InAxis)
 }
 
 void ACPlayer::OnJump() { this->Jump(); }
-void ACPlayer::DoAction() { Deck->PerkAction();}
+
+void ACPlayer::OnMiniMap()
+{
+	if (OnLevelMiniMap.IsBound())
+		OnLevelMiniMap.Broadcast();
+}
+void ACPlayer::DoAction() { Deck->PerkAction(); }
 void ACPlayer::TechDoAction() { Deck->PerkTechAction(); }
 void ACPlayer::TechOffAction() { Deck->PerkTechOffAction(); }
 
@@ -146,25 +154,11 @@ void ACPlayer::SelectDeck0() { Deck->SetCurrentPerk(9); }
 void ACPlayer::StartNextRound()
 {
 	ACPlayGameMode* playGameMode = Cast<ACPlayGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	CheckNull(playGameMode);
 	playGameMode->StartNextRound();
-
-	//EGameModeTypes type = Cast<UCGameInstance>(GetGameInstance())->GetGameModeType();
-
-	//switch (type)
-	//{
-	//	case EGameModeTypes::Story:
-	//	{
-	//		ACStoryGameMode* storyMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	//		storyMode->StartNextRound();
-	//	}break;
-	//	case EGameModeTypes::Endless:
-	//	{
-	//		//Cast<ACEndlessGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->StartNextRound();
-	//	}break;
-	//} // switch (type)
 }
 
 FGenericTeamId ACPlayer::GetGenericTeamId() const
 {
-	return FGenericTeamId(TeamID);
+	return TeamId;
 }

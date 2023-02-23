@@ -12,9 +12,11 @@ class STILLTHEYALIVE_API ACGridTrigger : public AActor
 public:	
 	ACGridTrigger();
 
-	FORCEINLINE float GetGridSize() { return GridSize; }
 protected:
 	virtual void BeginPlay() override;
+
+public:
+	FORCEINLINE float GetGridSize() { return GridSize; }
 
 private:
 	void CreateGrid(int32 Width, int32 Depth);
@@ -31,6 +33,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 		TArray<class ACGridSection*> GridClass;
+
 private:
 	int32 GridX, GridY;
 	float GridSize;

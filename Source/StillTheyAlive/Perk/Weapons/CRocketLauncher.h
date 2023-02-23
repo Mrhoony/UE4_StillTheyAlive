@@ -9,14 +9,15 @@ class STILLTHEYALIVE_API ACRocketLauncher : public ACWeapon
 {
 	GENERATED_BODY()
 	
-public:
-	ACRocketLauncher();
 protected:
 	virtual void BeginPlay() override;
+
 public:
 	virtual void WeaponTypeChanged() override;
-
 	virtual void TechAction() override;
+	
+public:
+	ACRocketLauncher();
 
 private:
 	bool Zoomin = false;

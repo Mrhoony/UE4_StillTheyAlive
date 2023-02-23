@@ -8,6 +8,7 @@ UCLASS()
 class STILLTHEYALIVE_API UCBTTaskNode_Action : public UBTTaskNode
 {
 	GENERATED_BODY()
+
 public:
 	UCBTTaskNode_Action();
 
@@ -16,10 +17,6 @@ public:
 
 protected:
 	virtual void TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
-
-private:
-	UPROPERTY(EditAnywhere)
-		float Delay = 2.f;
 
 private:
 	float TotalTime;
