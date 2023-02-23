@@ -8,6 +8,7 @@
 #include "Core/CGameInstance.h"
 #include "Core/GameModes/CStoryGameMode.h"
 #include "Core/GameModes/CPlayGameMode.h"
+#include "Widgets/CUserWidget_Deck.h"
 
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -51,9 +52,19 @@ ACPlayer::ACPlayer()
 	GetCharacterMovement()->MaxWalkSpeed = 600; //Status->GetRunSpeed();
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	// UI
+	CHelpers::GetClass<UCUserWidget_Deck>(&WB_DeckClass, "WidgetBlueprint'/Game/_Project/Widgets/WB_Deck.WB_Deck_C'");
 }
 
-void ACPlayer::BeginPlay() { Super::BeginPlay(); }
+void ACPlayer::BeginPlay()
+{
+	Super::BeginPlay();
+
+	CheckNull(WB_DeckClass);
+	WB_Deck = CreateWidget<UCUserWidget_Deck>(this, WB_DeckClass);
+	WB_Deck->AddToViewport();
+}
 void ACPlayer::Tick(float DeltaTime) { Super::Tick(DeltaTime); }
 
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

@@ -77,4 +77,6 @@ private:
 	UPROPERTY(VisibleDefaultsOnly) class UCStateComponent* State;
 	UPROPERTY(BlueprintAssignable) FLevelMiniMap OnLevelMiniMap;
 
+	TSubclassOf<class UCUserWidget_Deck> WB_DeckClass;
+	class UCUserWidget_Deck* WB_Deck;
 };
