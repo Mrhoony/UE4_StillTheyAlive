@@ -17,6 +17,10 @@ void UCUserWidget_Deck::NativeConstruct()
 	{
 		Slots.Add(Cast<UImage>(slot));
 	}
+
+	//CLog::Print("Construct Slots : " + FString::FromInt(Slots.Num()));
+
+	SetIcons();
 }
 
 void UCUserWidget_Deck::SetIcons()
@@ -24,9 +28,16 @@ void UCUserWidget_Deck::SetIcons()
 	CheckNull(OwnerComponent);
 
 	TArray<ACPerk*> perks = OwnerComponent->GetPerks();
-	
+
+	//CLog::Print("perks : " + FString::FromInt(perks.Num()));
+	//CLog::Print("Slots : " + FString::FromInt(Slots.Num()));
+
+	Slots[0]->SetBrushFromTexture(perks[0]->Icon);
+
 	for (int32 i = 0; i < perks.Num(); i++)
 	{
+		if (perks[i]->Icon == nullptr) continue;
+
 		Slots[i]->SetBrushFromTexture(perks[i]->Icon);
 	}
 }

@@ -193,6 +193,5 @@ void UCDeckComponent::MakeWidget()
 
 	Widget = CreateWidget<UCUserWidget_Deck, APlayerController>(playerController, WidgetClass);
 	Widget->SetOwnerComponent(this);
-	Widget->SetIcons();
 	Widget->AddToViewport();
 }
