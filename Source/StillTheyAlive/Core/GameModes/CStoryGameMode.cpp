@@ -89,10 +89,11 @@ void ACStoryGameMode::StartNextRound()
 			for (int32 x = 0; x < SpawnPoints.Num(); x++)
 			{
 				if (SpawnPoints[x]->PathNum == (int32)roundDatas[i]->SpawnLocationIndex)
-					transform.SetLocation(SpawnPoints[x]->GetActorLocation());
+					transform.SetLocation(SpawnPoints[x]->GetActorLocation() + FVector(0,0,88));
 			}
-
-			ACEnemy* enemy = GetWorld()->SpawnActor<ACEnemy>(roundDatas[i]->MonsterRef, transform);
+			FActorSpawnParameters spawn;
+			spawn.bNoFail;
+			ACEnemy* enemy = GetWorld()->SpawnActor<ACEnemy>(roundDatas[i]->MonsterRef, transform, spawn);
 		}
 	}
 }

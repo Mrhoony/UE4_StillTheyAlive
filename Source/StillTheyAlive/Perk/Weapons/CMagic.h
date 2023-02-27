@@ -18,4 +18,15 @@ protected:
 public:
 	virtual void TechAction() override;
 	virtual void WeaponTypeChanged() override;
+	virtual void EndTechAction() override;
+	virtual void Ultimate() override;
+	virtual void Begin_Ultimate() override;
+	virtual void Begin_TechAction() override;
+	virtual FVector SocketLocation() override;
+
+	virtual void ChargingMontage() override;
+
+private:
+	 TSubclassOf<class ACFloorBlackhole> Floor;
+	 TSubclassOf<class ASpawnMove> SpawnMove;
 };

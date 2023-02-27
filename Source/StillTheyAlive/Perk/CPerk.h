@@ -24,7 +24,13 @@ public:
 public:
 	UFUNCTION()
 		virtual void TechAction() {};
+		virtual void Begin_TechAction() {};
+		virtual void DivAction() {};
+		virtual void EndAction() {};
+		virtual void EndTechAction() {};
 		virtual void Ultimate() {};
+		virtual void Begin_Ultimate() {};
+		virtual FVector SocketLocation() { return FVector::ZeroVector; }
 
 public:
 	void BeginData(class ACharacter* DeckCharacter);

@@ -45,7 +45,7 @@ public:
 
 	void IncreaseHealth(float InAmount);
 	void DecreaseHealth(float InAmount);
-
+	void Update();
 //=======================================================
 // [Variables]
 //=======================================================

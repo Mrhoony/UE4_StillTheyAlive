@@ -54,6 +54,7 @@ public:
 
 public:
 	void PerkAction();
+	void PerkEndAction();
 	void PerkTechAction();
 	void PerkTechOffAction();
 	void PerkUltimate();

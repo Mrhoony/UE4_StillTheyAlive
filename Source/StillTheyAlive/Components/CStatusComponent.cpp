@@ -1,7 +1,7 @@
 #include "CStatusComponent.h"
 #include "Global.h"
 #include "GameFramework/CharacterMovementComponent.h"
-
+#include "Net/UnrealNetwork.h"
 #include "Blueprint/UserWidget.h"
 
 UCStatusComponent::UCStatusComponent()
