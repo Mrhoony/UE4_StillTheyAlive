@@ -23,7 +23,7 @@ public:
 public:
 	UFUNCTION()
 		virtual void WeaponTypeChanged();
-	virtual void ChargingMontage() {};
+
 	FORCEINLINE EWeaponType GetWeaponType() { return WeaponType; }
 
 protected:
@@ -37,5 +37,4 @@ public:
 		FWeaponTypeChanged OnWeaponTypeChanged;
 
 	float Damage = 5.f;
-	int32 ChargingStack;
 };

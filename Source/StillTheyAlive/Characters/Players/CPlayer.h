@@ -49,10 +49,8 @@ private:
 	void OnMiniMap();
 
 	void DoAction();
-	void EndDoAction();
 	void TechDoAction();
 	void TechOffAction();
-	void Ultimate();
 
 	void SelectDeck1();
 	void SelectDeck2();
@@ -80,8 +78,6 @@ private:
 	UPROPERTY(VisibleDefaultsOnly) class UCOptionComponent* Option;
 	UPROPERTY(VisibleDefaultsOnly) class UCDeckComponent* Deck;
 	UPROPERTY(VisibleDefaultsOnly) class UCStateComponent* State;
-	UPROPERTY(VisibleDefaultsOnly) class UCUltimateComponent* UltimateComp;
-	
 	UPROPERTY(BlueprintAssignable) FLevelMiniMap OnLevelMiniMap;
 
 	class UCHUD* HUD;

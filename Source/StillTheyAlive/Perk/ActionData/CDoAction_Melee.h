@@ -11,13 +11,9 @@ class STILLTHEYALIVE_API ACDoAction_Melee : public ACDoAction
 
 public:
 	virtual void DoAction_L() override;
-	virtual void DoAction_R() override;
 	virtual void Begin_DoAction() override;
 	virtual void End_DoAction() override;
-	virtual void DoOffAction_R() override;
-	virtual void UltimateAction() override;
-	virtual void Begin_Ultimate() override;
-	
+
 	virtual void OnAttachmentBeginOverlap(class ACharacter* InAttacker, class AActor* InCauser, class ACharacter* InOtherCharacter) override;
 	virtual void OnAttachmentEndOverlap(class ACharacter* InAttacker, class AActor* InCauser, class ACharacter* InOtherCharacter) override;
 

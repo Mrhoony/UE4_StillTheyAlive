@@ -100,9 +100,6 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ACThrow> ThrowClass;
-
-	UPROPERTY(EditAnywhere)
-		FAnimontage UltimateMontage;
 };
 
 UCLASS()

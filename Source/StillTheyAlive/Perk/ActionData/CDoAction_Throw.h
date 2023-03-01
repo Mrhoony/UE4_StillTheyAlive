@@ -11,18 +11,9 @@ class STILLTHEYALIVE_API ACDoAction_Throw : public ACDoAction
 	
 public:
 	virtual void BeginPlay() override;
-
 	virtual void DoAction_L() override;
-	virtual void End_DoAction_L() override;
-
-	virtual void DoAction_R() override;
-	virtual void Begin_DoAction_R() override;
-
 	virtual void Begin_DoAction() override;
 	virtual void End_DoAction() override;
-
-	virtual void UltimateAction() override;
-	virtual void Begin_Ultimate() override;
 
 private:
 	UFUNCTION()
