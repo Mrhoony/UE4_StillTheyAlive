@@ -29,6 +29,9 @@ public:
 // [CPPOnly]
 //=======================================================
 public:
+	FORCEINLINE class UCHUD* GetHUD() { return HUD; }
+
+public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Hitted() override;
 	virtual void Dead() override;
@@ -76,4 +79,7 @@ private:
 	UPROPERTY(VisibleDefaultsOnly) class UCDeckComponent* Deck;
 	UPROPERTY(VisibleDefaultsOnly) class UCStateComponent* State;
 	UPROPERTY(BlueprintAssignable) FLevelMiniMap OnLevelMiniMap;
+
+	class UCHUD* HUD;
+	TSubclassOf<class UCHUD> HUDWidgetClass;
 };
