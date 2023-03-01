@@ -24,10 +24,16 @@ protected:
 	virtual void BeginPlay() override;
 	
 public:
-	FORCEINLINE class ACPerk* GetCurrentPerk() { return CurrentPerk; }
+	UFUNCTION(BlueprintPure)		FORCEINLINE bool IsPerkUnarmed() { return Type == EPerkType::Unarmed; }
+	UFUNCTION(BlueprintPure)		FORCEINLINE bool IsPerkWeapon() { return Type == EPerkType::Weapon; }
+	UFUNCTION(BlueprintPure)		FORCEINLINE bool IsPerkTrap() { return Type == EPerkType::Trap; }
+	UFUNCTION(BlueprintPure)		FORCEINLINE bool IsPerkSpawn() { return Type == EPerkType::Spawn; }
+	UFUNCTION(BlueprintPure)		FORCEINLINE bool IsPerkTrinket() { return Type == EPerkType::Trinket; }
 
-private:
-	void ChangeType(EPerkType InType);
+public:
+	FORCEINLINE class ACPerk* GetCurrentPerk() { return CurrentPerk; }
+	FORCEINLINE TArray<class ACPerk*> GetPerks() { return Perks; }
+	FORCEINLINE class UCUserWidget_Deck* GetWidget() { return Widget; }
 
 public:
 	void SetUnarmed();
@@ -35,22 +41,6 @@ public:
 	void SetTrap();
 	void SetSpawn();
 	void SetTrinket();
-
-public:
-	UFUNCTION(BlueprintPure)
-		FORCEINLINE bool IsPerkUnarmed() { return Type == EPerkType::Unarmed; }
-
-	UFUNCTION(BlueprintPure)
-		FORCEINLINE bool IsPerkWeapon() { return Type == EPerkType::Weapon; }
-
-	UFUNCTION(BlueprintPure)
-		FORCEINLINE bool IsPerkTrap() { return Type == EPerkType::Trap; }
-
-	UFUNCTION(BlueprintPure)
-		FORCEINLINE bool IsPerkSpawn() { return Type == EPerkType::Spawn; }
-
-	UFUNCTION(BlueprintPure)
-		FORCEINLINE bool IsPerkTrinket() { return Type == EPerkType::Trinket; }
 
 public:
 	void PerkAction();
@@ -64,6 +54,10 @@ public:
 	void Dead();
 	void EndDead();
 
+	void CreateDeckWidget(class UCHUD* HUD);
+
+private:
+	void ChangeType(EPerkType InType);
 //=======================================================
 // [Variables]
 //=======================================================
@@ -77,10 +71,12 @@ public:
 
 private:
 	uint32 DeckNumber;
-	TArray<class ACPerk*> DeckPerks;
 	TArray<class ACPerk*> Perks;
 	class ACPerk* CurrentPerk;
 	class ACPerk* BeforePerk;
 	class UCStateComponent* OwnerState;
 	EPerkType Type;
+
+	TSubclassOf<class UCUserWidget_Deck> WidgetClass;
+	class UCUserWidget_Deck* Widget;
 };

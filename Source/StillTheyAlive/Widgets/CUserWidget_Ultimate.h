@@ -8,11 +8,8 @@ UCLASS()
 class STILLTHEYALIVE_API UCUserWidget_Ultimate : public UUserWidget
 {
 	GENERATED_BODY()
-<<<<<<< Updated upstream
-	
-=======
+
 public:
 	UFUNCTION(BlueprintImplementableEvent)
 		void Update(float InGauge, float InMaxGauge);
->>>>>>> Stashed changes
 };

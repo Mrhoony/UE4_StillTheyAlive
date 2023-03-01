@@ -51,5 +51,5 @@ public:
 		class UCActionObject* DataObject;
 
 	UPROPERTY(EditAnywhere)
-		class UTexture2D* PerkImage;
+		class UTexture2D* Icon;
 };
