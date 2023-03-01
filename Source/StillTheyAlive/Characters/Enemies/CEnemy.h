@@ -31,6 +31,8 @@ private:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCDissolveComponent* Dissolve;
 
+	TSubclassOf<class ACUltimate> SpawnUltimate;
 private:
 	FVector MovePoint;
+	bool isDead;
 };

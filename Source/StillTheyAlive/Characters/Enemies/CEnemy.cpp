@@ -6,9 +6,11 @@
 #include "Components/CDeckComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/CDissolveComponent.h"
+#include "Components/CUltimateComponent.h"
 #include "Core/GameModes/CStoryGameMode.h"
 #include "Core/GameModes/CPlayGameMode.h"
 #include "Characters/Enemies/CAIController.h"
+#include "Characters/Players/CUltimate.h"
 
 #include "Components/WidgetComponent.h"
 #include "Widgets/CUserWidget_Health.h"
@@ -17,6 +19,7 @@
 ACEnemy::ACEnemy()
 {
 	CHelpers::CreateActorComponent(this, &Dissolve, "Dissolve");
+	CHelpers::GetClass<ACUltimate>(&SpawnUltimate, "Blueprint'/Game/_Project/Perks/BP_CUltimate.BP_CUltimate_C'");
 }
 
 void ACEnemy::BeginPlay()
@@ -47,7 +50,9 @@ void ACEnemy::Hitted()
 void ACEnemy::Dead()
 {
 	CheckFalse(State->IsDead());
-
+	
+	isDead = true;
+	
 	//NameWidget->SetVisibility(false);
 	HealthWidget->SetVisibility(false);
 
@@ -59,6 +64,18 @@ void ACEnemy::Dead()
 	GetMesh()->GlobalAnimRateScale = 0.f;
 	GetMesh()->SetSimulatePhysics(true);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
+	// Ultimate
+	FVector location = (GetActorForwardVector() + GetActorUpVector() + GetActorRightVector()) * 300;
+	location.Rotation();
+
+	for (int32 i = 1; i < 4; i++)
+	{
+		location* i;
+		ACUltimate* ultimate = GetWorld()->SpawnActorDeferred<ACUltimate>(SpawnUltimate, GetActorTransform());
+		ultimate->SetDirection(location);
+		UGameplayStatics::FinishSpawningActor(ultimate, GetActorTransform());
+	}
 
 	Dissolve->Play();
 
@@ -94,12 +111,12 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 	{
 		const FRadialDamageEvent* radialDamageEvent = static_cast<const FRadialDamageEvent*>(&DamageEvent);
 		GetCharacterMovement()->AddImpulse((attackerForward + attackerUp) * 300.0f, true);
-		CLog::Print("TakeRadialDamage");
-		CLog::Print(DamageValue);
+	//	CLog::Print("TakeRadialDamage");
+	//	CLog::Print(DamageValue);
 	}
 	else
 	{
-		CLog::Print("TakeNormalDamage");
+	//	CLog::Print("TakeNormalDamage");
 		Status->DecreaseHealth(DamageValue);
 	}
 
@@ -107,8 +124,14 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 	if (!!healthWidgetObject)
 		healthWidgetObject->Update(Status->GetHealth(), Status->GetMaxHealth());
 
+	// Ultimate
+	UCUltimateComponent* ultimate = CHelpers::GetComponent<UCUltimateComponent>(Attacker);
+	
+
 	if (Status->GetHealth() <= 0.f)
 	{
+		if (isDead == true) return DamageValue;
+
 		State->SetDead();
 		return DamageValue;
 	}

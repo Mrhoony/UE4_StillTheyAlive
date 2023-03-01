@@ -17,5 +17,20 @@ protected:
 
 public:
 	virtual void TechAction() override;
+	virtual void DivAction() override;
+	virtual void EndAction() override;
 	virtual void WeaponTypeChanged() override;
+	virtual FVector SocketLocation() override;
+
+private:
+	void OnZoom();
+	void OffZoom();
+	void Fire();
+
+private:
+	class USpringArmComponent* OwnerSpringArm;
+	class UCameraComponent* OwnerCamera;
+private:
+	bool Zoom;
+	FTimerHandle AutoFireTimer;
 };
