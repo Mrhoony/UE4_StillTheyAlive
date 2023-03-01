@@ -14,7 +14,7 @@ UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class STILLTHEYALIVE_API UCStatusComponent : public UActorComponent
 {
 	GENERATED_BODY()
-
+		
 public:	
 	UCStatusComponent();
 	
