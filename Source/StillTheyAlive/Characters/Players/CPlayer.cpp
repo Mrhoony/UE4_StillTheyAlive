@@ -9,6 +9,8 @@
 #include "Core/CGameInstance.h"
 #include "Core/GameModes/CStoryGameMode.h"
 #include "Core/GameModes/CPlayGameMode.h"
+#include "Widgets/CUserWidget_Deck.h"
+#include "Widgets/CHUD.h"
 
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -53,12 +55,24 @@ ACPlayer::ACPlayer()
 	GetCharacterMovement()->MaxWalkSpeed = 600; //Status->GetRunSpeed();
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	// HUD
+	CHelpers::GetClass(&HUDWidgetClass, "WidgetBlueprint'/Game/_Project/Widgets/WB_HUD.WB_HUD_C'");
 }
 
-void ACPlayer::BeginPlay() { Super::BeginPlay(); }
-void ACPlayer::Tick(float DeltaTime) {
-	Super::Tick(DeltaTime); Status->DecreaseHealth(1.f);
+void ACPlayer::BeginPlay() {
+	Super::BeginPlay();
+
+	APlayerController* playerController = Cast<APlayerController>(GetController());
+	CheckNull(playerController);
+	CheckNull(HUDWidgetClass);
+	HUD = Cast<UCHUD>(CreateWidget(playerController, HUDWidgetClass));
+	HUD->AddToViewport();
+
+	Deck->CreateDeckWidget(HUD);
+	Status->CreateStatusWidget(HUD);
 }
+void ACPlayer::Tick(float DeltaTime) { Super::Tick(DeltaTime); }
 
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
