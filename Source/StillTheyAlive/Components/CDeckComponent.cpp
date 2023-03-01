@@ -1,14 +1,21 @@
 #include "CDeckComponent.h"
 #include "Global.h"
+
 #include "Perk/ActionData/CDoAction.h"
 #include "Perk/ActionData/CEquipment.h"
 #include "Perk/Weapons/CWeapon.h"
-#include "GameFramework/Character.h"
 #include "Characters/Players/CAnimInstance.h"
 #include "Components/CStateComponent.h"
+#include "Widgets/CUserWidget_Deck.h"
+#include "Widgets/CHUD.h"
+
+#include "GameFramework/Character.h"
+#include "Blueprint/UserWidget.h"
+#include "Components/PanelWidget.h"
 
 UCDeckComponent::UCDeckComponent()
 {
+	CHelpers::GetClass(&WidgetClass, "WidgetBlueprint'/Game/_Project/Widgets/WB_Deck.WB_Deck_C'");
 }
 
 void UCDeckComponent::BeginPlay()
@@ -34,6 +41,8 @@ void UCDeckComponent::BeginPlay()
 	CheckNull(Perks[0]);
 	CurrentPerk = Perks[0];
 	ChangePerk(nullptr, CurrentPerk);
+
+	//MakeWidget();
 }
 
 void UCDeckComponent::PerkAction()
@@ -175,4 +184,18 @@ void UCDeckComponent::EndDead()
 	{
 		Perks[i]->End_Dead();
 	}
+}
+
+void UCDeckComponent::CreateDeckWidget(UCHUD* HUD)
+{
+	CheckNull(WidgetClass);
+	CheckNull(HUD);
+
+	APlayerController* playerController = Cast<APlayerController>(OwnerCharacter->GetController());
+	CheckNull(playerController);
+
+	Widget = CreateWidget<UCUserWidget_Deck, APlayerController>(playerController, WidgetClass);
+	Widget->SetOwnerComponent(this);
+	
+	HUD->Slot_Deck->AddChild(Widget);
 }
