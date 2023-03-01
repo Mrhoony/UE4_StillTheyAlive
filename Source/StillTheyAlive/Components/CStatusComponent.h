@@ -24,10 +24,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-private:
-	UFUNCTION(BlueprintCallable)
-		void CreateStatusWidget();
-
 //=======================================================
 // [CPPOnly]
 //=======================================================
@@ -46,9 +42,14 @@ public:
 	void IncreaseHealth(float InAmount);
 	void DecreaseHealth(float InAmount);
 
+	void CreateStatusWidget(class UCHUD* HUD);
+
 //=======================================================
 // [Variables]
 //=======================================================
+public:
+	class ACharacter* OwnerCharacter;
+
 private:
 	UPROPERTY(EditAnywhere, Category = "Speed")		float Speed[(int32)EWalkSpeedTpye::Max] = { 200, 400, 600 };
 	UPROPERTY(EditAnywhere, Category = "Health")	float MaxHealth = 100;

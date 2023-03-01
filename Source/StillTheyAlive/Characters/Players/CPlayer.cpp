@@ -69,6 +69,7 @@ void ACPlayer::BeginPlay()
 	HUD->AddToViewport();
 
 	Deck->CreateDeckWidget(HUD);
+	Status->CreateStatusWidget(HUD);
 }
 
 void ACPlayer::Tick(float DeltaTime) { Super::Tick(DeltaTime); }

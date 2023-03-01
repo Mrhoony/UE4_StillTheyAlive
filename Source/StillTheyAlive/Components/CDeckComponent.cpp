@@ -186,7 +186,7 @@ void UCDeckComponent::EndDead()
 	}
 }
 
-void UCDeckComponent::CreateDeckWidget(class UCHUD* HUD)
+void UCDeckComponent::CreateDeckWidget(UCHUD* HUD)
 {
 	CheckNull(WidgetClass);
 	CheckNull(HUD);

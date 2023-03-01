@@ -1,25 +1,40 @@
 #include "CStatusComponent.h"
 #include "Global.h"
-#include "GameFramework/CharacterMovementComponent.h"
 
+#include "Widgets/CHUD.h"
+#include "Widgets/CUserWidget_PlayerStatus.h"
+
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Blueprint/UserWidget.h"
+#include "GameFramework/Character.h"
+#include "Components/PanelWidget.h"
 
 UCStatusComponent::UCStatusComponent()
 {
+	CHelpers::GetClass(&WidgetClass, "WidgetBlueprint'/Game/_Project/Widgets/WB_PlayerStatus.WB_PlayerStatus_C'");
 }
 
 void UCStatusComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	OwnerCharacter = Cast<ACharacter>(GetOwner());
+
 	Health = MaxHealth;
 }
 
-void UCStatusComponent::CreateStatusWidget()
-{	
-	/*CheckNull(WidgetClass);
-	Widget = CreateWidget<UCUserWidget_PlayerStatus, APlayerController>(GetOwner()->GetInstigatorController<APlayerController>(), WidgetClass);
-	Widget->OwnerComp = this;*/	
+void UCStatusComponent::CreateStatusWidget(UCHUD* HUD)
+{
+	CheckNull(WidgetClass);
+	CheckNull(HUD);
+
+	APlayerController* playerController = Cast<APlayerController>(OwnerCharacter->GetController());
+	CheckNull(playerController);
+
+	Widget = Cast<UCUserWidget_PlayerStatus>(CreateWidget(playerController, WidgetClass));
+	Widget->SetOwnerComponent(this);
+
+	HUD->Slot_Status->AddChild(Widget);
 }
 
 void UCStatusComponent::SetMove()
