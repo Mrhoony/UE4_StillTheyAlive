@@ -67,6 +67,8 @@ void ACPlayer::BeginPlay()
 	CheckNull(HUDWidgetClass);
 	HUD = Cast<UCHUD>(CreateWidget(playerController, HUDWidgetClass));
 	HUD->AddToViewport();
+
+	Deck->CreateDeckWidget(HUD);
 }
 
 void ACPlayer::Tick(float DeltaTime) { Super::Tick(DeltaTime); }

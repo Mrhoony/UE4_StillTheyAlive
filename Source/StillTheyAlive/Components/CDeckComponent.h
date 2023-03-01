@@ -53,7 +53,7 @@ public:
 	void Dead();
 	void EndDead();
 
-	void MakeWidget();
+	void CreateDeckWidget(class UCHUD* HUD);
 
 private:
 	void ChangeType(EPerkType InType);

@@ -7,9 +7,11 @@
 #include "Characters/Players/CAnimInstance.h"
 #include "Components/CStateComponent.h"
 #include "Widgets/CUserWidget_Deck.h"
+#include "Widgets/CHUD.h"
 
 #include "GameFramework/Character.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/PanelWidget.h"
 
 UCDeckComponent::UCDeckComponent()
 {
@@ -40,7 +42,7 @@ void UCDeckComponent::BeginPlay()
 	CurrentPerk = Perks[0];
 	ChangePerk(nullptr, CurrentPerk);
 
-	MakeWidget();
+	//MakeWidget();
 }
 
 void UCDeckComponent::PerkAction()
@@ -184,14 +186,16 @@ void UCDeckComponent::EndDead()
 	}
 }
 
-void UCDeckComponent::MakeWidget()
+void UCDeckComponent::CreateDeckWidget(class UCHUD* HUD)
 {
 	CheckNull(WidgetClass);
+	CheckNull(HUD);
 
 	APlayerController* playerController = Cast<APlayerController>(OwnerCharacter->GetController());
 	CheckNull(playerController);
 
 	Widget = CreateWidget<UCUserWidget_Deck, APlayerController>(playerController, WidgetClass);
 	Widget->SetOwnerComponent(this);
-	Widget->AddToViewport();
+	
+	HUD->Slot_Deck->AddChild(Widget);
 }
