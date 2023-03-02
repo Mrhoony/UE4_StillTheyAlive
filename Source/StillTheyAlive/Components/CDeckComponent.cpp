@@ -57,6 +57,18 @@ void UCDeckComponent::PerkAction()
 	}
 }
 
+void UCDeckComponent::PerkEndAction()
+{
+	CheckFalse(CurrentPerk);
+	
+	if (!!Perks[DeckNumber]->GetCurrent()->GetDoAction())
+	{
+		ACDoAction* doAction = Perks[DeckNumber]->GetCurrent()->GetDoAction();
+
+		doAction->End_DoAction_L();
+	}
+}
+
 void UCDeckComponent::PerkTechAction()
 {
 	if (Perks[DeckNumber]->GetCurrent()->GetDoAction())

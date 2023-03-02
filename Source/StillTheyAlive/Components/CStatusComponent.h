@@ -10,23 +10,23 @@ enum class EWalkSpeedTpye : uint8
 	Sneak, Walk, Run, Max
 };
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class STILLTHEYALIVE_API UCStatusComponent : public UActorComponent
 {
 	GENERATED_BODY()
-		
-public:	
+
+public:
 	UCStatusComponent();
-	
-//=======================================================
-// [Blueprint]
-//=======================================================
+
+	//=======================================================
+	// [Blueprint]
+	//=======================================================
 protected:
 	virtual void BeginPlay() override;
 
-//=======================================================
-// [CPPOnly]
-//=======================================================
+	//=======================================================
+	// [CPPOnly]
+	//=======================================================
 public:
 	FORCEINLINE float GetSneakSpeed() { return  Speed[(int32)EWalkSpeedTpye::Sneak]; }
 	FORCEINLINE float GetWalkSpeed() { return  Speed[(int32)EWalkSpeedTpye::Walk]; }
@@ -44,9 +44,9 @@ public:
 
 	void CreateStatusWidget(class UCHUD* HUD);
 
-//=======================================================
-// [Variables]
-//=======================================================
+	//=======================================================
+	// [Variables]
+	//=======================================================
 public:
 	class ACharacter* OwnerCharacter;
 

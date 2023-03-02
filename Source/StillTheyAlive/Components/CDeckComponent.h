@@ -44,6 +44,7 @@ public:
 
 public:
 	void PerkAction();
+	void PerkEndAction();
 	void PerkTechAction();
 	void PerkTechOffAction();
 	void PerkUltimate();
@@ -57,7 +58,6 @@ public:
 
 private:
 	void ChangeType(EPerkType InType);
-
 //=======================================================
 // [Variables]
 //=======================================================

@@ -5,6 +5,7 @@
 #include "Components/CStatusComponent.h"
 #include "Components/COptionComponent.h"
 #include "Components/CDeckComponent.h"
+#include "Components/CUltimateComponent.h"
 #include "Core/CGameInstance.h"
 #include "Core/GameModes/CStoryGameMode.h"
 #include "Core/GameModes/CPlayGameMode.h"
@@ -28,6 +29,7 @@ ACPlayer::ACPlayer()
 	CHelpers::CreateActorComponent(this, &State, "State");
 	CHelpers::CreateActorComponent(this, &Option, "Option");
 	CHelpers::CreateActorComponent(this, &Deck, "Deck");
+	CHelpers::CreateActorComponent(this, &UltimateComp, "Ultimate");
 
 	// Component Settings
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -88));
@@ -58,8 +60,7 @@ ACPlayer::ACPlayer()
 	CHelpers::GetClass(&HUDWidgetClass, "WidgetBlueprint'/Game/_Project/Widgets/WB_HUD.WB_HUD_C'");
 }
 
-void ACPlayer::BeginPlay()
-{
+void ACPlayer::BeginPlay() {
 	Super::BeginPlay();
 
 	APlayerController* playerController = Cast<APlayerController>(GetController());
@@ -71,7 +72,6 @@ void ACPlayer::BeginPlay()
 	Deck->CreateDeckWidget(HUD);
 	Status->CreateStatusWidget(HUD);
 }
-
 void ACPlayer::Tick(float DeltaTime) { Super::Tick(DeltaTime); }
 
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -86,8 +86,10 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACPlayer::OnJump);
 	PlayerInputComponent->BindAction("Action", EInputEvent::IE_Pressed, this, &ACPlayer::DoAction);
+	PlayerInputComponent->BindAction("Action", EInputEvent::IE_Released, this, &ACPlayer::EndDoAction);
 	PlayerInputComponent->BindAction("TechAction", EInputEvent::IE_Pressed, this, &ACPlayer::TechDoAction);
 	PlayerInputComponent->BindAction("TechAction", EInputEvent::IE_Released, this, &ACPlayer::TechOffAction);
+	PlayerInputComponent->BindAction("Ultimate", EInputEvent::IE_Pressed, this, &ACPlayer::Ultimate);
 	PlayerInputComponent->BindAction("MiniMap", EInputEvent::IE_Pressed, this, &ACPlayer::OnMiniMap);
 	
 	PlayerInputComponent->BindAction("Deck1", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck1);
@@ -155,9 +157,10 @@ void ACPlayer::OnMiniMap()
 		OnLevelMiniMap.Broadcast();
 }
 void ACPlayer::DoAction() { Deck->PerkAction(); }
+void ACPlayer::EndDoAction() { Deck->PerkEndAction(); }
 void ACPlayer::TechDoAction() { Deck->PerkTechAction(); }
 void ACPlayer::TechOffAction() { Deck->PerkTechOffAction(); }
-
+void ACPlayer::Ultimate() { Deck->PerkUltimate(); }
 void ACPlayer::SelectDeck1() { Deck->SetCurrentPerk(0); }
 void ACPlayer::SelectDeck2() { Deck->SetCurrentPerk(1); }
 void ACPlayer::SelectDeck3() { Deck->SetCurrentPerk(2); }
