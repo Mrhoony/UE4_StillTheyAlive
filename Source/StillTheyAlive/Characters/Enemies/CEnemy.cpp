@@ -89,6 +89,7 @@ void ACEnemy::End_Dead()
 
 	Deck->EndDead();
 
+	// 적이 죽으면 라이프 감소 ???
 	ACStoryGameMode* gameMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	gameMode->DecreaseLifes();
 

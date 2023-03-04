@@ -11,6 +11,7 @@
 #include "Core/GameModes/CPlayGameMode.h"
 #include "Widgets/CUserWidget_Deck.h"
 #include "Widgets/CHUD.h"
+#include "Widgets/CUserWidget_PlayerStatus.h"
 
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -108,6 +109,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ACPlayer::Hitted()
 {
+	Status->GetWidget()->UpdateHealthBar();
 }
 
 void ACPlayer::Dead()

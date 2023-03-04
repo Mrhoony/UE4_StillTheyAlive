@@ -7,7 +7,7 @@
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
 {
-	Rifle, Magic, GreatSword, RocketLauncher, Max
+	Rifle, Magic, GreatSword, RocketLauncher, Sword_bbadda, Bow, Max
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWeaponTypeChanged, EWeaponType, InNewType);

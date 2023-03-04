@@ -54,7 +54,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly)
 		class UCStatusComponent* Status;
-
+	
 	class UCDeckComponent* Deck;
 
 public:

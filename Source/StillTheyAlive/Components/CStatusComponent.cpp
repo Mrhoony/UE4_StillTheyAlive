@@ -57,14 +57,10 @@ void UCStatusComponent::IncreaseHealth(float InAmount)
 {
 	Health += InAmount;
 	Health = FMath::Clamp(Health, 0.f, MaxHealth);
-
-	Widget->UpdateHealthBar();
 }
 
 void UCStatusComponent::DecreaseHealth(float InAmount)
 {
 	Health -= InAmount;
 	Health = FMath::Clamp(Health, 0.f, MaxHealth);
-
-	Widget->UpdateHealthBar();
 }

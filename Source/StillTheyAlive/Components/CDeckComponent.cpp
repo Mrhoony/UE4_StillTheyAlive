@@ -49,7 +49,7 @@ void UCDeckComponent::PerkAction()
 {
 	CheckFalse(CurrentPerk);
 	CheckTrue(IsPerkUnarmed());
-	if (!!Perks[DeckNumber]->GetCurrent()->GetDoAction())
+	if (Perks[DeckNumber]->GetCurrent()->GetDoAction() != nullptr)
 	{
 		ACDoAction* doAction = Perks[DeckNumber]->GetCurrent()->GetDoAction();
 
