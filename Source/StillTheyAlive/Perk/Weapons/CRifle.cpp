@@ -1,7 +1,9 @@
 #include "CRifle.h"
 #include "Global.h"
+
 #include "Perk/ActionData/PerkActionData.h"
 #include "Perk/ActionData/CDoAction.h"
+
 #include "GameFrameWork/Character.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
