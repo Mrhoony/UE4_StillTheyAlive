@@ -23,6 +23,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	
 public:
+
 	virtual void DoAction_L() {};
 	virtual void End_DoAction_L() {};
 

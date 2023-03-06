@@ -44,6 +44,8 @@ public:
 
 	void CreateStatusWidget(class UCHUD* HUD);
 
+	UFUNCTION()
+	void OnRep_Update();
 	//=======================================================
 	// [Variables]
 	//=======================================================
@@ -55,8 +57,10 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Health")	float MaxHealth = 100;
 
 private:
-	bool bCanMove = true;
+	UPROPERTY(ReplicatedUsing = "OnRep_Update")
 	float Health;
+
+	bool bCanMove = true;
 	TSubclassOf<class UCUserWidget_PlayerStatus> WidgetClass;
 	class UCUserWidget_PlayerStatus* Widget;
 };

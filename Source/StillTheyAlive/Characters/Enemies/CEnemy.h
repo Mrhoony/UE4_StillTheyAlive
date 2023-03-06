@@ -21,8 +21,13 @@ public:
 
 	EPathFollowingRequestResult::Type Move(FVector GoalPoint);
 
-	UFUNCTION()
+	UFUNCTION(NetMulticast, Reliable)
+		void MulticastDead();
+		void MulticastDead_Implementation();
+
+	UFUNCTION(NetMulticast, Reliable)
 		void End_Dead();
+		void End_Dead_Implementation();
 
 protected:
 	virtual void BeginPlay() override;

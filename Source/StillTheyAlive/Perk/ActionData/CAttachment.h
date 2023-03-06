@@ -46,7 +46,7 @@ private:
 		class USceneComponent* Scene;
 
 protected:
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Replicated)
 		class ACharacter* OwnerCharacter;
 
 	UPROPERTY(BlueprintReadOnly)
