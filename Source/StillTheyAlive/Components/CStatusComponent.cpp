@@ -36,7 +36,6 @@ void UCStatusComponent::BeginPlay()
 
 void UCStatusComponent::OnRep_Update()
 {
-	
 	ACAICharacter* ai = Cast<ACAICharacter>(OwnerCharacter);
 	if (!!ai)
 	{

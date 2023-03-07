@@ -17,17 +17,19 @@
 UCDeckComponent::UCDeckComponent()
 {
 	CHelpers::GetClass(&WidgetClass, "WidgetBlueprint'/Game/_Project/Widgets/WB_Deck.WB_Deck_C'");
+	//SetIsReplicated(true);
 }
 
 void UCDeckComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(UCDeckComponent, DeckNumber);
-	DOREPLIFETIME(UCDeckComponent, CurrentPerk);
-	DOREPLIFETIME(UCDeckComponent, BeforePerk);
-	DOREPLIFETIME(UCDeckComponent, Type);
-	DOREPLIFETIME(UCDeckComponent, OwnerCharacter);
+	//DOREPLIFETIME(UCDeckComponent, DeckNumber);
+	//DOREPLIFETIME(UCDeckComponent, CurrentPerk);
+	//DOREPLIFETIME(UCDeckComponent, BeforePerk);
+	//DOREPLIFETIME(UCDeckComponent, Type);
+	//DOREPLIFETIME(UCDeckComponent, OwnerCharacter);
+	DOREPLIFETIME(UCDeckComponent, OwnerState);
 }
 
 void UCDeckComponent::BeginPlay()
@@ -49,7 +51,6 @@ void UCDeckComponent::BeginPlay()
 			Perks.Add(perk);
 		}
 	}
-
 	//MakeWidget();
 }
 void UCDeckComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -148,6 +149,7 @@ void UCDeckComponent::SetCurrentPerk_Implementation(int index)
 
 void UCDeckComponent::MultiSetCurrentPerk_Implementation(int index)
 {
+	if (OwnerState->IsIdle() == false) return;
 	if (Perks.Num() <= index) return;
 	if (DeckNumber == index && !!CurrentPerk)
 	{

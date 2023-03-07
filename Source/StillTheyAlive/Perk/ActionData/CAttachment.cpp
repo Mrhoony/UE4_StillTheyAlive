@@ -78,12 +78,22 @@ void ACAttachment::OnComponentEndOverlap(UPrimitiveComponent* OverlappedComponen
 	
 }
 
+void ACAttachment::ServerOnCollisions_Implementation(const FString& InCollisionNAme)
+{
+	OnCollisions(InCollisionNAme);
+}
+
 void ACAttachment::OnCollisions(FString InCollisionNAme)
 {
 	for (UShapeComponent* shape : ShapeComponents)
 	{
 		shape->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	}
+}
+
+void ACAttachment::ServerOffCollisions_Implementation()
+{
+	OffCollisions();
 }
 
 void ACAttachment::OffCollisions()

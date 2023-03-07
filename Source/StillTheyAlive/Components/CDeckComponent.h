@@ -110,21 +110,22 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FPerkTypeChanged OnPerkTypeChanged;
 
-	UPROPERTY(Replicated)
+	//UPROPERTY(Replicated)
 	class ACharacter* OwnerCharacter;
 private:
-	UPROPERTY(Replicated)
+	//UPROPERTY(Replicated)
 	uint32 DeckNumber;
 
-	UPROPERTY(Replicated)
+	//UPROPERTY(Replicated)
 	class ACPerk* CurrentPerk;
 
-	UPROPERTY(Replicated)
+	//UPROPERTY(Replicated)
 	class ACPerk* BeforePerk;
 
-	UPROPERTY(Replicated)
+	//UPROPERTY(Replicated)
 	EPerkType Type;
 
+	UPROPERTY(Replicated)
 	class UCStateComponent* OwnerState;
 
 
