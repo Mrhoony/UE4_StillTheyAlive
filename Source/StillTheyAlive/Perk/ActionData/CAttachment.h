@@ -14,7 +14,14 @@ class STILLTHEYALIVE_API ACAttachment : public AActor
 	
 public:	
 	ACAttachment();
+	UFUNCTION(Reliable, Server)
+		void ServerOnCollisions(const FString& InCollisionNAme = "None");
+	void ServerOnCollisions_Implementation(const FString& InCollisionNAme = "None");
 	void OnCollisions(FString InCollisionNAme = "None");
+
+	UFUNCTION(Reliable, Server)
+		void ServerOffCollisions();
+	void ServerOffCollisions_Implementation();
 	void OffCollisions();
 
 protected:
@@ -46,7 +53,7 @@ private:
 		class USceneComponent* Scene;
 
 protected:
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Replicated)
 		class ACharacter* OwnerCharacter;
 
 	UPROPERTY(BlueprintReadOnly)

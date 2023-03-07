@@ -17,5 +17,8 @@ void ACWayPoint::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponen
 	CheckNull(enemy);
 	ACAIController* aicontoller = Cast<ACAIController>(enemy->GetController());
 	if (!!NextPoint)
-		aicontoller->SetLoactionKey(NextPoint->GetActorLocation());
+	{
+		if(!!aicontoller)
+			aicontoller->SetLoactionKey(NextPoint->GetActorLocation());
+	}
 }

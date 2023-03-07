@@ -4,6 +4,7 @@
 #include "Components/CStateComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFrameWork/Character.h"
+#include "Net/UnrealNetwork.h"
 
 ACAttachment::ACAttachment()
 {
@@ -29,6 +30,13 @@ void ACAttachment::BeginPlay()
 	Super::BeginPlay();
 }
 
+void ACAttachment::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ACAttachment, OwnerCharacter);
+}
+
 void ACAttachment::AttachTo(FName InSocketName)
 {
 	if(OwnerCharacter->GetMesh())
@@ -42,20 +50,24 @@ void ACAttachment::AttachToCollision(USceneComponent* InComponent, FName InSocke
 
 void ACAttachment::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+
 	CheckTrue(OtherActor == OwnerCharacter);
 	CheckTrue(OtherActor->GetClass() == OwnerCharacter->GetClass())
 
-	if (OnAttachmentBeginOverlap.IsBound())
-	{
-		ACharacter* otherCharacter = Cast<ACharacter>(OtherActor);
-		CheckNull(otherCharacter);
+		if (OnAttachmentBeginOverlap.IsBound())
+		{
+			ACharacter* otherCharacter = Cast<ACharacter>(OtherActor);
+			CheckNull(otherCharacter);
+			if (!!OwnerCharacter)
+				OnAttachmentBeginOverlap.Broadcast(OwnerCharacter, this, otherCharacter);
+		}
 
-		OnAttachmentBeginOverlap.Broadcast(OwnerCharacter, this, otherCharacter);
-	}
 }
 
 void ACAttachment::OnComponentEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+	
+	
 	if (OnAttachmentEndOverlap.IsBound())
 	{
 		ACharacter* otherCharacter = Cast<ACharacter>(OtherActor);
@@ -63,6 +75,12 @@ void ACAttachment::OnComponentEndOverlap(UPrimitiveComponent* OverlappedComponen
 
 		OnAttachmentEndOverlap.Broadcast(OwnerCharacter, this, otherCharacter);
 	}
+	
+}
+
+void ACAttachment::ServerOnCollisions_Implementation(const FString& InCollisionNAme)
+{
+	OnCollisions(InCollisionNAme);
 }
 
 void ACAttachment::OnCollisions(FString InCollisionNAme)
@@ -71,6 +89,11 @@ void ACAttachment::OnCollisions(FString InCollisionNAme)
 	{
 		shape->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	}
+}
+
+void ACAttachment::ServerOffCollisions_Implementation()
+{
+	OffCollisions();
 }
 
 void ACAttachment::OffCollisions()

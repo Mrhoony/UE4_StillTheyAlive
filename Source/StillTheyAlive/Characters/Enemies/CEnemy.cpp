@@ -39,7 +39,7 @@ void ACEnemy::OnStateTypeChanged(EStateTypes InPrevType, EStateTypes InNewType)
 	switch (InNewType)
 	{
 	case EStateTypes::Hit:		Hitted();	break;
-	case EStateTypes::Dead:		Dead();		break;
+	case EStateTypes::Dead:		MulticastDead();		break;
 	}
 }
 
@@ -83,27 +83,37 @@ void ACEnemy::Dead()
 	UKismetSystemLibrary::K2_SetTimer(this, "End_Dead", 3.f, false);
 }
 
-void ACEnemy::End_Dead()
+void ACEnemy::MulticastDead_Implementation()
+{
+	Dead();
+}
+
+void ACEnemy::End_Dead_Implementation()
 {
 	Dissolve->Stop();
 
 	Deck->EndDead();
 
 	ACStoryGameMode* gameMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if(!!gameMode)
 	gameMode->DecreaseLifes();
 
-	Destroy();
+	Destroy(true);
 }
 
 float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	DamageValue = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 	Causer = DamageCauser;
-	Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
 
-	//AddImpulse를 위한 준비
-	FVector attackerForward = Attacker->GetActorForwardVector();
-	FVector attackerUp = Attacker->GetActorUpVector();
+	FVector attackerForward;
+	FVector attackerUp;
+	if (!!EventInstigator)
+	{
+		Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
+		attackerForward = Attacker->GetActorForwardVector();
+		attackerUp = Attacker->GetActorUpVector();
+	}
 	attackerForward.Normalize();
 	attackerUp.Normalize();
 
@@ -119,14 +129,6 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 	//	CLog::Print("TakeNormalDamage");
 		Status->DecreaseHealth(DamageValue);
 	}
-
-	UCUserWidget_Health* healthWidgetObject = Cast<UCUserWidget_Health>(HealthWidget->GetUserWidgetObject());
-	if (!!healthWidgetObject)
-		healthWidgetObject->Update(Status->GetHealth(), Status->GetMaxHealth());
-
-	// Ultimate
-	UCUltimateComponent* ultimate = CHelpers::GetComponent<UCUltimateComponent>(Attacker);
-	
 
 	if (Status->GetHealth() <= 0.f)
 	{

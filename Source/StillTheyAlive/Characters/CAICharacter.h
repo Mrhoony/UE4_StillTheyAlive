@@ -41,6 +41,7 @@ public:
 	float ActionMaxCoolTime = 2.f;
 	float ActionCoolTime = 0;
 
+	class UCUserWidget_Health* HealthBar;
 	class ACharacter* Attacker;
 	class AActor* Causer;
 	float DamageValue;

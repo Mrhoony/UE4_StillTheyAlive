@@ -47,5 +47,6 @@ public:
 		FStateTypeChanged OnStateTypeChanged;
 	
 private:
+	UPROPERTY(Replicated)
 	EStateTypes Type;
 };

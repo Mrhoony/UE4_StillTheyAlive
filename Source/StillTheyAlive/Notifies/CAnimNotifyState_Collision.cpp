@@ -22,10 +22,10 @@ void UCAnimNotifyState_Collision::NotifyBegin(USkeletalMeshComponent* MeshComp, 
 	if (!!melee)
 	{
 		FString collisionName = melee->GetSpecificCollisionName();
-		deck->GetCurrentPerk()->GetCurrent()->GetAttachment()->OnCollisions(collisionName);
+		deck->GetCurrentPerk()->GetCurrent()->GetAttachment()->ServerOnCollisions(collisionName);
 	}
 	else
-		deck->GetCurrentPerk()->GetCurrent()->GetAttachment()->OnCollisions();
+		deck->GetCurrentPerk()->GetCurrent()->GetAttachment()->ServerOnCollisions();
 }
 
 void UCAnimNotifyState_Collision::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
@@ -36,7 +36,7 @@ void UCAnimNotifyState_Collision::NotifyEnd(USkeletalMeshComponent* MeshComp, UA
 	UCDeckComponent* deck = CHelpers::GetComponent<UCDeckComponent>(MeshComp->GetOwner());
 	CheckNull(deck);
 
-	deck->GetCurrentPerk()->GetCurrent()->GetAttachment()->OffCollisions();
+	deck->GetCurrentPerk()->GetCurrent()->GetAttachment()->ServerOffCollisions();
 
 	ACDoAction_Melee* melee = Cast<ACDoAction_Melee>(deck->GetCurrentPerk()->GetCurrent()->GetDoAction());
 	CheckNull(melee);

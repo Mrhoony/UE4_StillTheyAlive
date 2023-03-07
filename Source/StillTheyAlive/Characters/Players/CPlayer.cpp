@@ -70,7 +70,7 @@ void ACPlayer::BeginPlay() {
 	HUD->AddToViewport();
 
 	Deck->CreateDeckWidget(HUD);
-	Status->CreateStatusWidget(HUD);
+	//Status->CreateStatusWidget(HUD);
 }
 void ACPlayer::Tick(float DeltaTime) { Super::Tick(DeltaTime); }
 
@@ -116,6 +116,7 @@ void ACPlayer::Dead()
 
 void ACPlayer::OnMoveForward(float InAxis)
 {
+	if(!!Status)
 	CheckFalse(Status->IsCanMove());
 
 	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
@@ -125,6 +126,7 @@ void ACPlayer::OnMoveForward(float InAxis)
 }
 void ACPlayer::OnMoveRight(float InAxis)
 {
+	if (!!Status)
 	CheckFalse(Status->IsCanMove());
 
 	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
@@ -156,11 +158,11 @@ void ACPlayer::OnMiniMap()
 	if (OnLevelMiniMap.IsBound())
 		OnLevelMiniMap.Broadcast();
 }
-void ACPlayer::DoAction() { Deck->PerkAction(); }
-void ACPlayer::EndDoAction() { Deck->PerkEndAction(); }
-void ACPlayer::TechDoAction() { Deck->PerkTechAction(); }
-void ACPlayer::TechOffAction() { Deck->PerkTechOffAction(); }
-void ACPlayer::Ultimate() { Deck->PerkUltimate(); }
+void ACPlayer::DoAction()		{ Deck->ServerPerkAction(); }
+void ACPlayer::EndDoAction()	{ Deck->ServerPerkEndAction(); }
+void ACPlayer::TechDoAction()	{ Deck->ServerPerkTechAction(); }
+void ACPlayer::TechOffAction()	{ Deck->ServerPerkTechOffAction(); }
+void ACPlayer::Ultimate()		{ Deck->ServerPerkUltimate(); }
 void ACPlayer::SelectDeck1() { Deck->SetCurrentPerk(0); }
 void ACPlayer::SelectDeck2() { Deck->SetCurrentPerk(1); }
 void ACPlayer::SelectDeck3() { Deck->SetCurrentPerk(2); }

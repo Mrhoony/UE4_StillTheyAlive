@@ -46,7 +46,9 @@ void ACDoAction_Throw::Begin_DoAction()
 	Super::Begin_DoAction();
 
 	FVector location = Deck->GetCurrentPerk()->SocketLocation();
-	FRotator rotation = OwnerCharacter->GetController()->GetControlRotation();
+	FRotator rotation;
+	if(!!OwnerCharacter->GetController())
+	rotation = OwnerCharacter->GetController()->GetControlRotation();
 
 	FTransform transform = Datas[0].EffectTransform;
 	transform.AddToTranslation(location);
@@ -69,7 +71,9 @@ void ACDoAction_Throw::OnThrowBeginOverlap(FHitResult InHitResult)
 {
 	FDamageEvent e;
 
-	InHitResult.GetActor()->TakeDamage(Datas[0].Power, e, OwnerCharacter->GetController(), ThrowObject);
+	ACharacter* hitchar = Cast<ACharacter>(InHitResult.GetActor());
+	if(!!hitchar)
+		hitchar->TakeDamage(Datas[0].Power, e, OwnerCharacter->GetController(), ThrowObject);
 }
 
 void ACDoAction_Throw::End_DoAction_L()
