@@ -79,6 +79,10 @@ void ACEnemy::Dead()
 
 	Dissolve->Play();
 
+	ACStoryGameMode* gameMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (!!gameMode)
+		gameMode->DecreaseRoundCount();
+
 	//End_Dead
 	UKismetSystemLibrary::K2_SetTimer(this, "End_Dead", 3.f, false);
 }
@@ -93,10 +97,6 @@ void ACEnemy::End_Dead_Implementation()
 	Dissolve->Stop();
 
 	Deck->EndDead();
-
-	ACStoryGameMode* gameMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	if(!!gameMode)
-	gameMode->DecreaseLifes();
 
 	Destroy(true);
 }

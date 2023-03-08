@@ -17,7 +17,7 @@
 UCDeckComponent::UCDeckComponent()
 {
 	CHelpers::GetClass(&WidgetClass, "WidgetBlueprint'/Game/_Project/Widgets/WB_Deck.WB_Deck_C'");
-	//SetIsReplicated(true);
+	SetIsReplicated(true);
 }
 
 void UCDeckComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

@@ -50,7 +50,7 @@ void ACStoryGameMode::BeginPlay()
 	
 	Score = 0;
 
-	UdpateCurrentRoundDatas(); 
+	DataTable->GetAllRows<FSpawnData>("GetAllRows", RoundDatas);
 }
 
 void ACStoryGameMode::DecreaseLifes()
@@ -72,8 +72,11 @@ void ACStoryGameMode::DecreaseLifes()
 
 void ACStoryGameMode::StartNextRound()
 {
-	TArray<FSpawnData*> roundDatas;
+	if (bStarted == false) return;
 
+	bStarted = false;
+
+	TArray<FSpawnData*> roundDatas;
 	for (FSpawnData* data : RoundDatas)
 	{
 		if (data->Round == CurrentRound)
@@ -83,31 +86,80 @@ void ACStoryGameMode::StartNextRound()
 	for (int32 i = 0; i < roundDatas.Num(); i++)
 	{
 		RoundAmount += roundDatas[i]->SpawnCount;
-		for (int32 z = 0; z < roundDatas[i]->SpawnCount; z++)
-		{
-			FTransform transform;
-			for (int32 x = 0; x < SpawnPoints.Num(); x++)
-			{
-				if (SpawnPoints[x]->PathNum == (int32)roundDatas[i]->SpawnLocationIndex)
-					transform.SetLocation(SpawnPoints[x]->GetActorLocation() + FVector(0,0,88));
-			}
-			FActorSpawnParameters spawn;
-			spawn.bNoFail;
-			ACEnemy* enemy = GetWorld()->SpawnActor<ACEnemy>(roundDatas[i]->MonsterRef, transform, spawn);
-		}
 	}
+	
+	RoundWave();
 }
 
-void ACStoryGameMode::UdpateCurrentRoundDatas()
+void ACStoryGameMode::SpawnMonster()
 {
-	TArray<FSpawnData*> datas;
-	DataTable->GetAllRows<FSpawnData>("GetAllRows", datas);
+	FActorSpawnParameters spawn;
+	spawn.bNoFail;
 
-	for (FSpawnData* data : datas)
+	GetWorld()->SpawnActor<ACEnemy>(Monclass, SpawnTransform, spawn);
+}
+
+void ACStoryGameMode::GameClear()
+{
+
+}
+
+void ACStoryGameMode::RoundWave()
+{
+	TArray<FSpawnData*> roundDatas = CurrentRoundDatas();
+
+	if (roundDatas.Num() < WaveCount)
+	{
+		WaveCount = 1;
+		return;
+	}
+
+	CLog::Print("hi");
+	int32 wavedata = WaveCount - 1;
+	Monclass = roundDatas[wavedata]->MonsterRef;
+
+	for (int32 i = 0; i < SpawnPoints.Num(); i++)
+	{
+		if (SpawnPoints[i]->PathNum == (int32)roundDatas[wavedata]->SpawnLocationIndex)
+			SpawnTransform.SetLocation(SpawnPoints[i]->GetActorLocation() + FVector(0, 0, 88));
+	}
+	
+	GetWorldTimerManager().SetTimer(timerHandle, this, &ACStoryGameMode::SpawnMonster, 1.0f, true, (float)roundDatas[wavedata]->SpawnCount);
+	
+	FTimerDynamicDelegate timer;
+	timer.BindUFunction(this, "ClearSapwn");
+	UKismetSystemLibrary::K2_SetTimerDelegate(timer, (float)roundDatas[wavedata]->SpawnCount * 2, false);
+}
+
+TArray<FSpawnData*> ACStoryGameMode::CurrentRoundDatas()
+{
+	TArray<FSpawnData*> roundDatas;
+
+	for (FSpawnData* data : RoundDatas)
 	{
 		if (data->Round == CurrentRound)
-		{
-			RoundDatas.Add(data);
-		}
+			roundDatas.Add(data);
+	}
+
+	return roundDatas;
+}
+
+void ACStoryGameMode::ClearSapwn()
+{
+	GetWorldTimerManager().ClearTimer(timerHandle);
+	WaveCount++;
+	RoundWave();
+}
+
+void ACStoryGameMode::DecreaseRoundCount()
+{
+	RoundAmount--;
+	if (RoundAmount == 0)
+	{
+		CurrentRound++;
+		if (CurrentRound == 5)
+			GameClear();
+
+		bStarted = true;
 	}
 }
