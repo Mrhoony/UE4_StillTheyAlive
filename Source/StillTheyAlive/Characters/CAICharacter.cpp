@@ -44,9 +44,11 @@ void ACAICharacter::BeginPlay()
 	State->OnStateTypeChanged.AddDynamic(this, &ACAICharacter::OnStateTypeChanged);
 
 	HealthWidget->InitWidget();
-	UCUserWidget_Health* healthWidgetObject = Cast<UCUserWidget_Health>(HealthWidget->GetUserWidgetObject());
-	if (!!healthWidgetObject)
-		healthWidgetObject->Update(Status->GetHealth(), Status->GetMaxHealth());
+	HealthBar = Cast<UCUserWidget_Health>(HealthWidget->GetUserWidgetObject());
+	if (!!HealthBar)
+		HealthBar->Update(Status->GetHealth(), Status->GetMaxHealth());
+
+	Deck->SetCurrentPerk(0);
 }
 
 void ACAICharacter::Tick(float DeltaTime)

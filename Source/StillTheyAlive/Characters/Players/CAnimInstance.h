@@ -16,9 +16,10 @@ class STILLTHEYALIVE_API UCAnimInstance : public UAnimInstance
 public:
 	virtual void NativeBeginPlay() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
-
 	UFUNCTION()
 		void OnWeaponTypeChanged(EWeaponType InNewType);
+	UFUNCTION(NetMulticast, Reliable)
+		void ServerOnWeaponTypeChanged(EWeaponType InNewType);
 
 //=======================================================
 // [Variables]
@@ -26,12 +27,14 @@ public:
 protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) float Speed;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) float Direction;
-	UPROPERTY(BlueprintReadOnly, EditAnywhere) EPerkType PerkType;
-	UPROPERTY(BlueprintReadOnly, EditAnywhere) EWeaponType WeaponType;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) bool IsFalling;	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere) EStateTypes StateType;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Replicated) EPerkType PerkType;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Replicated) EWeaponType WeaponType;
 private:
 	UFUNCTION()
 		void OnPerkTypeChanged(EPerkType InPrevType, EPerkType InNewType);
+	UFUNCTION(NetMulticast, Reliable)
+		void ServerOnPerkTypeChanged(EPerkType InPrevType, EPerkType InNewType);
 };

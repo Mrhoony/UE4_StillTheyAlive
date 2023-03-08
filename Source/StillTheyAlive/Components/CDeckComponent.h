@@ -24,6 +24,8 @@ protected:
 	virtual void BeginPlay() override;
 	
 public:
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
 	UFUNCTION(BlueprintPure)		FORCEINLINE bool IsPerkUnarmed() { return Type == EPerkType::Unarmed; }
 	UFUNCTION(BlueprintPure)		FORCEINLINE bool IsPerkWeapon() { return Type == EPerkType::Weapon; }
 	UFUNCTION(BlueprintPure)		FORCEINLINE bool IsPerkTrap() { return Type == EPerkType::Trap; }
@@ -50,10 +52,58 @@ public:
 	void PerkUltimate();
 	void SetCurrentPerk(int index);
 	void ChangePerk(class ACPerk* InPrevPerk, class  ACPerk* InNewPerk);
+	
+	UFUNCTION(NetMulticast, Reliable)
+		void PerkAction();
+		void PerkAction_Implementation();
 
+	UFUNCTION(Reliable, Server)
+		void ServerPerkAction();
+		void ServerPerkAction_Implementation();
+
+	UFUNCTION(NetMulticast, Reliable)
+		void PerkEndAction();
+		void PerkEndAction_Implementation();
+
+	UFUNCTION(Reliable, Server) 
+		void ServerPerkEndAction();
+		void ServerPerkEndAction_Implementation();
+
+	UFUNCTION(NetMulticast, Reliable) 
+		void PerkTechAction();
+		void PerkTechAction_Implementation();
+
+	UFUNCTION(Reliable, Server) 
+		void ServerPerkTechAction();
+		void ServerPerkTechAction_Implementation();
+
+	UFUNCTION(NetMulticast, Reliable)
+		void PerkTechOffAction();
+		void PerkTechOffAction_Implementation();
+
+	UFUNCTION(Reliable, Server) 
+		void ServerPerkTechOffAction();
+		void ServerPerkTechOffAction_Implementation();
+
+	UFUNCTION(NetMulticast, Reliable) 
+		void PerkUltimate();
+	void PerkUltimate_Implementation();
+
+	UFUNCTION(Reliable, Server) 
+		void ServerPerkUltimate();
+		void ServerPerkUltimate_Implementation();
+
+	UFUNCTION(Reliable, Server)
+		void SetCurrentPerk(int index);
+		void SetCurrentPerk_Implementation(int index);
+
+	UFUNCTION(NetMulticast, Reliable)
+		void MultiSetCurrentPerk(int index);
+		void MultiSetCurrentPerk_Implementation(int index);
+
+	void ChangePerk(class ACPerk* InPrevPerk, class  ACPerk* InNewPerk);
 	void Dead();
 	void EndDead();
-
 	void CreateDeckWidget(class UCHUD* HUD);
 
 private:
@@ -65,18 +115,28 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Perk")	TArray<TSubclassOf<class ACPerk>> PerkClass;
 
 public:	
-	class ACharacter* OwnerCharacter;
 	UPROPERTY(BlueprintAssignable)
 	FPerkTypeChanged OnPerkTypeChanged;
 
+	//UPROPERTY(Replicated)
+	class ACharacter* OwnerCharacter;
 private:
+	//UPROPERTY(Replicated)
 	uint32 DeckNumber;
-	TArray<class ACPerk*> Perks;
+
+	//UPROPERTY(Replicated)
 	class ACPerk* CurrentPerk;
+
+	//UPROPERTY(Replicated)
 	class ACPerk* BeforePerk;
-	class UCStateComponent* OwnerState;
+
+	//UPROPERTY(Replicated)
 	EPerkType Type;
 
-	TSubclassOf<class UCUserWidget_Deck> WidgetClass;
+	UPROPERTY(Replicated)
+	class UCStateComponent* OwnerState;
+
+	TArray<class ACPerk*> Perks;
 	class UCUserWidget_Deck* Widget;
+	TSubclassOf<class UCUserWidget_Deck> WidgetClass;
 };
