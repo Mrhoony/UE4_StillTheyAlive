@@ -89,8 +89,8 @@ void ACDoAction_Melee::OnAttachmentBeginOverlap(ACharacter* InAttacker, AActor* 
 
 	if (hittedCharactersNum < HittedCharacters.Num())
 	{
-		//TakeDamage
 		FDamageEvent e;
+		if(!!InOtherCharacter)
 		InOtherCharacter->TakeDamage(Datas[ComboCount].Power, e, InAttacker->GetController(), InCauser);
 	}
 }

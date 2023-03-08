@@ -38,6 +38,8 @@ void ACMagic::Begin_TechAction()
 	FTransform transform;
 	FVector location = OwnerCharacter->GetMesh()->GetSocketLocation("Throw_Hand");
 	transform.SetLocation(location);
+
+	if(!!OwnerCharacter->GetController())
 	transform.SetRotation(FQuat(OwnerCharacter->GetController()->GetControlRotation()));
 	ASpawnMove* spawnMove = GetWorld()->SpawnActorDeferred<ASpawnMove>(SpawnMove, transform, this);
 	UGameplayStatics::FinishSpawningActor(spawnMove, transform);

@@ -23,6 +23,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	
 public:
+
 	virtual void DoAction_L() {};
 	virtual void End_DoAction_L() {};
 
@@ -55,6 +56,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 		class UCStatusComponent* Status;
 	
+	class UCDeckComponent* Deck;
+
 	class UCDeckComponent* Deck;
 
 public:

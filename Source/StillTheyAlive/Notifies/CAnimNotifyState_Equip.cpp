@@ -18,6 +18,7 @@ void UCAnimNotifyState_Equip::NotifyBegin(USkeletalMeshComponent* MeshComp, UAni
 	UCDeckComponent* deck = CHelpers::GetComponent<UCDeckComponent>(MeshComp->GetOwner());
 	CheckNull(deck);
 
+	if(!!deck->GetCurrentPerk())
 	deck->GetCurrentPerk()->GetCurrent()->GetEquipment()->Begin_Equip();
 }
 
@@ -29,5 +30,6 @@ void UCAnimNotifyState_Equip::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimS
 	UCDeckComponent* deck = CHelpers::GetComponent<UCDeckComponent>(MeshComp->GetOwner());
 	CheckNull(deck);
 
+	if(!!deck->GetCurrentPerk())
 	deck->GetCurrentPerk()->GetCurrent()->GetEquipment()->End_Equip();
 }
