@@ -45,14 +45,6 @@ public:
 	void SetTrinket();
 
 public:
-	void PerkAction();
-	void PerkEndAction();
-	void PerkTechAction();
-	void PerkTechOffAction();
-	void PerkUltimate();
-	void SetCurrentPerk(int index);
-	void ChangePerk(class ACPerk* InPrevPerk, class  ACPerk* InNewPerk);
-	
 	UFUNCTION(NetMulticast, Reliable)
 		void PerkAction();
 		void PerkAction_Implementation();
