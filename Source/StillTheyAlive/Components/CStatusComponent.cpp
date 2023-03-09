@@ -40,7 +40,6 @@ void UCStatusComponent::OnRep_Update()
 	if (!!ai)
 	{
 		ai->HealthBar->Update(Health, MaxHealth);
-		CLog::Print("OnRep_Update");
 	}
 }
 

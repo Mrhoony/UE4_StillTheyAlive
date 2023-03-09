@@ -114,7 +114,6 @@ void ACStoryGameMode::RoundWave()
 		return;
 	}
 
-	CLog::Print("hi");
 	int32 wavedata = WaveCount - 1;
 	Monclass = roundDatas[wavedata]->MonsterRef;
 
@@ -124,11 +123,11 @@ void ACStoryGameMode::RoundWave()
 			SpawnTransform.SetLocation(SpawnPoints[i]->GetActorLocation() + FVector(0, 0, 88));
 	}
 	
-	GetWorldTimerManager().SetTimer(timerHandle, this, &ACStoryGameMode::SpawnMonster, 1.0f, true, (float)roundDatas[wavedata]->SpawnCount);
+	GetWorldTimerManager().SetTimer(timerHandle, this, &ACStoryGameMode::SpawnMonster, 1.f, true);
 	
 	FTimerDynamicDelegate timer;
 	timer.BindUFunction(this, "ClearSapwn");
-	UKismetSystemLibrary::K2_SetTimerDelegate(timer, (float)roundDatas[wavedata]->SpawnCount * 2, false);
+	UKismetSystemLibrary::K2_SetTimerDelegate(timer, (float)roundDatas[wavedata]->SpawnCount + 0.1f, false);
 }
 
 TArray<FSpawnData*> ACStoryGameMode::CurrentRoundDatas()
@@ -140,7 +139,7 @@ TArray<FSpawnData*> ACStoryGameMode::CurrentRoundDatas()
 		if (data->Round == CurrentRound)
 			roundDatas.Add(data);
 	}
-
+	
 	return roundDatas;
 }
 
