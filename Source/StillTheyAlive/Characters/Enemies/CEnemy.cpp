@@ -138,7 +138,7 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 		return DamageValue;
 	}
 
-	Update(Health, MaxHealth);
+	HealthBar->Update(Status->GetHealth(), Status->GetMaxHealth());
 	//State->SetHit();
 
 	return DamageValue;

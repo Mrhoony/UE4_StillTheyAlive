@@ -52,6 +52,8 @@ private:
 	UFUNCTION()
 	void ClearSapwn();
 
+	UFUNCTION(NetMulticast, Reliable)
+	void OpenDoor();
 private:
 	void RoundWave();
 	void GameClear();
@@ -72,15 +74,16 @@ private:
 	int32 Money;
 	int32 Life;
 
+	TArray<class AStartDoor*> Doors;
 	TArray<class ACSpawnPoint*> SpawnPoints;
 	TArray<class ACGoalPoint*> GoalPoints;
 	TArray<class AActor*> SpawnMonsters;	
 	TArray<FSpawnData*> RoundDatas;
 
-	int32 RoundAmount = 0;
-	int32 WaveCount = 1;
-	int CurrentRound = 1;
-	bool bStarted = true;
+	int32 RoundAmount;
+	int32 WaveCount;
+	int CurrentRound;
+	bool bStarted;
 	FTransform SpawnTransform;
 	UClass* Monclass;
 

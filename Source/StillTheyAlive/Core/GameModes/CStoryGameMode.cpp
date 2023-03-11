@@ -5,6 +5,8 @@
 #include "Characters/Enemies/CEnemy.h"
 #include "Maps/CSpawnPoint.h"
 #include "Maps/CGoalPoint.h"
+#include "Maps/StartDoor.h"
+#include "Characters/Players/CPlayer.h"
 
 #include "Engine/DataTable.h"
 
@@ -47,8 +49,22 @@ void ACStoryGameMode::BeginPlay()
 		Money = 10000;
 		Life = 30;
 	}
-	
+
+	actors.Empty();
+	actors.Shrink();
+
+	// Find & Save Door
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AStartDoor::StaticClass(), actors);
+	for (AActor* actor : actors)
+		Doors.Add(Cast<AStartDoor>(actor));
+	if (actors.Num() < 1) { UE_LOG(LogTemp, Error, TEXT("Cannot Found StartDoor")); return; }
+
+	// ¸ÊÀÌ ¹Ù²ð ¶§ ¸¶´Ù ÃÊ±âÈ­
 	Score = 0;
+	RoundAmount = 0;
+	WaveCount = 1;
+	CurrentRound = 1;
+	bStarted = true;
 
 	DataTable->GetAllRows<FSpawnData>("GetAllRows", RoundDatas);
 }
@@ -76,6 +92,12 @@ void ACStoryGameMode::StartNextRound()
 
 	bStarted = false;
 
+	if (CurrentRound == 1) 
+	{
+		OpenDoor();
+	}
+		
+
 	TArray<FSpawnData*> roundDatas;
 	for (FSpawnData* data : RoundDatas)
 	{
@@ -101,7 +123,16 @@ void ACStoryGameMode::SpawnMonster()
 
 void ACStoryGameMode::GameClear()
 {
+	ACPlayer* player = Cast<ACPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	if (!!player)
+		player->PlayGameMessage("Game Clear!!");
+	
+}
 
+void ACStoryGameMode::OpenDoor_Implementation()
+{
+	for (AStartDoor* doors : Doors)
+		doors->OpenDoor();
 }
 
 void ACStoryGameMode::RoundWave()
