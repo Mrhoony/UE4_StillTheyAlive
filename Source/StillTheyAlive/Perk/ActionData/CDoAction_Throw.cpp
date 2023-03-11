@@ -46,7 +46,6 @@ void ACDoAction_Throw::Begin_DoAction()
 	Super::Begin_DoAction();
 
 	FVector location = Deck->GetCurrentPerk()->SocketLocation();
-
 	FRotator rotation;
 	if(!!OwnerCharacter->GetController())
 	rotation = OwnerCharacter->GetController()->GetControlRotation();

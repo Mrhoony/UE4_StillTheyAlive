@@ -58,6 +58,8 @@ protected:
 	
 	class UCDeckComponent* Deck;
 
+	class UCDeckComponent* Deck;
+
 public:
 	TArray<FTechDoAction> TechDatas;
 

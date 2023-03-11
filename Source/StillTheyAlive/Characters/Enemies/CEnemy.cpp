@@ -137,7 +137,6 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 
 	// Ultimate
 	UCUltimateComponent* ultimate = CHelpers::GetComponent<UCUltimateComponent>(Attacker);
-	
 	if (Status->GetHealth() <= 0.f)
 	{
 		if (isDead == true) return DamageValue;
