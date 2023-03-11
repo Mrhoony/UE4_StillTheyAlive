@@ -24,5 +24,4 @@ public:
 	virtual void Begin_Ultimate() override;
 
 	virtual void ChargingMontage() override;
-
 };

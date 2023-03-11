@@ -128,7 +128,6 @@ private:
 	UPROPERTY(Replicated)
 	class UCStateComponent* OwnerState;
 
-
 	TArray<class ACPerk*> Perks;
 	class UCUserWidget_Deck* Widget;
 	TSubclassOf<class UCUserWidget_Deck> WidgetClass;

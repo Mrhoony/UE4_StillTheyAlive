@@ -34,6 +34,7 @@ public:
 	FORCEINLINE bool IsCanMove() { return bCanMove; }
 	FORCEINLINE float GetMaxHealth() { return MaxHealth; }
 	FORCEINLINE float GetHealth() { return Health; }
+	FORCEINLINE class UCUserWidget_PlayerStatus* GetWidget() { return Widget; }
 
 	void SetMove();
 	void SetStop();

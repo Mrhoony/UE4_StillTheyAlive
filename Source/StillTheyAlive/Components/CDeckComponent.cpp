@@ -64,7 +64,7 @@ void UCDeckComponent::PerkAction_Implementation()
 {
 	CheckFalse(CurrentPerk);
 	CheckTrue(IsPerkUnarmed());
-	if (!!CurrentPerk->GetCurrent()->GetDoAction())
+	if (Perks[DeckNumber]->GetCurrent()->GetDoAction() != nullptr)
 	{
 		ACDoAction* doAction = CurrentPerk->GetCurrent()->GetDoAction();
 		

@@ -94,6 +94,7 @@ void ACEnemy::End_Dead_Implementation()
 
 	Deck->EndDead();
 
+	// 적이 죽으면 라이프 감소 ???
 	ACStoryGameMode* gameMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if(!!gameMode)
 	gameMode->DecreaseLifes();
@@ -130,6 +131,12 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 		Status->DecreaseHealth(DamageValue);
 	}
 
+	UCUserWidget_Health* healthWidgetObject = Cast<UCUserWidget_Health>(HealthWidget->GetUserWidgetObject());
+	if (!!healthWidgetObject)
+		healthWidgetObject->Update(Status->GetHealth(), Status->GetMaxHealth());
+
+	// Ultimate
+	UCUltimateComponent* ultimate = CHelpers::GetComponent<UCUltimateComponent>(Attacker);
 	if (Status->GetHealth() <= 0.f)
 	{
 		if (isDead == true) return DamageValue;
