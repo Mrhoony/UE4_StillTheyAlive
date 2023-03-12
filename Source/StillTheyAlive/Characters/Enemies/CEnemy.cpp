@@ -79,6 +79,10 @@ void ACEnemy::Dead()
 
 	Dissolve->Play();
 
+	ACStoryGameMode* gameMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (!!gameMode)
+		gameMode->DecreaseRoundCount();
+
 	//End_Dead
 	UKismetSystemLibrary::K2_SetTimer(this, "End_Dead", 3.f, false);
 }
@@ -93,11 +97,6 @@ void ACEnemy::End_Dead_Implementation()
 	Dissolve->Stop();
 
 	Deck->EndDead();
-
-	// 적이 죽으면 라이프 감소 ???
-	ACStoryGameMode* gameMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	if(!!gameMode)
-	gameMode->DecreaseLifes();
 
 	Destroy(true);
 }
@@ -131,12 +130,6 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 		Status->DecreaseHealth(DamageValue);
 	}
 
-	UCUserWidget_Health* healthWidgetObject = Cast<UCUserWidget_Health>(HealthWidget->GetUserWidgetObject());
-	if (!!healthWidgetObject)
-		healthWidgetObject->Update(Status->GetHealth(), Status->GetMaxHealth());
-
-	// Ultimate
-	UCUltimateComponent* ultimate = CHelpers::GetComponent<UCUltimateComponent>(Attacker);
 	if (Status->GetHealth() <= 0.f)
 	{
 		if (isDead == true) return DamageValue;
@@ -145,6 +138,7 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 		return DamageValue;
 	}
 
+	HealthBar->Update(Status->GetHealth(), Status->GetMaxHealth());
 	//State->SetHit();
 
 	return DamageValue;

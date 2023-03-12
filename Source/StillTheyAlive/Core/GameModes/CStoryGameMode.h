@@ -37,15 +37,28 @@ public:
 	void DecreaseMoney(const int32& InAmount);	
 	void IncreaseLifes(const int32& InAmount);
 	void DecreaseLifes(const int32& InAmount);
+	void DecreaseRoundCount();
 
 public:
 	FORCEINLINE int32 GetScore() const { return Score; }
 	FORCEINLINE int32 GetMoney() const { return Money; }
 	FORCEINLINE int32 GetLife() const { return Life; }
 
-private:
-	void UdpateCurrentRoundDatas();
 
+private:
+	UFUNCTION()
+	void SpawnMonster();
+
+	UFUNCTION()
+	void ClearSapwn();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void OpenDoor();
+private:
+	void RoundWave();
+	void GameClear();
+
+	TArray<FSpawnData*> CurrentRoundDatas();
 public:
 	FScoreValueChanged OnScoreValueChanged;
 	FMoneyValueChanged OnMoneyValueChanged;
@@ -61,12 +74,20 @@ private:
 	int32 Money;
 	int32 Life;
 
+	TArray<class AStartDoor*> Doors;
 	TArray<class ACSpawnPoint*> SpawnPoints;
 	TArray<class ACGoalPoint*> GoalPoints;
 	TArray<class AActor*> SpawnMonsters;	
 	TArray<FSpawnData*> RoundDatas;
+
+	int32 RoundAmount;
+	int32 WaveCount;
+	int CurrentRound;
 	bool bStarted;
-	int32 RoundAmount = 0;
-	int CurrentRound = 1;
+	FTransform SpawnTransform;
+	UClass* Monclass;
+
+	FTimerHandle timerHandle;
+
 	FStoryMapData* StoryMapData;
 };

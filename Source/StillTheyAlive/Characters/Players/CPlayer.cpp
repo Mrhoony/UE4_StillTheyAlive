@@ -10,12 +10,15 @@
 #include "Core/GameModes/CStoryGameMode.h"
 #include "Core/GameModes/CPlayGameMode.h"
 #include "Widgets/CUserWidget_Deck.h"
+#include "Widgets/CUserWidget_GameMessage.h"
 #include "Widgets/CHUD.h"
 #include "Widgets/CUserWidget_PlayerStatus.h"
 
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Blueprint/UserWidget.h"
+#include "Components/PanelWidget.h"
 
 ACPlayer::ACPlayer()
 {
@@ -59,9 +62,11 @@ ACPlayer::ACPlayer()
 
 	// HUD
 	CHelpers::GetClass(&HUDWidgetClass, "WidgetBlueprint'/Game/_Project/Widgets/WB_HUD.WB_HUD_C'");
+	CHelpers::GetClass(&MessageWidgetClass, "WidgetBlueprint'/Game/_Project/Widgets/WB_GameMessage.WB_GameMessage_C'");
 }
 
-void ACPlayer::BeginPlay() {
+void ACPlayer::BeginPlay() 
+{
 	Super::BeginPlay();
 
 	APlayerController* playerController = Cast<APlayerController>(GetController());
@@ -70,6 +75,8 @@ void ACPlayer::BeginPlay() {
 	HUD = Cast<UCHUD>(CreateWidget(playerController, HUDWidgetClass));
 	HUD->AddToViewport();
 
+	CheckNull(MessageWidgetClass);
+	GameMessage = Cast<UCUserWidget_GameMessage>(CreateWidget(playerController, MessageWidgetClass));
 	Deck->CreateDeckWidget(HUD);
 	//Status->CreateStatusWidget(HUD);
 }
@@ -186,4 +193,15 @@ void ACPlayer::StartNextRound()
 FGenericTeamId ACPlayer::GetGenericTeamId() const
 {
 	return TeamId;
+}
+
+void ACPlayer::PlayGameMessage(const FString& InMessage)
+{
+	APlayerController* playerController = Cast<APlayerController>(GetController());
+	CheckNull(playerController);
+	CheckNull(MessageWidgetClass);
+	CheckNull(HUD);
+	GameMessage = Cast<UCUserWidget_GameMessage>(CreateWidget(playerController, MessageWidgetClass));
+	HUD->Slot_Message->AddChild(GameMessage);
+	GameMessage->StartMessage(InMessage);
 }

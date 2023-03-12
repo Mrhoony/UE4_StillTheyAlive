@@ -38,6 +38,7 @@ public:
 	FGenericTeamId TeamId = FGenericTeamId(0);
 	virtual FGenericTeamId GetGenericTeamId() const override;
 
+	void PlayGameMessage(const FString& InMessage);
 private:
 	// Axis Mapping
 	void OnMoveForward(float InAxis);
@@ -85,5 +86,7 @@ private:
 	UPROPERTY(BlueprintAssignable) FLevelMiniMap OnLevelMiniMap;
 
 	class UCHUD* HUD;
+	class UCUserWidget_GameMessage* GameMessage;
 	TSubclassOf<class UCHUD> HUDWidgetClass;
+	TSubclassOf<class UCUserWidget_GameMessage> MessageWidgetClass;
 };
