@@ -14,6 +14,7 @@ protected:
 
 public:
 	FORCEINLINE void SetOwnerComponent(class UCDeckComponent* InOnwerComponent) { OwnerComponent = InOnwerComponent; }
+	FORCEINLINE TArray<class UCUserWidget_DeckSlot*> GetSlots() { return Slots; }
 
 	void SetIcons();
 
@@ -23,5 +24,5 @@ private:
 
 private:
 	class UCDeckComponent* OwnerComponent;
-	TArray<class UImage*> Slots;
+	TArray<class UCUserWidget_DeckSlot*> Slots;
 };

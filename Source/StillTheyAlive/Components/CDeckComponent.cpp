@@ -8,6 +8,7 @@
 #include "Components/CStateComponent.h"
 #include "Widgets/CUserWidget_Deck.h"
 #include "Widgets/CHUD.h"
+#include "Widgets/CUserWidget_DeckSlot.h"
 
 #include "GameFramework/Character.h"
 #include "Blueprint/UserWidget.h"
@@ -158,6 +159,9 @@ void UCDeckComponent::MultiSetCurrentPerk_Implementation(int index)
 	}
 	else
 	{
+		int curPerkIndex = Perks.Find(CurrentPerk);
+		if(curPerkIndex != -1) GetWidget()->GetSlots()[curPerkIndex]->SetCleared();
+
 		DeckNumber = index;
 
 		BeforePerk = CurrentPerk;
@@ -165,6 +169,8 @@ void UCDeckComponent::MultiSetCurrentPerk_Implementation(int index)
 		CurrentPerk = Perks[DeckNumber];
 	}
 	ChangePerk(BeforePerk, CurrentPerk);
+
+	GetWidget()->GetSlots()[index]->SetSelected();
 }
 
 void UCDeckComponent::ChangePerk(ACPerk* InPrevPerk, ACPerk* InNewPerk)
