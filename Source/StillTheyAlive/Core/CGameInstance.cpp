@@ -18,7 +18,7 @@ UCGameInstance::UCGameInstance(const FObjectInitializer& ObjectInitializer)
 
 void UCGameInstance::Init()
 {
-	IOnlineSubsystem* oss = IOnlineSubsystem::Get();    // OSS 가져오는법
+	IOnlineSubsystem* oss = IOnlineSubsystem::Get();  
 	if (!!oss)
 	{
 		UE_LOG(LogTemp, Error, TEXT("OSS Pointer Found. Name : %s"), *oss->GetSubsystemName().ToString());
@@ -26,7 +26,7 @@ void UCGameInstance::Init()
 		SessionInterface = oss->GetSessionInterface();
 		if (SessionInterface.IsValid())
 		{
-			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UCGameInstance::OnCreateSessionComplete);  //AddRow = C++ 함수, Addobject = 전역 함수만 멤버함수 x
+			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UCGameInstance::OnCreateSessionComplete); 
 			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UCGameInstance::OnDestroySessionComplete);
 			SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UCGameInstance::OnFindSessionsComplete);
 			SessionInterface->OnJoinSessionCompleteDelegates.AddUObject(this, &UCGameInstance::OnJoinSessionComplete);
@@ -120,10 +120,6 @@ void UCGameInstance::OnCreateSessionComplete(FName InSessionName, bool InSuccess
 
 	if (!!MainMenu)
 		MainMenu->Teardown();
-
-	UEngine* engine = GetEngine();
-	if (engine == nullptr) return;
-	engine->AddOnScreenDebugMessage(0, 2, FColor::Green, TEXT("Host"));
 
 	UWorld* world = GetWorld();
 	if (world == nullptr) return;

@@ -9,6 +9,7 @@
 #include "Components/VerticalBox.h"
 #include "Components/HorizontalBox.h"
 #include "Components/TextBlock.h"
+#include "Components/PanelWidget.h"
 #include "Components/EditableTextBox.h"
 #include "GameFramework/PlayerController.h"
 
@@ -36,14 +37,19 @@ bool UCUserWidget_MainMenu::Initialize()
 	CheckNullResult(CreateSession, false);
 	CheckNullResult(CancleSession, false);
 
+	// Main
 	PlayMenuButton->OnClicked.AddDynamic(this, &UCUserWidget_MainMenu::OpenPlayMenu);
 	PlayMenuBackButton->OnClicked.AddDynamic(this, &UCUserWidget_MainMenu::OpenMainMenu);
-	CancelSessionButton->OnClicked.AddDynamic(this, &UCUserWidget_MainMenu::OpenMainMenu);
 	PlayGameButton->OnClicked.AddDynamic(this, &UCUserWidget_MainMenu::PlayGame);
 	MultiPlayButton->OnClicked.AddDynamic(this, &UCUserWidget_MainMenu::OpenMultiMenu);
+
+	// Session
+	CancelSessionButton->OnClicked.AddDynamic(this, &UCUserWidget_MainMenu::OpenMainMenu);
 	CreateSessionButton->OnClicked.AddDynamic(this, &UCUserWidget_MainMenu::OpenCreateMenu);
 	JoinSessionButton->OnClicked.AddDynamic(this, &UCUserWidget_MainMenu::JoinServer);
 	RefreshButton->OnClicked.AddDynamic(this, &UCUserWidget_MainMenu::RefreshServer);
+
+	// Create Session
 	CreateSession->OnClicked.AddDynamic(this, &UCUserWidget_MainMenu::HostServer);
 	CancleSession->OnClicked.AddDynamic(this, &UCUserWidget_MainMenu::OpenMultiMenu);
 
@@ -206,7 +212,6 @@ void UCUserWidget_MainMenu::SetSelectedMap(FString InText)
 
 void UCUserWidget_MainMenu::SetServerList(TArray<FServerData> InServerNames)
 {
-	if (ServerList == nullptr) return;
 	ServerList->ClearChildren();
 	uint32 i = 0;
 	for (const FServerData& serverData : InServerNames)

@@ -1,5 +1,11 @@
 #include "CLobbyGameMode.h"
+#include "Global.h"
 #include "core/CGameInstance.h"
+
+ACLobbyGameMode::ACLobbyGameMode()
+{
+	CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/BP_CPlayer.BP_CPlayer_C'");
+}
 
 void ACLobbyGameMode::IncreaseReady()
 {

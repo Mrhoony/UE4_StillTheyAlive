@@ -10,6 +10,8 @@ class STILLTHEYALIVE_API ACLobbyGameMode : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+	ACLobbyGameMode();
+
 	void IncreaseReady();
 	void DecreaseReady();
 private:
