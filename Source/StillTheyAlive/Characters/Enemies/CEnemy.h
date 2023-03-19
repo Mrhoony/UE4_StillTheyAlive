@@ -21,13 +21,8 @@ public:
 
 	EPathFollowingRequestResult::Type Move(FVector GoalPoint);
 
-	UFUNCTION(NetMulticast, Reliable)
-		void MulticastDead();
-		void MulticastDead_Implementation();
-
-	UFUNCTION(NetMulticast, Reliable)
+	UFUNCTION()
 		void End_Dead();
-		void End_Dead_Implementation();
 
 protected:
 	virtual void BeginPlay() override;
@@ -36,8 +31,7 @@ private:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCDissolveComponent* Dissolve;
 
-	TSubclassOf<class ACUltimate> SpawnUltimate;
 private:
 	FVector MovePoint;
-	bool isDead;
+	int32 a;
 };

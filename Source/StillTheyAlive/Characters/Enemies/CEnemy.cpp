@@ -6,20 +6,19 @@
 #include "Components/CDeckComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/CDissolveComponent.h"
-#include "Components/CUltimateComponent.h"
 #include "Core/GameModes/CStoryGameMode.h"
 #include "Core/GameModes/CPlayGameMode.h"
 #include "Characters/Enemies/CAIController.h"
-#include "Characters/Players/CUltimate.h"
 
 #include "Components/WidgetComponent.h"
 #include "Widgets/CUserWidget_Health.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Perk/ActionData/CThrow.h"
+
 
 ACEnemy::ACEnemy()
 {
 	CHelpers::CreateActorComponent(this, &Dissolve, "Dissolve");
-	CHelpers::GetClass<ACUltimate>(&SpawnUltimate, "Blueprint'/Game/_Project/Perks/BP_CUltimate.BP_CUltimate_C'");
 }
 
 void ACEnemy::BeginPlay()
@@ -39,7 +38,7 @@ void ACEnemy::OnStateTypeChanged(EStateTypes InPrevType, EStateTypes InNewType)
 	switch (InNewType)
 	{
 	case EStateTypes::Hit:		Hitted();	break;
-	case EStateTypes::Dead:		MulticastDead();		break;
+	case EStateTypes::Dead:		Dead();		break;
 	}
 }
 
@@ -50,9 +49,7 @@ void ACEnemy::Hitted()
 void ACEnemy::Dead()
 {
 	CheckFalse(State->IsDead());
-	
-	isDead = true;
-	
+
 	//NameWidget->SetVisibility(false);
 	HealthWidget->SetVisibility(false);
 
@@ -65,80 +62,58 @@ void ACEnemy::Dead()
 	GetMesh()->SetSimulatePhysics(true);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
-	// Ultimate
-	FVector location = (GetActorForwardVector() + GetActorUpVector() + GetActorRightVector()) * 300;
-	location.Rotation();
-
-	for (int32 i = 1; i < 4; i++)
-	{
-		location* i;
-		ACUltimate* ultimate = GetWorld()->SpawnActorDeferred<ACUltimate>(SpawnUltimate, GetActorTransform());
-		ultimate->SetDirection(location);
-		UGameplayStatics::FinishSpawningActor(ultimate, GetActorTransform());
-	}
-
 	Dissolve->Play();
-
-	ACStoryGameMode* gameMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	if (!!gameMode)
-		gameMode->DecreaseRoundCount();
 
 	//End_Dead
 	UKismetSystemLibrary::K2_SetTimer(this, "End_Dead", 3.f, false);
 }
 
-void ACEnemy::MulticastDead_Implementation()
-{
-	Dead();
-}
-
-void ACEnemy::End_Dead_Implementation()
+void ACEnemy::End_Dead()
 {
 	Dissolve->Stop();
 
 	Deck->EndDead();
 
-	Destroy(true);
+	ACStoryGameMode* gameMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	gameMode->DecreaseLifes();
+
+	Destroy();
 }
 
 float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	DamageValue = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 	Causer = DamageCauser;
+	Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
 
-	FVector attackerForward;
-	FVector attackerUp;
-	if (!!EventInstigator)
-	{
-		Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
-		attackerForward = Attacker->GetActorForwardVector();
-		attackerUp = Attacker->GetActorUpVector();
-	}
+	//AddImpulse를 위한 준비
+	FVector attackerForward = Attacker->GetActorForwardVector();
+	FVector attackerUp = Attacker->GetActorUpVector();
 	attackerForward.Normalize();
 	attackerUp.Normalize();
 
 	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
 	{
 		const FRadialDamageEvent* radialDamageEvent = static_cast<const FRadialDamageEvent*>(&DamageEvent);
-		GetCharacterMovement()->AddImpulse((attackerForward + attackerUp) * 300.0f, true);
-	//	CLog::Print("TakeRadialDamage");
-	//	CLog::Print(DamageValue);
+		CLog::Print(DamageValue);
+		Status->DecreaseHealth(DamageValue);
 	}
 	else
 	{
-	//	CLog::Print("TakeNormalDamage");
+		CLog::Print("TakeNormalDamage");
 		Status->DecreaseHealth(DamageValue);
 	}
 
+	UCUserWidget_Health* healthWidgetObject = Cast<UCUserWidget_Health>(HealthWidget->GetUserWidgetObject());
+	if (!!healthWidgetObject)
+		healthWidgetObject->Update(Status->GetHealth(), Status->GetMaxHealth());
+
 	if (Status->GetHealth() <= 0.f)
 	{
-		if (isDead == true) return DamageValue;
-
 		State->SetDead();
 		return DamageValue;
 	}
 
-	HealthBar->Update(Status->GetHealth(), Status->GetMaxHealth());
 	//State->SetHit();
 
 	return DamageValue;
