@@ -59,7 +59,6 @@ void ACDoAction_Fire::Begin_DoAction()
 
 	ThrowObject = GetWorld()->SpawnActorDeferred<ACThrow>(Datas[0].ThrowClass, transform, OwnerCharacter, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 	ThrowObject->OnThrowBeginOverlap.AddDynamic(this, &ACDoAction_Fire::OnThrowBeginOverlap);
-	ThrowObject->SetRadialTrue();
 	UGameplayStatics::FinishSpawningActor(ThrowObject, transform);
 }
 
