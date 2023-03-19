@@ -1,5 +1,6 @@
 #include "CBTTaskNode_Action.h"
 #include "Global.h"
+
 #include "Characters/CAICharacter.h"
 #include "AIController.h"
 #include "Components/CDeckComponent.h"
@@ -21,7 +22,7 @@ EBTNodeResult::Type UCBTTaskNode_Action::ExecuteTask(UBehaviorTreeComponent& Own
 	ACAICharacter* aiPawn = Cast<ACAICharacter>(controller->GetPawn());
 	UCDeckComponent* deck = CHelpers::GetComponent<UCDeckComponent>(aiPawn);
 
-	aiPawn->ActionCoolTime = aiPawn->ActionMaxCoolTime;
+	aiPawn->ActionCoolTime = aiPawn->ActionMaxCoolTime; // X
 	controller->StopMovement();
 	deck->PerkAction();
 	return EBTNodeResult::InProgress;
@@ -36,5 +37,7 @@ void UCBTTaskNode_Action::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 	UCStateComponent* state = CHelpers::GetComponent<UCStateComponent>(aiPawn);
 
 	if (state->IsIdle() && aiPawn->ActionCoolTime == 0)
+	{
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+	}		
 }

@@ -24,5 +24,8 @@ void ACSpawnPoint::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedCompon
 	CheckNull(enemy);
 	ACAIController* aicontoller = Cast<ACAIController>(enemy->GetController());
 	if (!!FirstPoint)
-		aicontoller->SetLoactionKey(FirstPoint->GetActorLocation());
+	{
+		if (!!aicontoller)
+			aicontoller->SetLoactionKey(FirstPoint->GetActorLocation());
+	}
 }

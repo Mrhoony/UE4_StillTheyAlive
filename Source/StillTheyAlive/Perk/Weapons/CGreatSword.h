@@ -19,4 +19,9 @@ protected:
 
 public:
 	virtual void TechAction() override;
+	virtual void EndTechAction() override;
+	virtual void Ultimate() override;
+	virtual void Begin_Ultimate() override;
+
+	virtual void ChargingMontage() override;
 };

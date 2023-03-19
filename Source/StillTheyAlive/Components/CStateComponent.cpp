@@ -1,7 +1,16 @@
 #include "CStateComponent.h"
+#include "Net/UnrealNetwork.h"
 
 UCStateComponent::UCStateComponent()
 {
+}
+
+void UCStateComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UCStateComponent, Type);
+
 }
 
 void UCStateComponent::BeginPlay()

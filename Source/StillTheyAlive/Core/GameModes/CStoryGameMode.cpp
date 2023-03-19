@@ -1,17 +1,18 @@
 #include "CStoryGameMode.h"
 #include "Global.h"
-#include "Widgets/CHUD_Aim.h"
+
 #include "Core/CGameInstance.h"
 #include "Characters/Enemies/CEnemy.h"
 #include "Maps/CSpawnPoint.h"
 #include "Maps/CGoalPoint.h"
+#include "Maps/StartDoor.h"
+#include "Characters/Players/CPlayer.h"
 
 #include "Engine/DataTable.h"
 
 ACStoryGameMode::ACStoryGameMode()
 {
 	CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/BP_CPlayer.BP_CPlayer_C'");
-	CHelpers::GetClass<AHUD>(&HUDClass, "Blueprint'/Game/_Project/Widgets/BP_CHUD_Aim.BP_CHUD_Aim_C'");
 }
 
 void ACStoryGameMode::BeginPlay()
@@ -48,10 +49,24 @@ void ACStoryGameMode::BeginPlay()
 		Money = 10000;
 		Life = 30;
 	}
-	
-	Score = 0;
 
-	UdpateCurrentRoundDatas(); 
+	actors.Empty();
+	actors.Shrink();
+
+	// Find & Save Door
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AStartDoor::StaticClass(), actors);
+	for (AActor* actor : actors)
+		Doors.Add(Cast<AStartDoor>(actor));
+	if (actors.Num() < 1) { UE_LOG(LogTemp, Error, TEXT("Cannot Found StartDoor")); return; }
+
+	// ¸ÊÀÌ ¹Ù²ð ¶§ ¸¶´Ù ÃÊ±âÈ­
+	Score = 0;
+	RoundAmount = 0;
+	WaveCount = 1;
+	CurrentRound = 1;
+	bStarted = true;
+
+	DataTable->GetAllRows<FSpawnData>("GetAllRows", RoundDatas);
 }
 
 void ACStoryGameMode::DecreaseLifes()
@@ -73,8 +88,17 @@ void ACStoryGameMode::DecreaseLifes()
 
 void ACStoryGameMode::StartNextRound()
 {
-	TArray<FSpawnData*> roundDatas;
+	if (bStarted == false) return;
 
+	bStarted = false;
+
+	if (CurrentRound == 1) 
+	{
+		OpenDoor();
+	}
+		
+
+	TArray<FSpawnData*> roundDatas;
 	for (FSpawnData* data : RoundDatas)
 	{
 		if (data->Round == CurrentRound)
@@ -84,30 +108,88 @@ void ACStoryGameMode::StartNextRound()
 	for (int32 i = 0; i < roundDatas.Num(); i++)
 	{
 		RoundAmount += roundDatas[i]->SpawnCount;
-		for (int32 z = 0; z < roundDatas[i]->SpawnCount; z++)
-		{
-			FTransform transform;
-			for (int32 x = 0; x < SpawnPoints.Num(); x++)
-			{
-				if (SpawnPoints[x]->PathNum == (int32)roundDatas[i]->SpawnLocationIndex)
-					transform.SetLocation(SpawnPoints[x]->GetActorLocation());
-			}
-
-			ACEnemy* enemy = GetWorld()->SpawnActor<ACEnemy>(roundDatas[i]->MonsterRef, transform);
-		}
 	}
+	
+	RoundWave();
 }
 
-void ACStoryGameMode::UdpateCurrentRoundDatas()
+void ACStoryGameMode::SpawnMonster()
 {
-	TArray<FSpawnData*> datas;
-	DataTable->GetAllRows<FSpawnData>("GetAllRows", datas);
+	FActorSpawnParameters spawn;
+	spawn.bNoFail;
 
-	for (FSpawnData* data : datas)
+	GetWorld()->SpawnActor<ACEnemy>(Monclass, SpawnTransform, spawn);
+}
+
+void ACStoryGameMode::GameClear()
+{
+	ACPlayer* player = Cast<ACPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	if (!!player)
+		player->PlayGameMessage("Game Clear!!");
+	
+}
+
+void ACStoryGameMode::OpenDoor_Implementation()
+{
+	for (AStartDoor* doors : Doors)
+		doors->OpenDoor();
+}
+
+void ACStoryGameMode::RoundWave()
+{
+	TArray<FSpawnData*> roundDatas = CurrentRoundDatas();
+
+	if (roundDatas.Num() < WaveCount)
+	{
+		WaveCount = 1;
+		return;
+	}
+
+	int32 wavedata = WaveCount - 1;
+	Monclass = roundDatas[wavedata]->MonsterRef;
+
+	for (int32 i = 0; i < SpawnPoints.Num(); i++)
+	{
+		if (SpawnPoints[i]->PathNum == (int32)roundDatas[wavedata]->SpawnLocationIndex)
+			SpawnTransform.SetLocation(SpawnPoints[i]->GetActorLocation() + FVector(0, 0, 88));
+	}
+	
+	GetWorldTimerManager().SetTimer(timerHandle, this, &ACStoryGameMode::SpawnMonster, 1.f, true);
+	
+	FTimerDynamicDelegate timer;
+	timer.BindUFunction(this, "ClearSapwn");
+	UKismetSystemLibrary::K2_SetTimerDelegate(timer, (float)roundDatas[wavedata]->SpawnCount + 0.1f, false);
+}
+
+TArray<FSpawnData*> ACStoryGameMode::CurrentRoundDatas()
+{
+	TArray<FSpawnData*> roundDatas;
+
+	for (FSpawnData* data : RoundDatas)
 	{
 		if (data->Round == CurrentRound)
-		{
-			RoundDatas.Add(data);
-		}
+			roundDatas.Add(data);
+	}
+	
+	return roundDatas;
+}
+
+void ACStoryGameMode::ClearSapwn()
+{
+	GetWorldTimerManager().ClearTimer(timerHandle);
+	WaveCount++;
+	RoundWave();
+}
+
+void ACStoryGameMode::DecreaseRoundCount()
+{
+	RoundAmount--;
+	if (RoundAmount == 0)
+	{
+		CurrentRound++;
+		if (CurrentRound == 5)
+			GameClear();
+
+		bStarted = true;
 	}
 }

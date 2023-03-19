@@ -32,7 +32,6 @@ ACAIController::ACAIController()
 		
 	Perception->ConfigureSense(*Sight);
 	Perception->SetDominantSense(Sight->GetSenseImplementation());
-
 	SetGenericTeamId(FGenericTeamId(1));
 }
 
@@ -104,9 +103,22 @@ void ACAIController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 	{	
 		target = Cast<ACharacter>(actor);
 
-		if(!!target)
-			break;
+		if (!!target)
+		{
+			if (Behavior->GetTarget() == nullptr)
+				break;
+			else
+			{
+				float distance = GetPawn()->GetDistanceTo(target);
+				ACharacter* currTarget = Behavior->GetTarget();
+				float temp = GetPawn()->GetDistanceTo(currTarget);
+				if (distance > temp)
+				{
+					target = currTarget;
+					break;
+				}
+			}
+		}
 	}
-
 	Blackboard->SetValueAsObject("Target", target);
 }

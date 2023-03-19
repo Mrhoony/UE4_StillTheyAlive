@@ -7,7 +7,7 @@
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
 {
-	Rifle, Magic, GreatSword, RocketLauncher, Max
+	Rifle, Magic, GreatSword, RocketLauncher, Sword_bbadda, Bow, Max
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWeaponTypeChanged, EWeaponType, InNewType);
@@ -23,7 +23,7 @@ public:
 public:
 	UFUNCTION()
 		virtual void WeaponTypeChanged();
-
+	virtual void ChargingMontage() {};
 	FORCEINLINE EWeaponType GetWeaponType() { return WeaponType; }
 
 protected:
@@ -37,4 +37,5 @@ public:
 		FWeaponTypeChanged OnWeaponTypeChanged;
 
 	float Damage = 5.f;
+	int32 ChargingStack;
 };

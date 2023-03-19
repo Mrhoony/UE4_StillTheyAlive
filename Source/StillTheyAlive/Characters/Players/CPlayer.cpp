@@ -5,17 +5,20 @@
 #include "Components/CStatusComponent.h"
 #include "Components/COptionComponent.h"
 #include "Components/CDeckComponent.h"
-#include "Components/WidgetComponent.h"
+#include "Components/CUltimateComponent.h"
 #include "Core/CGameInstance.h"
 #include "Core/GameModes/CStoryGameMode.h"
 #include "Core/GameModes/CPlayGameMode.h"
+#include "Widgets/CUserWidget_Deck.h"
+#include "Widgets/CUserWidget_GameMessage.h"
+#include "Widgets/CHUD.h"
+#include "Widgets/CUserWidget_PlayerStatus.h"
 
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
-#include "Widgets/CHUD_PlayerStatus.h"
-
-
+#include "Blueprint/UserWidget.h"
+#include "Components/PanelWidget.h"
 
 ACPlayer::ACPlayer()
 {
@@ -30,6 +33,7 @@ ACPlayer::ACPlayer()
 	CHelpers::CreateActorComponent(this, &State, "State");
 	CHelpers::CreateActorComponent(this, &Option, "Option");
 	CHelpers::CreateActorComponent(this, &Deck, "Deck");
+	CHelpers::CreateActorComponent(this, &UltimateComp, "Ultimate");
 
 	// Component Settings
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -88));
@@ -55,17 +59,26 @@ ACPlayer::ACPlayer()
 	GetCharacterMovement()->MaxWalkSpeed = 600; //Status->GetRunSpeed();
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	// HUD
+	CHelpers::GetClass(&HUDWidgetClass, "WidgetBlueprint'/Game/_Project/Widgets/WB_HUD.WB_HUD_C'");
+	CHelpers::GetClass(&MessageWidgetClass, "WidgetBlueprint'/Game/_Project/Widgets/WB_GameMessage.WB_GameMessage_C'");
 }
 
-void ACPlayer::BeginPlay()
-{ 
+void ACPlayer::BeginPlay() 
+{
 	Super::BeginPlay();
-	CheckNull(Widget);
 
-	WidgetInstance = CreateWidget<UUserWidget>(GetWorld(), Widget);
-	WidgetInstance->AddToViewport();
-	Cast<UCHUD_PlayerStatus>(WidgetInstance)->UpdateHP(Status->GetHealth(), Status->GetMaxHealth());
-	Cast<UCHUD_PlayerStatus>(WidgetInstance)->UpdateMP(Status->GetMana(), Status->GetMaxMana());
+	APlayerController* playerController = Cast<APlayerController>(GetController());
+	CheckNull(playerController);
+	CheckNull(HUDWidgetClass);
+	HUD = Cast<UCHUD>(CreateWidget(playerController, HUDWidgetClass));
+	HUD->AddToViewport();
+
+	CheckNull(MessageWidgetClass);
+	GameMessage = Cast<UCUserWidget_GameMessage>(CreateWidget(playerController, MessageWidgetClass));
+	Deck->CreateDeckWidget(HUD);
+	//Status->CreateStatusWidget(HUD);
 }
 void ACPlayer::Tick(float DeltaTime) { Super::Tick(DeltaTime); }
 
@@ -81,8 +94,10 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACPlayer::OnJump);
 	PlayerInputComponent->BindAction("Action", EInputEvent::IE_Pressed, this, &ACPlayer::DoAction);
+	PlayerInputComponent->BindAction("Action", EInputEvent::IE_Released, this, &ACPlayer::EndDoAction);
 	PlayerInputComponent->BindAction("TechAction", EInputEvent::IE_Pressed, this, &ACPlayer::TechDoAction);
 	PlayerInputComponent->BindAction("TechAction", EInputEvent::IE_Released, this, &ACPlayer::TechOffAction);
+	PlayerInputComponent->BindAction("Ultimate", EInputEvent::IE_Pressed, this, &ACPlayer::Ultimate);
 	PlayerInputComponent->BindAction("MiniMap", EInputEvent::IE_Pressed, this, &ACPlayer::OnMiniMap);
 	
 	PlayerInputComponent->BindAction("Deck1", EInputEvent::IE_Pressed, this, &ACPlayer::SelectDeck1);
@@ -101,6 +116,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ACPlayer::Hitted()
 {
+	Status->GetWidget()->UpdateHealthBar();
 }
 
 void ACPlayer::Dead()
@@ -109,6 +125,7 @@ void ACPlayer::Dead()
 
 void ACPlayer::OnMoveForward(float InAxis)
 {
+	if(!!Status)
 	CheckFalse(Status->IsCanMove());
 
 	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
@@ -118,6 +135,7 @@ void ACPlayer::OnMoveForward(float InAxis)
 }
 void ACPlayer::OnMoveRight(float InAxis)
 {
+	if (!!Status)
 	CheckFalse(Status->IsCanMove());
 
 	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
@@ -149,20 +167,21 @@ void ACPlayer::OnMiniMap()
 	if (OnLevelMiniMap.IsBound())
 		OnLevelMiniMap.Broadcast();
 }
-void ACPlayer::DoAction() { Deck->PerkAction(); }
-void ACPlayer::TechDoAction() { Deck->PerkTechAction(); }
-void ACPlayer::TechOffAction() { Deck->PerkTechOffAction(); }
-
-void ACPlayer::SelectDeck1() { Deck->SetCurrentPerk(0); }
-void ACPlayer::SelectDeck2() { Deck->SetCurrentPerk(1); }
-void ACPlayer::SelectDeck3() { Deck->SetCurrentPerk(2); }
-void ACPlayer::SelectDeck4() { Deck->SetCurrentPerk(3); }
-void ACPlayer::SelectDeck5() { Deck->SetCurrentPerk(4); }
-void ACPlayer::SelectDeck6() { Deck->SetCurrentPerk(5); }
-void ACPlayer::SelectDeck7() { Deck->SetCurrentPerk(6); }
-void ACPlayer::SelectDeck8() { Deck->SetCurrentPerk(7); }
-void ACPlayer::SelectDeck9() { Deck->SetCurrentPerk(8); }
-void ACPlayer::SelectDeck0() { Deck->SetCurrentPerk(9); }
+void ACPlayer::DoAction()		{ Deck->ServerPerkAction(); }
+void ACPlayer::EndDoAction()	{ Deck->ServerPerkEndAction(); }
+void ACPlayer::TechDoAction()	{ Deck->ServerPerkTechAction(); }
+void ACPlayer::TechOffAction()	{ Deck->ServerPerkTechOffAction(); }
+void ACPlayer::Ultimate()		{ Deck->ServerPerkUltimate(); }
+void ACPlayer::SelectDeck1()	{ Deck->SetCurrentPerk(0); }
+void ACPlayer::SelectDeck2()	{ Deck->SetCurrentPerk(1); }
+void ACPlayer::SelectDeck3()	{ Deck->SetCurrentPerk(2); }
+void ACPlayer::SelectDeck4()	{ Deck->SetCurrentPerk(3); }
+void ACPlayer::SelectDeck5()	{ Deck->SetCurrentPerk(4); }
+void ACPlayer::SelectDeck6()	{ Deck->SetCurrentPerk(5); }
+void ACPlayer::SelectDeck7()	{ Deck->SetCurrentPerk(6); }
+void ACPlayer::SelectDeck8()	{ Deck->SetCurrentPerk(7); }
+void ACPlayer::SelectDeck9()	{ Deck->SetCurrentPerk(8); }
+void ACPlayer::SelectDeck0()	{ Deck->SetCurrentPerk(9); }
 
 void ACPlayer::StartNextRound()
 {
@@ -174,4 +193,15 @@ void ACPlayer::StartNextRound()
 FGenericTeamId ACPlayer::GetGenericTeamId() const
 {
 	return TeamId;
+}
+
+void ACPlayer::PlayGameMessage(const FString& InMessage)
+{
+	APlayerController* playerController = Cast<APlayerController>(GetController());
+	CheckNull(playerController);
+	CheckNull(MessageWidgetClass);
+	CheckNull(HUD);
+	GameMessage = Cast<UCUserWidget_GameMessage>(CreateWidget(playerController, MessageWidgetClass));
+	HUD->Slot_Message->AddChild(GameMessage);
+	GameMessage->StartMessage(InMessage);
 }

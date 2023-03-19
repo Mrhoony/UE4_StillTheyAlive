@@ -14,7 +14,9 @@ public class StillTheyAlive : ModuleRules
 			"InputCore",
 			"UMG",
 			"AIModule",
-			"GameplayTasks"
+			"GameplayTasks",
+			"OnlineSubsystem",
+			"SlateCore"
 		});
 
 		PublicIncludePaths.Add(ModuleDirectory);

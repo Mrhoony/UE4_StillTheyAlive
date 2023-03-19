@@ -1,14 +1,36 @@
 #include "CDeckComponent.h"
 #include "Global.h"
+
 #include "Perk/ActionData/CDoAction.h"
 #include "Perk/ActionData/CEquipment.h"
 #include "Perk/Weapons/CWeapon.h"
-#include "GameFramework/Character.h"
 #include "Characters/Players/CAnimInstance.h"
 #include "Components/CStateComponent.h"
+#include "Widgets/CUserWidget_Deck.h"
+#include "Widgets/CHUD.h"
+#include "Widgets/CUserWidget_DeckSlot.h"
+
+#include "GameFramework/Character.h"
+#include "Blueprint/UserWidget.h"
+#include "Components/PanelWidget.h"
+#include "Net/UnrealNetwork.h"
 
 UCDeckComponent::UCDeckComponent()
 {
+	CHelpers::GetClass(&WidgetClass, "WidgetBlueprint'/Game/_Project/Widgets/WB_Deck.WB_Deck_C'");
+	SetIsReplicated(true);
+}
+
+void UCDeckComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	//DOREPLIFETIME(UCDeckComponent, DeckNumber);
+	//DOREPLIFETIME(UCDeckComponent, CurrentPerk);
+	//DOREPLIFETIME(UCDeckComponent, BeforePerk);
+	//DOREPLIFETIME(UCDeckComponent, Type);
+	//DOREPLIFETIME(UCDeckComponent, OwnerCharacter);
+	DOREPLIFETIME(UCDeckComponent, OwnerState);
 }
 
 void UCDeckComponent::BeginPlay()
@@ -30,26 +52,52 @@ void UCDeckComponent::BeginPlay()
 			Perks.Add(perk);
 		}
 	}
-
-	CheckNull(Perks[0]);
-	CurrentPerk = Perks[0];
-	ChangePerk(nullptr, CurrentPerk);
+	//MakeWidget();
+}
+void UCDeckComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
-void UCDeckComponent::PerkAction()
+
+
+void UCDeckComponent::PerkAction_Implementation()
 {
 	CheckFalse(CurrentPerk);
 	CheckTrue(IsPerkUnarmed());
-	if (!!Perks[DeckNumber]->GetCurrent()->GetDoAction())
+	if (Perks[DeckNumber]->GetCurrent()->GetDoAction() != nullptr)
 	{
-		ACDoAction* doAction = Perks[DeckNumber]->GetCurrent()->GetDoAction();
-
+		ACDoAction* doAction = CurrentPerk->GetCurrent()->GetDoAction();
+		
 		doAction->DoAction_L();
 	}
 }
 
-void UCDeckComponent::PerkTechAction()
+void UCDeckComponent::ServerPerkAction_Implementation()
 {
+	PerkAction();
+}
+
+void UCDeckComponent::PerkEndAction_Implementation()
+{
+	CheckNull(CurrentPerk);
+	
+	if (!!Perks[DeckNumber]->GetCurrent()->GetDoAction())
+	{
+		ACDoAction* doAction = Perks[DeckNumber]->GetCurrent()->GetDoAction();
+
+		doAction->End_DoAction_L();
+	}
+}
+
+void UCDeckComponent::ServerPerkEndAction_Implementation()
+{
+	PerkEndAction();
+}
+
+void UCDeckComponent::PerkTechAction_Implementation()
+{
+	CheckNull(CurrentPerk);
 	if (Perks[DeckNumber]->GetCurrent()->GetDoAction())
 	{
 		ACDoAction* doAction = Perks[DeckNumber]->GetCurrent()->GetDoAction();
@@ -58,8 +106,14 @@ void UCDeckComponent::PerkTechAction()
 	}
 }
 
-void UCDeckComponent::PerkTechOffAction()
+void UCDeckComponent::ServerPerkTechAction_Implementation()
 {
+	PerkTechAction();
+}
+
+void UCDeckComponent::PerkTechOffAction_Implementation()
+{
+	CheckNull(CurrentPerk);
 	if (Perks[DeckNumber]->GetCurrent()->GetDoAction())
 	{
 		ACDoAction* doAction = Perks[DeckNumber]->GetCurrent()->GetDoAction();
@@ -68,8 +122,14 @@ void UCDeckComponent::PerkTechOffAction()
 	}
 }
 
-void UCDeckComponent::PerkUltimate()
+void UCDeckComponent::ServerPerkTechOffAction_Implementation()
 {
+	PerkTechOffAction();
+}
+
+void UCDeckComponent::PerkUltimate_Implementation()
+{
+	CheckNull(CurrentPerk);
 	if (Perks[DeckNumber]->GetCurrent()->GetDoAction())
 	{
 		ACDoAction* doAction = Perks[DeckNumber]->GetCurrent()->GetDoAction();
@@ -78,17 +138,31 @@ void UCDeckComponent::PerkUltimate()
 	}
 }
 
-void UCDeckComponent::SetCurrentPerk(int index)
+void UCDeckComponent::ServerPerkUltimate_Implementation()
 {
-	CheckFalse(OwnerState->IsIdle());
+	PerkUltimate();
+}
+
+void UCDeckComponent::SetCurrentPerk_Implementation(int index)
+{
+	MultiSetCurrentPerk(index);
+	//GetWidget()->GetSlots()[index]->SetSelected();
+}
+
+void UCDeckComponent::MultiSetCurrentPerk_Implementation(int index)
+{
+	if (OwnerState->IsIdle() == false) return;
 	if (Perks.Num() <= index) return;
 	if (DeckNumber == index && !!CurrentPerk)
 	{
-		SetUnarmed(); 
+		SetUnarmed();
 		return;
 	}
 	else
 	{
+		int curPerkIndex = Perks.Find(CurrentPerk);
+		//if(curPerkIndex != -1) GetWidget()->GetSlots()[curPerkIndex]->SetCleared();
+
 		DeckNumber = index;
 
 		BeforePerk = CurrentPerk;
@@ -96,12 +170,15 @@ void UCDeckComponent::SetCurrentPerk(int index)
 		CurrentPerk = Perks[DeckNumber];
 	}
 	ChangePerk(BeforePerk, CurrentPerk);
+
+
 }
 
 void UCDeckComponent::ChangePerk(ACPerk* InPrevPerk, ACPerk* InNewPerk)
 {
 	if(!!InPrevPerk)
 	InPrevPerk->GetCurrent()->GetEquipment()->Unequip();
+	CheckNull(InNewPerk);
 	InNewPerk->GetCurrent()->GetEquipment()->Equip();
 	switch (InNewPerk->GetPerkType())
 	{
@@ -175,4 +252,18 @@ void UCDeckComponent::EndDead()
 	{
 		Perks[i]->End_Dead();
 	}
+}
+
+void UCDeckComponent::CreateDeckWidget(UCHUD* HUD)
+{
+	CheckNull(WidgetClass);
+	CheckNull(HUD);
+
+	APlayerController* playerController = Cast<APlayerController>(OwnerCharacter->GetController());
+	CheckNull(playerController);
+
+	Widget = CreateWidget<UCUserWidget_Deck, APlayerController>(playerController, WidgetClass);
+	Widget->SetOwnerComponent(this);
+	
+	HUD->Slot_Deck->AddChild(Widget);
 }

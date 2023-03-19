@@ -2,7 +2,9 @@
 #include "Global.h"
 #include "Components/CStateComponent.h"
 #include "Components/CStatusComponent.h"
+#include "Components/CDeckComponent.h"
 #include "GameFrameWork/Character.h"
+#include "Perk/CPerk.h"
 
 void ACDoAction_Melee::DoAction_L()
 {
@@ -23,6 +25,7 @@ void ACDoAction_Melee::DoAction_L()
 	OwnerCharacter->PlayAnimMontage(Datas[0].Montage.AnimMontage, Datas[0].Montage.PlayRate, Datas[0].Montage.StartSection);
 	Datas[0].bCanMove ? Status->SetMove() : Status->SetStop();
 }
+
 
 void ACDoAction_Melee::Begin_DoAction()
 {
@@ -86,8 +89,8 @@ void ACDoAction_Melee::OnAttachmentBeginOverlap(ACharacter* InAttacker, AActor* 
 
 	if (hittedCharactersNum < HittedCharacters.Num())
 	{
-		//TakeDamage
 		FDamageEvent e;
+		if(!!InOtherCharacter)
 		InOtherCharacter->TakeDamage(Datas[ComboCount].Power, e, InAttacker->GetController(), InCauser);
 	}
 }
@@ -100,4 +103,30 @@ void ACDoAction_Melee::OnAttachmentEndOverlap(ACharacter* InAttacker, AActor* In
 void ACDoAction_Melee::RestoreGlobalTimeDilation()
 {
 	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1.f);
+}
+
+void ACDoAction_Melee::DoAction_R()
+{
+	CheckFalse(State->IsIdle());
+	State->SetAction();
+	Deck->GetCurrentPerk()->TechAction();
+	TechDatas[ComboCount].bCanMove ? Status->SetMove() : Status->SetStop();
+}
+
+void ACDoAction_Melee::DoOffAction_R()
+{
+	Deck->GetCurrentPerk()->EndTechAction();
+}
+
+void ACDoAction_Melee::UltimateAction()
+{
+	CheckFalse(State->IsIdle());
+	State->SetAction();
+	Deck->GetCurrentPerk()->Ultimate();
+	TechDatas[0].bCanMove ? Status->SetMove() : Status->SetStop();
+}
+
+void ACDoAction_Melee::Begin_Ultimate()
+{
+	Deck->GetCurrentPerk()->Begin_Ultimate();
 }

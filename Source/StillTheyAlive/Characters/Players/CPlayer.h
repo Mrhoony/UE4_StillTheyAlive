@@ -29,12 +29,16 @@ public:
 // [CPPOnly]
 //=======================================================
 public:
+	FORCEINLINE class UCHUD* GetHUD() { return HUD; }
+
+public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Hitted() override;
 	virtual void Dead() override;
 	FGenericTeamId TeamId = FGenericTeamId(0);
 	virtual FGenericTeamId GetGenericTeamId() const override;
 
+	void PlayGameMessage(const FString& InMessage);
 private:
 	// Axis Mapping
 	void OnMoveForward(float InAxis);
@@ -46,8 +50,10 @@ private:
 	void OnMiniMap();
 
 	void DoAction();
+	void EndDoAction();
 	void TechDoAction();
 	void TechOffAction();
+	void Ultimate();
 
 	void SelectDeck1();
 	void SelectDeck2();
@@ -75,9 +81,12 @@ private:
 	UPROPERTY(VisibleDefaultsOnly) class UCOptionComponent* Option;
 	UPROPERTY(VisibleDefaultsOnly) class UCDeckComponent* Deck;
 	UPROPERTY(VisibleDefaultsOnly) class UCStateComponent* State;
+	UPROPERTY(VisibleDefaultsOnly) class UCUltimateComponent* UltimateComp;
+	
 	UPROPERTY(BlueprintAssignable) FLevelMiniMap OnLevelMiniMap;
 
-	UPROPERTY(EditAnywhere) TSubclassOf<UUserWidget> Widget;
-	class UUserWidget* WidgetInstance;
-
+	class UCHUD* HUD;
+	class UCUserWidget_GameMessage* GameMessage;
+	TSubclassOf<class UCHUD> HUDWidgetClass;
+	TSubclassOf<class UCUserWidget_GameMessage> MessageWidgetClass;
 };
