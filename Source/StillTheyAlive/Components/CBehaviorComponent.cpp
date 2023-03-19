@@ -31,12 +31,19 @@ bool UCBehaviorComponent::IsActionMode()	{	return GetType() == EBehaviorType::Ac
 bool UCBehaviorComponent::IsPatrolMode()	{	return GetType() == EBehaviorType::Patrol;	}
 bool UCBehaviorComponent::IsHittedMode()	{	return GetType() == EBehaviorType::Hitted;	}
 bool UCBehaviorComponent::IsReturnMode()	{	return GetType() == EBehaviorType::Return;	}
+bool UCBehaviorComponent::IsRangeAttackMode(){	return GetType() == EBehaviorType::RangeAttack;	}
+bool UCBehaviorComponent::IsSkillMode(){	return GetType() == EBehaviorType::Skill;	}
+bool UCBehaviorComponent::IsSkill2Mode(){	return GetType() == EBehaviorType::Skill2;	}
 void UCBehaviorComponent::SetWaitMode()		{	ChangeType(EBehaviorType::Wait);			}
 void UCBehaviorComponent::SetApproachMode()	{	ChangeType(EBehaviorType::Approach);		}
 void UCBehaviorComponent::SetActionMode()	{	ChangeType(EBehaviorType::Action);			}
 void UCBehaviorComponent::SetPatrolMode()	{	ChangeType(EBehaviorType::Patrol);			}
 void UCBehaviorComponent::SetHittedMode()	{	ChangeType(EBehaviorType::Hitted);			}
 void UCBehaviorComponent::SetReturnMode()	{	ChangeType(EBehaviorType::Return);			}
+void UCBehaviorComponent::SetRangeAttackMode() {	ChangeType(EBehaviorType::RangeAttack);	}
+void UCBehaviorComponent::SetSkillMode() {	ChangeType(EBehaviorType::Skill);	}
+void UCBehaviorComponent::SetSkill2Mode() {	ChangeType(EBehaviorType::Skill2);	}
+
 ACharacter* UCBehaviorComponent::GetTarget()
 {
 	return Cast<ACharacter>(Blackboard->GetValueAsObject(TargetKey));

@@ -146,6 +146,7 @@ void UCDeckComponent::ServerPerkUltimate_Implementation()
 void UCDeckComponent::SetCurrentPerk_Implementation(int index)
 {
 	MultiSetCurrentPerk(index);
+	//GetWidget()->GetSlots()[index]->SetSelected();
 }
 
 void UCDeckComponent::MultiSetCurrentPerk_Implementation(int index)
@@ -160,7 +161,7 @@ void UCDeckComponent::MultiSetCurrentPerk_Implementation(int index)
 	else
 	{
 		int curPerkIndex = Perks.Find(CurrentPerk);
-		if(curPerkIndex != -1) GetWidget()->GetSlots()[curPerkIndex]->SetCleared();
+		//if(curPerkIndex != -1) GetWidget()->GetSlots()[curPerkIndex]->SetCleared();
 
 		DeckNumber = index;
 
@@ -170,7 +171,7 @@ void UCDeckComponent::MultiSetCurrentPerk_Implementation(int index)
 	}
 	ChangePerk(BeforePerk, CurrentPerk);
 
-	GetWidget()->GetSlots()[index]->SetSelected();
+
 }
 
 void UCDeckComponent::ChangePerk(ACPerk* InPrevPerk, ACPerk* InNewPerk)
