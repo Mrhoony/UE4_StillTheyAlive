@@ -21,8 +21,8 @@ void ACLobbyGameMode::PostLogin(APlayerController* NewPlayer)
 		ACPlayerState* State = Cast<ACPlayerState>(player->GetPlayerState());
 		State->SetPlayerNum(PlayerNum);
 	}
-	if (PlayerNum >= 3)
-		UKismetSystemLibrary::K2_SetTimer(this, "StartGame", 10.f, false);
+	if (PlayerNum >= 2)
+		GetWorldTimerManager().SetTimer(GameStartTimer, this, &ACLobbyGameMode::StartGame, 10);
 }
 
 void ACLobbyGameMode::Logout(AController* Exiting)
@@ -52,5 +52,5 @@ void ACLobbyGameMode::StartGame()
 	UWorld* world = GetWorld();
 	if (world == nullptr) return;
 
-	world->ServerTravel("/Game/Maps/TwoWays?listen");
+	world->ServerTravel("/Game/_Project/Maps/TwoWays?listen");
 }

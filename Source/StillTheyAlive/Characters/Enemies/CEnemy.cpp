@@ -64,6 +64,10 @@ void ACEnemy::Dead()
 
 	Dissolve->Play();
 
+	ACStoryGameMode* gameMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (!!gameMode)
+		gameMode->DecreaseRoundCount();
+
 	//End_Dead
 	UKismetSystemLibrary::K2_SetTimer(this, "End_Dead", 3.f, false);
 }
@@ -74,10 +78,7 @@ void ACEnemy::End_Dead()
 
 	Deck->EndDead();
 
-	ACStoryGameMode* gameMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	gameMode->DecreaseLifes();
-
-	Destroy();
+	Destroy(true);
 }
 
 float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -104,16 +105,13 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 		Status->DecreaseHealth(DamageValue);
 	}
 
-	UCUserWidget_Health* healthWidgetObject = Cast<UCUserWidget_Health>(HealthWidget->GetUserWidgetObject());
-	if (!!healthWidgetObject)
-		healthWidgetObject->Update(Status->GetHealth(), Status->GetMaxHealth());
-
 	if (Status->GetHealth() <= 0.f)
 	{
 		State->SetDead();
 		return DamageValue;
 	}
 
+	HealthBar->Update(Status->GetHealth(), Status->GetMaxHealth());
 	//State->SetHit();
 
 	return DamageValue;

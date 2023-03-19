@@ -43,31 +43,6 @@ void UCGameInstance::Init()
 		GEngine->OnNetworkFailure().AddUObject(this, &UCGameInstance::OnNetworkFailure);
 }
 
-void UCGameInstance::Init()
-{
-	IOnlineSubsystem* oss = IOnlineSubsystem::Get();  
-	if (!!oss)
-	{
-		UE_LOG(LogTemp, Error, TEXT("OSS Pointer Found. Name : %s"), *oss->GetSubsystemName().ToString());
-
-		SessionInterface = oss->GetSessionInterface();
-		if (SessionInterface.IsValid())
-		{
-			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UCGameInstance::OnCreateSessionComplete); 
-			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UCGameInstance::OnDestroySessionComplete);
-			SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UCGameInstance::OnFindSessionsComplete);
-			SessionInterface->OnJoinSessionCompleteDelegates.AddUObject(this, &UCGameInstance::OnJoinSessionComplete);
-		}
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("Not found OSS"));
-	}
-
-	if (!!GEngine)
-		GEngine->OnNetworkFailure().AddUObject(this, &UCGameInstance::OnNetworkFailure);
-}
-
 void UCGameInstance::LoadMainMenu()
 {
 	if (MainMenuClass == nullptr) return;
