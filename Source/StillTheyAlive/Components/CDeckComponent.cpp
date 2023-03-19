@@ -158,8 +158,11 @@ void UCDeckComponent::MultiSetCurrentPerk_Implementation(int index)
 	}
 	else
 	{
-		int curPerkIndex = Perks.Find(CurrentPerk);
-		if(curPerkIndex != -1) GetWidget()->GetSlots()[curPerkIndex]->SetCleared();
+		if (Cast<ACPlayer>(OwnerCharacter) != nullptr && GetWidget() != nullptr)
+		{
+			int curPerkIndex = Perks.Find(CurrentPerk);
+			if (curPerkIndex != -1) GetWidget()->GetSlots()[curPerkIndex]->SetCleared();
+		}
 
 		DeckNumber = index;
 
@@ -169,7 +172,7 @@ void UCDeckComponent::MultiSetCurrentPerk_Implementation(int index)
 	}
 	ChangePerk(BeforePerk, CurrentPerk);
 
-	if(Cast<ACPlayer>(OwnerCharacter) != nullptr)
+	if (Cast<ACPlayer>(OwnerCharacter) != nullptr && GetWidget() != nullptr)
 		GetWidget()->GetSlots()[index]->SetSelected();
 }
 
