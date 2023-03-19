@@ -14,7 +14,7 @@
 
 UCStatusComponent::UCStatusComponent()
 {
-	CHelpers::GetClass(&WidgetClass, "WidgetBlueprint'/Game/_Project/Widgets/WB_PlayerStatus.WB_PlayerStatus_C'");
+	//CHelpers::GetClass(&WidgetClass, "WidgetBlueprint'/Game/_Project/Widgets/WB_PlayerStatus.WB_PlayerStatus_C'");
 	SetIsReplicated(true);
 }
 

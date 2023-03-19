@@ -86,12 +86,6 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 	Causer = DamageCauser;
 	Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
 
-	//AddImpulse¸¦ À§ÇÑ ÁØºñ
-	FVector attackerForward = Attacker->GetActorForwardVector();
-	FVector attackerUp = Attacker->GetActorUpVector();
-	attackerForward.Normalize();
-	attackerUp.Normalize();
-
 	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
 	{
 		const FRadialDamageEvent* radialDamageEvent = static_cast<const FRadialDamageEvent*>(&DamageEvent);
@@ -103,7 +97,7 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 		CLog::Print("TakeNormalDamage");
 		Status->DecreaseHealth(DamageValue);
 	}
-
+	
 	UCUserWidget_Health* healthWidgetObject = Cast<UCUserWidget_Health>(HealthWidget->GetUserWidgetObject());
 	if (!!healthWidgetObject)
 		healthWidgetObject->Update(Status->GetHealth(), Status->GetMaxHealth());
@@ -113,8 +107,6 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 		State->SetDead();
 		return DamageValue;
 	}
-
-	//State->SetHit();
 
 	return DamageValue;
 }
