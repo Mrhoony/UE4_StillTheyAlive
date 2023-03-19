@@ -86,7 +86,7 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 	Causer = DamageCauser;
 	Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
 
-	//AddImpulse¸¦ À§ÇÑ ÁØºñ
+	//AddImpulseÂ¸Â¦ Ã€Â§Ã‡Ã‘ ÃÃ˜ÂºÃ±
 	FVector attackerForward = Attacker->GetActorForwardVector();
 	FVector attackerUp = Attacker->GetActorUpVector();
 	attackerForward.Normalize();
