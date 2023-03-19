@@ -12,7 +12,8 @@ void UCStatusComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Health = MaxHealth;
+	CurrentHealth = MaxHealth;
+	CurrentMana = MaxMana;
 }
 
 void UCStatusComponent::CreateStatusWidget()
@@ -40,12 +41,12 @@ void UCStatusComponent::SetSpeed(EWalkSpeedTpye InType)
 
 void UCStatusComponent::IncreaseHealth(float InAmount)
 {
-	Health += InAmount;
-	Health = FMath::Clamp(Health, 0.f, MaxHealth);
+	CurrentHealth += InAmount;
+	CurrentHealth = FMath::Clamp(CurrentHealth, 0.f, MaxHealth);
 }
 
 void UCStatusComponent::DecreaseHealth(float InAmount)
 {
-	Health -= InAmount;
-	Health = FMath::Clamp(Health, 0.f, MaxHealth);
+	CurrentHealth -= InAmount;
+	CurrentHealth = FMath::Clamp(CurrentHealth, 0.f, MaxHealth);
 }

@@ -92,22 +92,16 @@ void ACDoAction_Fire::OnThrowBeginOverlap(FHitResult InHitResult)
 	
 	ACEnemy* enemy = Cast<ACEnemy>(InHitResult.GetActor());
 
-	if (ThrowObject->IsRadial())
+	if (UGameplayStatics::ApplyRadialDamageWithFalloff
+	(this->GetWorld(), Datas[0].Power, Datas[0].Power * 0.2f, origin, 100.0f, 1000.0f, 0,
+	NULL, ignorePlayer, ThrowObject, OwnerCharacter->GetController(), ECollisionChannel::ECC_WorldStatic))
 	{
-		if (UGameplayStatics::ApplyRadialDamageWithFalloff
-		(this->GetWorld(), Datas[0].Power, Datas[0].Power * 0.2f, origin, 100.0f, 1000.0f, 0,
-		NULL, ignorePlayer, ThrowObject, OwnerCharacter->GetController(), ECollisionChannel::ECC_WorldStatic))
-		{
-			CLog::Print("ApplyRadialDamage");
-			CLog::Print(Datas[0].Power);
-		}
+		CLog::Print("ApplyRadialDamage");
+		CLog::Print(Datas[0].Power);
 	}
-	else
+	if (UGameplayStatics::ApplyDamage(InHitResult.GetActor(), 20.0f, OwnerCharacter->GetController(), ThrowObject, NULL))
 	{
-		if (UGameplayStatics::ApplyDamage(InHitResult.GetActor(), 20.0f, OwnerCharacter->GetController(), ThrowObject, NULL))
-		{
-			CLog::Print("ApplyNormalDamage");
-		}
+		CLog::Print("ApplyNormalDamage");
 	}
 }
 

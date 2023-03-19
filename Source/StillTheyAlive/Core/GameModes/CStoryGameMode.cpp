@@ -1,6 +1,6 @@
 #include "CStoryGameMode.h"
 #include "Global.h"
-
+#include "Widgets/CHUD_Aim.h"
 #include "Core/CGameInstance.h"
 #include "Characters/Enemies/CEnemy.h"
 #include "Maps/CSpawnPoint.h"
@@ -11,6 +11,7 @@
 ACStoryGameMode::ACStoryGameMode()
 {
 	CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/BP_CPlayer.BP_CPlayer_C'");
+	CHelpers::GetClass<AHUD>(&HUDClass, "Blueprint'/Game/_Project/Widgets/BP_CHUD_Aim.BP_CHUD_Aim_C'");
 }
 
 void ACStoryGameMode::BeginPlay()

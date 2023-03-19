@@ -5,6 +5,7 @@
 #include "Components/CStatusComponent.h"
 #include "Components/COptionComponent.h"
 #include "Components/CDeckComponent.h"
+#include "Components/WidgetComponent.h"
 #include "Core/CGameInstance.h"
 #include "Core/GameModes/CStoryGameMode.h"
 #include "Core/GameModes/CPlayGameMode.h"
@@ -12,6 +13,9 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Widgets/CHUD_PlayerStatus.h"
+
+
 
 ACPlayer::ACPlayer()
 {
@@ -53,7 +57,16 @@ ACPlayer::ACPlayer()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
-void ACPlayer::BeginPlay() { Super::BeginPlay(); }
+void ACPlayer::BeginPlay()
+{ 
+	Super::BeginPlay();
+	CheckNull(Widget);
+
+	WidgetInstance = CreateWidget<UUserWidget>(GetWorld(), Widget);
+	WidgetInstance->AddToViewport();
+	Cast<UCHUD_PlayerStatus>(WidgetInstance)->UpdateHP(Status->GetHealth(), Status->GetMaxHealth());
+	Cast<UCHUD_PlayerStatus>(WidgetInstance)->UpdateMP(Status->GetMana(), Status->GetMaxMana());
+}
 void ACPlayer::Tick(float DeltaTime) { Super::Tick(DeltaTime); }
 
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

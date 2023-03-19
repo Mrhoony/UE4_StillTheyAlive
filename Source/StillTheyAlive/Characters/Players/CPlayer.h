@@ -77,4 +77,7 @@ private:
 	UPROPERTY(VisibleDefaultsOnly) class UCStateComponent* State;
 	UPROPERTY(BlueprintAssignable) FLevelMiniMap OnLevelMiniMap;
 
+	UPROPERTY(EditAnywhere) TSubclassOf<UUserWidget> Widget;
+	class UUserWidget* WidgetInstance;
+
 };

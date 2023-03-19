@@ -33,4 +33,5 @@ private:
 
 private:
 	FVector MovePoint;
+	int32 a;
 };
