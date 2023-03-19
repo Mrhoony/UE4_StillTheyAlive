@@ -3,6 +3,7 @@
 
 #include "CSaveGame.h"
 #include "Widgets/CUserWidget_MainMenu.h"
+#include "Widgets/LobbyMenu.h"
 
 #include "GameFramework/SaveGame.h"
 #include "OnlineSubsystemTypes.h"
@@ -14,6 +15,32 @@ const static FName SEVER_NAME_SETTINGS_KEY = TEXT("ServerName");
 UCGameInstance::UCGameInstance(const FObjectInitializer& ObjectInitializer)
 {
 	CHelpers::GetClass(&MainMenuClass, "WidgetBlueprint'/Game/_Project/Widgets/WB_MainMenu.WB_MainMenu_C'");
+	CHelpers::GetClass(&LobbyMenuClass, "WidgetBlueprint'/Game/_Project/Widgets/WB_Lobby.WB_Lobby_C'");
+}
+
+void UCGameInstance::Init()
+{
+	IOnlineSubsystem* oss = IOnlineSubsystem::Get();  
+	if (!!oss)
+	{
+		UE_LOG(LogTemp, Error, TEXT("OSS Pointer Found. Name : %s"), *oss->GetSubsystemName().ToString());
+
+		SessionInterface = oss->GetSessionInterface();
+		if (SessionInterface.IsValid())
+		{
+			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UCGameInstance::OnCreateSessionComplete); 
+			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UCGameInstance::OnDestroySessionComplete);
+			SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UCGameInstance::OnFindSessionsComplete);
+			SessionInterface->OnJoinSessionCompleteDelegates.AddUObject(this, &UCGameInstance::OnJoinSessionComplete);
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Not found OSS"));
+	}
+
+	if (!!GEngine)
+		GEngine->OnNetworkFailure().AddUObject(this, &UCGameInstance::OnNetworkFailure);
 }
 
 void UCGameInstance::Init()
@@ -49,6 +76,15 @@ void UCGameInstance::LoadMainMenu()
 	if (MainMenu == nullptr) return;
 	MainMenu->SetMenuInterface(this);
 	MainMenu->Setup();
+}
+
+ void UCGameInstance::LoadLobbyMenu()
+{
+	 if (LobbyMenuClass == nullptr) return;
+	 LobbyMenu = CreateWidget<ULobbyMenu>(this, LobbyMenuClass);
+
+	 if (LobbyMenu == nullptr) return;
+	 LobbyMenu->Setup();
 }
 
 void UCGameInstance::Host(FString InServerName)
