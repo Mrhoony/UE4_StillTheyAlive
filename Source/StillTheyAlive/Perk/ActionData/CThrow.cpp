@@ -3,11 +3,13 @@
 #include "Components/SphereComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "PhysicsEngine/RadialForceComponent.h"
 
 ACThrow::ACThrow()
 {
 	CHelpers::CreateSceneComponent(this, &Sphere, "Sphere");
 	CHelpers::CreateSceneComponent(this, &ThrowParticle, "ThrowParticle", Sphere);
+	CHelpers::CreateSceneComponent(this, &RadialForce, "RadialForce", Sphere);
 	CHelpers::CreateActorComponent(this, &Projectile, "Projectile");
 
 	Projectile->InitialSpeed = 4000.f;
@@ -15,7 +17,17 @@ ACThrow::ACThrow()
 	Projectile->ProjectileGravityScale = 0.f;
 	Projectile->bSweepCollision = false;
 
-	InitialLifeSpan = 3.f;
+	RadialForce->Radius = 300.0f;
+	RadialForce->Falloff = ERadialImpulseFalloff::RIF_Constant;
+	RadialForce->RemoveObjectTypeToAffect(EObjectTypeQuery::ObjectTypeQuery3);
+	RadialForce->RemoveObjectTypeToAffect(EObjectTypeQuery::ObjectTypeQuery4);
+	RadialForce->RemoveObjectTypeToAffect(EObjectTypeQuery::ObjectTypeQuery5);
+	RadialForce->RemoveObjectTypeToAffect(EObjectTypeQuery::ObjectTypeQuery6);
+	RadialForce->AddObjectTypeToAffect(EObjectTypeQuery::ObjectTypeQuery8);
+	RadialForce->ImpulseStrength = 500.0f;
+	RadialForce->bImpulseVelChange = true;
+
+	InitialLifeSpan = 5.f;
 }
 
 void ACThrow::BeginPlay()
@@ -39,6 +51,9 @@ void ACThrow::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 
 	if (OnThrowBeginOverlap.IsBound())
 		OnThrowBeginOverlap.Broadcast(SweepResult);
+}
 
-	Destroy();
+void ACThrow::Impulse()
+{
+	RadialForce->FireImpulse();
 }

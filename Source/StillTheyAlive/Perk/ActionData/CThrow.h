@@ -14,9 +14,7 @@ class STILLTHEYALIVE_API ACThrow : public AActor
 public:	
 	ACThrow();
 
-	FORCEINLINE bool IsRadial() { return bRadial; }
-	FORCEINLINE void SetRadial() { bRadial = true; }
-
+	void Impulse();
 protected:
 	virtual void BeginPlay() override;
 
@@ -41,10 +39,10 @@ private:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UProjectileMovementComponent* Projectile;
 
+	UPROPERTY(VisibleDefaultsOnly)
+		class URadialForceComponent* RadialForce;
+
 public:
 	UPROPERTY(BlueprintAssignable)
 		FThrowBeginOverlap OnThrowBeginOverlap;
-
-private:
-	bool bRadial = false;
 };

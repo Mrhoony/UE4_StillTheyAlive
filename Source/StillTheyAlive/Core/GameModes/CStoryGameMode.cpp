@@ -12,7 +12,10 @@
 
 ACStoryGameMode::ACStoryGameMode()
 {
-	CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/BP_CPlayer.BP_CPlayer_C'");
+	//CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/BP_CPlayer.BP_CPlayer_C'");
+	//CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/Belica/BP_Belica.BP_Belica_C'");
+	CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/Phase/BP_Phase.BP_Phase_C'");
+	//CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/Yin/BP_Yin.BP_Yin_C'");
 }
 
 void ACStoryGameMode::BeginPlay()

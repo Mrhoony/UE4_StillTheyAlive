@@ -17,7 +17,10 @@ protected:
 
 public:
 	void OpenDoor();
-	void DestroyActor();
+
+public:
+	UFUNCTION()
+		void DestroyActor();
 
 private:
 	UPROPERTY(VisibleAnywhere)
