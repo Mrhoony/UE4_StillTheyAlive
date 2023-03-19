@@ -22,4 +22,5 @@ private:
 private:
 	int PlayerNum = 0;
 	int ReadyPlayer = 0;
+	FTimerHandle GameStartTimer;
 };
