@@ -1,7 +1,8 @@
+
 #include "CDoAction.h"
 #include "Global.h"
-#include "Components/CStateComponent.h"
 #include "Perk/CPerk.h"
+#include "Components/CStateComponent.h"
 #include "Components/CStatusComponent.h"
 #include "Components/CDeckComponent.h"
 #include "GameFramework/Character.h"
@@ -16,6 +17,7 @@ void ACDoAction::BeginPlay()
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
 	State = CHelpers::GetComponent<UCStateComponent>(OwnerCharacter);
 	Status = CHelpers::GetComponent<UCStatusComponent>(OwnerCharacter);
+	Deck = CHelpers::GetComponent<UCDeckComponent>(OwnerCharacter);
 
 	Super::BeginPlay();
 }
@@ -23,6 +25,16 @@ void ACDoAction::BeginPlay()
 void ACDoAction::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void ACDoAction::OnCharging()
+{
+	Charging = true;
+}
+
+void ACDoAction::OffCharging()
+{
+	Charging = false;
 }
 
 //void ACDoAction::DoAction_R(ACPerk* InPerk)
