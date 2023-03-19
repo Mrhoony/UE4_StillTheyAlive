@@ -86,12 +86,6 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 	Causer = DamageCauser;
 	Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
 
-	//AddImpulse를 위한 준비
-	FVector attackerForward = Attacker->GetActorForwardVector();
-	FVector attackerUp = Attacker->GetActorUpVector();
-	attackerForward.Normalize();
-	attackerUp.Normalize();
-
 	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
 	{
 		const FRadialDamageEvent* radialDamageEvent = static_cast<const FRadialDamageEvent*>(&DamageEvent);
