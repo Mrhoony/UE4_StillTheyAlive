@@ -28,6 +28,7 @@ public:
 
 public:
 	UFUNCTION(BlueprintCallable, Exec)		void LoadMainMenu();
+	UFUNCTION(BlueprintCallable, Exec)		void LoadLobbyMenu();
 
 public:
 	FORCEINLINE FPlayerCharacter& GetPlayerCharacter() { return PlayerCharacter; }
@@ -36,10 +37,8 @@ public:
 
 	FORCEINLINE void SetCurrentStoryMap(FStoryMapData* InStoryMap) { CurrentStoryMap = InStoryMap; }
 
-
 	UFUNCTION(Exec)
 		void Host(FString InServerName) override;
-
 
 	UFUNCTION(Exec)
 		void Join(uint32 Index) override;
@@ -80,7 +79,9 @@ private:
 	EGameModeTypes GameModeType;
 
 	TSubclassOf<class UUserWidget> MainMenuClass;
+	TSubclassOf<class UUserWidget> LobbyMenuClass;
 	class UCUserWidget_MainMenu* MainMenu;
+	class ULobbyMenu* LobbyMenu;
 
 	IOnlineSessionPtr SessionInterface;
 	TSharedPtr<class FOnlineSessionSearch> SessionSearch;

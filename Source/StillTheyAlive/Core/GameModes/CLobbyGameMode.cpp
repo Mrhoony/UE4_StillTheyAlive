@@ -1,10 +1,33 @@
 #include "CLobbyGameMode.h"
 #include "Global.h"
 #include "core/CGameInstance.h"
+#include "core/CPlayerState.h"
+#include "Characters/Players/CPlayer.h"
 
 ACLobbyGameMode::ACLobbyGameMode()
 {
 	CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/BP_CPlayer.BP_CPlayer_C'");
+}
+
+void ACLobbyGameMode::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+	ACPlayer* player = Cast<ACPlayer>(NewPlayer->GetPawn());
+	ACPlayerState* playerState = Cast<ACPlayerState>(NewPlayer->PlayerState);
+	PlayerNum++;
+	if (playerState != nullptr && player != nullptr)
+	{
+		player->SetPlayerState(playerState);
+		ACPlayerState* State = Cast<ACPlayerState>(player->GetPlayerState());
+		State->SetPlayerNum(PlayerNum);
+	}
+	if (PlayerNum >= 3)
+		UKismetSystemLibrary::K2_SetTimer(this, "StartGame", 10.f, false);
+}
+
+void ACLobbyGameMode::Logout(AController* Exiting)
+{
+	Super::Logout(Exiting);
 }
 
 void ACLobbyGameMode::IncreaseReady()
@@ -29,6 +52,5 @@ void ACLobbyGameMode::StartGame()
 	UWorld* world = GetWorld();
 	if (world == nullptr) return;
 
-	bUseSeamlessTravel = true;
 	world->ServerTravel("/Game/Maps/TwoWays?listen");
 }
