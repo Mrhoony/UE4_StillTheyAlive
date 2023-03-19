@@ -89,12 +89,10 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
 	{
 		const FRadialDamageEvent* radialDamageEvent = static_cast<const FRadialDamageEvent*>(&DamageEvent);
-		CLog::Print(DamageValue);
 		Status->DecreaseHealth(DamageValue);
 	}
 	else
 	{
-		CLog::Print("TakeNormalDamage");
 		Status->DecreaseHealth(DamageValue);
 	}
 	
