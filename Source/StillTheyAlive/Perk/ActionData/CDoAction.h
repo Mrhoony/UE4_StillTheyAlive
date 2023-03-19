@@ -9,8 +9,8 @@ UCLASS()
 class STILLTHEYALIVE_API ACDoAction : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	ACDoAction();
 	FORCEINLINE void SetDatas(TArray<FDoAction> InDatas) { Datas = InDatas; }
 	FORCEINLINE void SetTechDatas(TArray<FTechDoAction> InDatas) { TechDatas = InDatas; }
@@ -47,10 +47,14 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 		class UCStatusComponent* Status;
 
+	class UCDeckComponent* Deck;
+
 public:
 	TArray<FTechDoAction> TechDatas;
 
 protected:
 	TArray<FDoAction> Datas;
 
+private:
+	bool Charging;
 };
