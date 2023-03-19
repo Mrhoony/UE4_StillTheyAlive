@@ -9,6 +9,7 @@
 #include "Widgets/CUserWidget_Deck.h"
 #include "Widgets/CHUD.h"
 #include "Widgets/CUserWidget_DeckSlot.h"
+#include "Characters/Players/CPlayer.h"
 
 #include "GameFramework/Character.h"
 #include "Blueprint/UserWidget.h"
@@ -58,8 +59,6 @@ void UCDeckComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
-
-
 
 void UCDeckComponent::PerkAction_Implementation()
 {
@@ -170,7 +169,8 @@ void UCDeckComponent::MultiSetCurrentPerk_Implementation(int index)
 	}
 	ChangePerk(BeforePerk, CurrentPerk);
 
-	GetWidget()->GetSlots()[index]->SetSelected();
+	if(Cast<ACPlayer>(OwnerCharacter) != nullptr)
+		GetWidget()->GetSlots()[index]->SetSelected();
 }
 
 void UCDeckComponent::ChangePerk(ACPerk* InPrevPerk, ACPerk* InNewPerk)
