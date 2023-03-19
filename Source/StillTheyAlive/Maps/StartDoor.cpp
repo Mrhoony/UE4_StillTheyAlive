@@ -34,6 +34,7 @@ void AStartDoor::OpenDoor()
 
 void AStartDoor::DestroyActor()
 {
+	PrintLine();
 	Destroy();
 }
 
