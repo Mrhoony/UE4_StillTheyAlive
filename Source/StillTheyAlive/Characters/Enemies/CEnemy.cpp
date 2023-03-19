@@ -13,6 +13,8 @@
 #include "Components/WidgetComponent.h"
 #include "Widgets/CUserWidget_Health.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Perk/ActionData/CThrow.h"
+
 
 ACEnemy::ACEnemy()
 {
@@ -93,9 +95,8 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
 	{
 		const FRadialDamageEvent* radialDamageEvent = static_cast<const FRadialDamageEvent*>(&DamageEvent);
-		GetCharacterMovement()->AddImpulse((attackerForward + attackerUp) * 300.0f, true);
-		CLog::Print("TakeRadialDamage");
 		CLog::Print(DamageValue);
+		Status->DecreaseHealth(DamageValue);
 	}
 	else
 	{

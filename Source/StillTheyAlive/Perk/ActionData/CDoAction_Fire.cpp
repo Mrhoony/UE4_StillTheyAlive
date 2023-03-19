@@ -21,6 +21,7 @@ void ACDoAction_Fire::BeginPlay()
 	UCActionComponent* actionComp = CHelpers::GetComponent<UCActionComponent>(OwnerCharacter);
 	CheckNull(actionComp);
 	actionComp->OnActionTypeChanged.AddDynamic(this, &ACDoAction_Fire::ABortByActionTypeChanged);
+
 }
 
 void ACDoAction_Fire::Tick(float DeltaTime)
@@ -28,6 +29,7 @@ void ACDoAction_Fire::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	Aim->Tick(DeltaTime);
+	
 }
 
 void ACDoAction_Fire::DoAction_L()
@@ -47,6 +49,7 @@ void ACDoAction_Fire::Begin_DoAction()
 {
 	Super::Begin_DoAction();
 
+
 	FVector location = OwnerCharacter->GetMesh()->GetSocketLocation("Hand_Throw");
 	FRotator rotation = OwnerCharacter->GetController()->GetControlRotation();
 
@@ -55,8 +58,8 @@ void ACDoAction_Fire::Begin_DoAction()
 	transform.SetRotation(FQuat(rotation));
 
 	ThrowObject = GetWorld()->SpawnActorDeferred<ACThrow>(Datas[0].ThrowClass, transform, OwnerCharacter, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
-	ThrowObject->SetRadial();
 	ThrowObject->OnThrowBeginOverlap.AddDynamic(this, &ACDoAction_Fire::OnThrowBeginOverlap);
+	ThrowObject->SetRadialTrue();
 	UGameplayStatics::FinishSpawningActor(ThrowObject, transform);
 }
 
@@ -86,23 +89,30 @@ void ACDoAction_Fire::DoOffAction_R()
 
 void ACDoAction_Fire::OnThrowBeginOverlap(FHitResult InHitResult)
 {
-	FVector origin = InHitResult.Location;
-	TArray<AActor*> ignorePlayer;
-	ignorePlayer.Add(OwnerCharacter);
-	
-	ACEnemy* enemy = Cast<ACEnemy>(InHitResult.GetActor());
+	FVector origin = ThrowObject->GetActorLocation();
+	TArray<AActor*> ignoreActor;
+	ignoreActor.Add(OwnerCharacter);
+	ignoreActor.Add(ThrowObject);
 
+	if (InHitResult.Actor == nullptr) return;
+	
+	//Play Particle
+	UParticleSystem* hitEffect = Datas[0].Effect;
+	if (!!hitEffect)
+	{
+		FTransform transform = Datas[0].EffectTransform;
+		transform.AddToTranslation(ThrowObject->GetActorLocation());
+		UGameplayStatics::SpawnEmitterAtLocation(OwnerCharacter->GetWorld(), hitEffect, transform);
+	}
+
+	//Apply Radial Damage
 	if (UGameplayStatics::ApplyRadialDamageWithFalloff
-	(this->GetWorld(), Datas[0].Power, Datas[0].Power * 0.2f, origin, 100.0f, 1000.0f, 0,
-	NULL, ignorePlayer, ThrowObject, OwnerCharacter->GetController(), ECollisionChannel::ECC_WorldStatic))
+	(OwnerCharacter->GetWorld(), Datas[0].Power, Datas[0].Power * 0.1f, origin, 100.0f, 300.0f, 1.0f,
+	NULL, ignoreActor, nullptr, OwnerCharacter->GetController(), ECollisionChannel::ECC_Visibility))
 	{
-		CLog::Print("ApplyRadialDamage");
-		CLog::Print(Datas[0].Power);
+		ThrowObject->Impulse();
 	}
-	if (UGameplayStatics::ApplyDamage(InHitResult.GetActor(), 20.0f, OwnerCharacter->GetController(), ThrowObject, NULL))
-	{
-		CLog::Print("ApplyNormalDamage");
-	}
+	ThrowObject->Destroy();
 }
 
 void ACDoAction_Fire::ABortByActionTypeChanged(EActionType InPrevType, EActionType InNewType)

@@ -15,8 +15,10 @@ public:
 	ACThrow();
 
 	FORCEINLINE bool IsRadial() { return bRadial; }
-	FORCEINLINE void SetRadial() { bRadial = true; }
-
+	FORCEINLINE void SetRadialTrue() { bRadial = true; }
+	FORCEINLINE void SetRadialFalse() { bRadial = false; }
+	
+	void Impulse();
 protected:
 	virtual void BeginPlay() override;
 
@@ -40,6 +42,9 @@ private:
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UProjectileMovementComponent* Projectile;
+
+	UPROPERTY(VisibleDefaultsOnly)
+		class URadialForceComponent* RadialForce;
 
 public:
 	UPROPERTY(BlueprintAssignable)
