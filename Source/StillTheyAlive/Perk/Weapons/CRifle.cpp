@@ -52,8 +52,8 @@ void ACRifle::OnZoom()
 {
 	Zoom = true;
 	DataObject->GetDoAction()->Datas[0].Diversity = true;
-	OwnerSpringArm->TargetArmLength = 150.f;
-	OwnerSpringArm->SocketOffset = FVector(0, 50, 20);
+	OwnerSpringArm->TargetArmLength = 0.f;
+	OwnerSpringArm->SocketOffset = FVector(70, 0, -80);
 }
 
 void ACRifle::OffZoom()

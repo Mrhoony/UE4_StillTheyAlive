@@ -1,6 +1,7 @@
 #include "CEnemy.h"
 #include "Global.h"
 
+#include "Components/CUltimateComponent.h"
 #include "Components/CStatusComponent.h"
 #include "Components/COptionComponent.h"
 #include "Components/CDeckComponent.h"
@@ -9,6 +10,7 @@
 #include "Core/GameModes/CStoryGameMode.h"
 #include "Core/GameModes/CPlayGameMode.h"
 #include "Characters/Enemies/CAIController.h"
+#include "Characters/Players/CUltimate.h"
 
 #include "Components/WidgetComponent.h"
 #include "Widgets/CUserWidget_Health.h"
@@ -19,6 +21,7 @@
 ACEnemy::ACEnemy()
 {
 	CHelpers::CreateActorComponent(this, &Dissolve, "Dissolve");
+	CHelpers::GetClass<ACUltimate>(&SpawnUltimate, "Blueprint'/Game/_Project/Perks/BP_CUltimate.BP_CUltimate_C'");
 }
 
 void ACEnemy::BeginPlay()
@@ -56,6 +59,23 @@ void ACEnemy::Dead()
 	//All Weapon Collision Disable
 	Deck->Dead();
 
+	FVector location = (GetActorForwardVector() + GetActorUpVector() + GetActorRightVector()) * 300;
+	location.Rotation();
+
+	for (int32 i = 1; i < 4; i++)
+	{
+		location * i;
+		ACUltimate* ultimate = GetWorld()->SpawnActorDeferred<ACUltimate>(SpawnUltimate, GetActorTransform());
+		ultimate->SetDirection(location);
+		UGameplayStatics::FinishSpawningActor(ultimate, GetActorTransform());
+	}
+
+	Dissolve->Play();
+
+	ACStoryGameMode* gameMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (!!gameMode)
+		gameMode->DecreaseRoundCount();
+
 	//Ragdoll
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->GlobalAnimRateScale = 0.f;
@@ -74,41 +94,25 @@ void ACEnemy::End_Dead()
 
 	Deck->EndDead();
 
-	ACStoryGameMode* gameMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	gameMode->DecreaseLifes();
-
 	Destroy();
 }
 
 float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	
 	DamageValue = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 	Causer = DamageCauser;
 	if(EventInstigator != nullptr)
 		Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
 
-	//AddImpulse를 위한 준비
-	FVector attackerForward = Attacker->GetActorForwardVector();
-	FVector attackerUp = Attacker->GetActorUpVector();
-	attackerForward.Normalize();
-	attackerUp.Normalize();
-
 	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
 	{
 		const FRadialDamageEvent* radialDamageEvent = static_cast<const FRadialDamageEvent*>(&DamageEvent);
-		CLog::Print(DamageValue);
 		Status->DecreaseHealth(DamageValue);
 	}
 	else
 	{
-		CLog::Print("TakeNormalDamage");
 		Status->DecreaseHealth(DamageValue);
 	}
-
-	UCUserWidget_Health* healthWidgetObject = Cast<UCUserWidget_Health>(HealthWidget->GetUserWidgetObject());
-	if (!!healthWidgetObject)
-		healthWidgetObject->Update(Status->GetHealth(), Status->GetMaxHealth());
 
 	if (Status->GetHealth() <= 0.f)
 	{
@@ -116,6 +120,7 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 		return DamageValue;
 	}
 
+	HealthBar->Update(Status->GetHealth(), Status->GetMaxHealth());
 	//State->SetHit();
 
 	return DamageValue;
