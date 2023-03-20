@@ -53,7 +53,6 @@ void ACStoryGameMode::PostLogin(APlayerController* NewPlayer)
 void ACStoryGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-
 	// Find & Save SpawnPoints
 	TArray<AActor*> actors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACSpawnPoint::StaticClass(), actors);
@@ -171,16 +170,10 @@ void ACStoryGameMode::GameClear()
 void ACStoryGameMode::BossRound()
 {
 	TArray<AActor*> actors;
-	FVector bosslocation;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ABossSpawn::StaticClass(), actors);
-	bosslocation = actors[0]->GetActorLocation();
-	actors.Empty();
-	actors.Shrink();
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACPlayer::StaticClass(), actors);
 	for (AActor* actor : actors)
 	{
-		FVector location = UKismetMathLibrary::RandomUnitVectorInConeInRadians(bosslocation, 500.f);
-		actor->SetActorLocation(location);
+		actor->SetActorLocation(FVector(-61230, -9410, 260));
 	}
 }
 
@@ -242,7 +235,7 @@ void ACStoryGameMode::DecreaseRoundCount()
 	if (RoundAmount == 0)
 	{
 		CurrentRound++;
-		if (CurrentRound == 5)
+		if (CurrentRound == 2)
 			BossRound();
 
 		bStarted = true;
