@@ -1,3 +1,4 @@
+
 #include "CDoAction.h"
 #include "Global.h"
 #include "Perk/CPerk.h"
@@ -35,3 +36,8 @@ void ACDoAction::OffCharging()
 {
 	Charging = false;
 }
+
+//void ACDoAction::DoAction_R(ACPerk* InPerk)
+//{
+//	InPerk->TechAction();
+//}

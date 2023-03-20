@@ -82,9 +82,11 @@ void ACEnemy::End_Dead()
 
 float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
+	
 	DamageValue = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 	Causer = DamageCauser;
-	Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
+	if(EventInstigator != nullptr)
+		Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
 
 	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
 	{
