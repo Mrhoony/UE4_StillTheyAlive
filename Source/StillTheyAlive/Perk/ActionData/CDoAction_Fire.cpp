@@ -74,7 +74,9 @@ void ACDoAction_Fire::DoAction_R()
 {
 	Super::DoAction_R();
 
+	PrintLine();
 	CheckNull(Aim);
+	PrintLine();
 	Aim->On();
 }
 
