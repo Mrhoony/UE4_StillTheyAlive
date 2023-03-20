@@ -17,26 +17,27 @@ protected:
 
 public:
 	virtual void Tick(float DeltaTime) override;
+	virtual void Dead() override;
 
 	FORCEINLINE bool IsRangeAttack() { return bRangeAttack; }
 	FORCEINLINE bool IsSkill() { return bSkill; }
 	FORCEINLINE bool IsSkill2() { return bSkill2; }
 
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(NetMulticast, Reliable)
 		void PlayRangeAttack();
 		void PlayRangeAttack_Implementation();
 		void BeginRangeAttack();
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(NetMulticast, Reliable)
 		void PlaySkill();
 		void PlaySkill_Implementation();
 		void BeginSkill();
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(NetMulticast, Reliable)
 		void PlaySkill2();
 		void PlaySkill2_Implementation();
-
+		void BeginSkill2();
 
 	void BeginAttack();
 	void EndAttack();
@@ -52,12 +53,12 @@ private:
 	bool bRangeAttack = false;
 
 	UPROPERTY(EditAnywhere)
-	float MAXCT_Skill = 25.f;
+	float MAXCT_Skill = 20.f;
 	float CT_Skill;
 	bool bSkill = false;
 
 	UPROPERTY(EditAnywhere)
-	float MAXCT_Skill2 = 35.f;
+	float MAXCT_Skill2 = 30.f;
 	float CT_Skill2;
 	bool bSkill2 = false;
 
@@ -75,4 +76,5 @@ private:
 	class UCBehaviorComponent* Behavior;
 	TSubclassOf<class ABossThrowStone> ThrowStone;
 	TSubclassOf<class ABossFallingStone> FallingStone;
+	TSubclassOf<class ABossFloor> BossFloor;
 };

@@ -5,6 +5,7 @@
 #include "Components/CStatusComponent.h"
 #include "Components/CDeckComponent.h"
 #include "Perk/CPerk.h"
+#include "Characters/Players/CPlayer.h"
 #include "GameFrameWork/Character.h"
 
 void ACDoAction_Throw::BeginPlay()
@@ -49,6 +50,12 @@ void ACDoAction_Throw::Begin_DoAction()
 	FRotator rotation;
 	if(!!OwnerCharacter->GetController())
 	rotation = OwnerCharacter->GetController()->GetControlRotation();
+	else
+	{
+		ACPlayer* player= Cast<ACPlayer>(OwnerCharacter);
+		if (!!player)
+			rotation = player->GetAim();
+	}
 
 	FTransform transform = Datas[0].EffectTransform;
 	transform.AddToTranslation(location);

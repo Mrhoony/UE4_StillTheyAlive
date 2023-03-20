@@ -1,6 +1,7 @@
 #include "CEnemy.h"
 #include "Global.h"
 
+#include "Components/CUltimateComponent.h"
 #include "Components/CStatusComponent.h"
 #include "Components/COptionComponent.h"
 #include "Components/CDeckComponent.h"
@@ -56,6 +57,24 @@ void ACEnemy::Dead()
 	//All Weapon Collision Disable
 	Deck->Dead();
 
+
+	FVector location = (GetActorForwardVector() + GetActorUpVector() + GetActorRightVector()) * 300;
+	location.Rotation();
+
+	for (int32 i = 1; i < 4; i++)
+	{
+		location * i;
+		ACUltimate* ultimate = GetWorld()->SpawnActorDeferred<ACUltimate>(SpawnUltimate, GetActorTransform());
+		ultimate->SetDirection(location);
+		UGameplayStatics::FinishSpawningActor(ultimate, GetActorTransform());
+	}
+
+	Dissolve->Play();
+
+	ACStoryGameMode* gameMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (!!gameMode)
+		gameMode->DecreaseRoundCount();
+
 	//Ragdoll
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->GlobalAnimRateScale = 0.f;
@@ -63,6 +82,7 @@ void ACEnemy::Dead()
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
 	Dissolve->Play();
+
 
 	//End_Dead
 	UKismetSystemLibrary::K2_SetTimer(this, "End_Dead", 3.f, false);
@@ -73,9 +93,6 @@ void ACEnemy::End_Dead()
 	Dissolve->Stop();
 
 	Deck->EndDead();
-
-	ACStoryGameMode* gameMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	gameMode->DecreaseLifes();
 
 	Destroy();
 }
@@ -91,7 +108,6 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
 	{
 		const FRadialDamageEvent* radialDamageEvent = static_cast<const FRadialDamageEvent*>(&DamageEvent);
-		CLog::Print(DamageValue);
 		Status->DecreaseHealth(DamageValue);
 	}
 	else

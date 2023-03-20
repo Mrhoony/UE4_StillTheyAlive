@@ -145,7 +145,6 @@ void UCDeckComponent::ServerPerkUltimate_Implementation()
 void UCDeckComponent::SetCurrentPerk_Implementation(int index)
 {
 	MultiSetCurrentPerk(index);
-	//GetWidget()->GetSlots()[index]->SetSelected();
 }
 
 void UCDeckComponent::MultiSetCurrentPerk_Implementation(int index)

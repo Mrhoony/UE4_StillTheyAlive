@@ -19,6 +19,7 @@
 #include "Camera/CameraComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/PanelWidget.h"
+#include "Net/UnrealNetwork.h"
 
 ACPlayer::ACPlayer()
 {
@@ -65,6 +66,13 @@ ACPlayer::ACPlayer()
 	CHelpers::GetClass(&MessageWidgetClass, "WidgetBlueprint'/Game/_Project/Widgets/WB_GameMessage.WB_GameMessage_C'");
 }
 
+void ACPlayer::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ACPlayer, Aim);
+}
+
 void ACPlayer::BeginPlay() 
 {
 	Super::BeginPlay();
@@ -80,7 +88,12 @@ void ACPlayer::BeginPlay()
 	Deck->CreateDeckWidget(HUD);
 	//Status->CreateStatusWidget(HUD);
 }
-void ACPlayer::Tick(float DeltaTime) { Super::Tick(DeltaTime); }
+void ACPlayer::Tick(float DeltaTime) 
+{ 
+	Super::Tick(DeltaTime); 
+	if(!!GetController())
+	Aim = GetController()->GetControlRotation();
+}
 
 float ACPlayer::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {

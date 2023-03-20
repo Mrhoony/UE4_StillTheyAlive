@@ -46,7 +46,10 @@ void UCBehaviorComponent::SetSkill2Mode() {	ChangeType(EBehaviorType::Skill2);	}
 
 ACharacter* UCBehaviorComponent::GetTarget()
 {
-	return Cast<ACharacter>(Blackboard->GetValueAsObject(TargetKey));
+	ACharacter* character = Cast<ACharacter>(Blackboard->GetValueAsObject(TargetKey));
+	if (!!character)
+		return character;
+	return nullptr;
 }
 
 FVector UCBehaviorComponent::GetLocation()

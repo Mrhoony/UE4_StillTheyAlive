@@ -22,6 +22,11 @@ void ACDoAction_Spawn::DoAction_L()
 	}
 	else
 	{
+		if (Datas[0].Montage.AnimMontage == nullptr)
+		{
+			Begin_DoAction();
+			End_DoAction();
+		}
 		OwnerCharacter->PlayAnimMontage(Datas[0].Montage.AnimMontage, Datas[0].Montage.PlayRate, Datas[0].Montage.StartSection);
 	}
 
@@ -32,7 +37,7 @@ void ACDoAction_Spawn::DoAction_L()
 void ACDoAction_Spawn::Begin_DoAction()
 {
 	Super::Begin_DoAction();
-	FVector location = OwnerCharacter->GetActorLocation() + FVector(150, 0, 0);
+	FVector location = OwnerCharacter->GetActorLocation() + OwnerCharacter->GetActorForwardVector() * 200;
 
 	FTransform transform = Datas[0].EffectTransform;
 	transform.AddToTranslation(location);

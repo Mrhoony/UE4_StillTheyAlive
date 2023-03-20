@@ -31,7 +31,7 @@ public:
 //=======================================================
 public:
 	FORCEINLINE class UCHUD* GetHUD() { return HUD; }
-
+	FORCEINLINE FRotator GetAim() { return Aim; }
 public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Hitted() override;
@@ -86,6 +86,8 @@ private:
 	
 	UPROPERTY(BlueprintAssignable) FLevelMiniMap OnLevelMiniMap;
 
+	UPROPERTY(Replicated)
+	FRotator Aim;
 	class UCHUD* HUD;
 	class UCUserWidget_GameMessage* GameMessage;
 	TSubclassOf<class UCHUD> HUDWidgetClass;
