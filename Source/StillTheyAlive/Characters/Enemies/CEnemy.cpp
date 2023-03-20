@@ -82,22 +82,30 @@ void ACEnemy::End_Dead()
 
 float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	
+
 	DamageValue = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 	Causer = DamageCauser;
-	if(EventInstigator != nullptr)
+	if (EventInstigator != nullptr)
 		Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
+
+	//AddImpulse를 위한 준비
+	FVector attackerForward = Attacker->GetActorForwardVector();
+	FVector attackerUp = Attacker->GetActorUpVector();
+	attackerForward.Normalize();
+	attackerUp.Normalize();
 
 	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
 	{
 		const FRadialDamageEvent* radialDamageEvent = static_cast<const FRadialDamageEvent*>(&DamageEvent);
+		CLog::Print(DamageValue);
 		Status->DecreaseHealth(DamageValue);
 	}
 	else
 	{
+		CLog::Print("TakeNormalDamage");
 		Status->DecreaseHealth(DamageValue);
 	}
-	
+
 	UCUserWidget_Health* healthWidgetObject = Cast<UCUserWidget_Health>(HealthWidget->GetUserWidgetObject());
 	if (!!healthWidgetObject)
 		healthWidgetObject->Update(Status->GetHealth(), Status->GetMaxHealth());
@@ -107,6 +115,8 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 		State->SetDead();
 		return DamageValue;
 	}
+
+	//State->SetHit();
 
 	return DamageValue;
 }
