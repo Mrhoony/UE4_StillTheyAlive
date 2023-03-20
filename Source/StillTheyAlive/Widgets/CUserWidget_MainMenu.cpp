@@ -76,9 +76,6 @@ void UCUserWidget_MainMenu::OpenMultiMenu()
 {
 	CheckNull(MenuSwitcher);
 
-	if (MenuInterface != nullptr)
-		MenuInterface->RefreshServerList();
-
 	MenuSwitcher->SetActiveWidget(MultiMenu);
 }
 
