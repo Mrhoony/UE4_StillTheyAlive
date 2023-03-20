@@ -19,6 +19,9 @@ class STILLTHEYALIVE_API ACStoryGameMode : public ACPlayGameMode
 public:
 	ACStoryGameMode();
 
+public:
+	virtual void PostLogin(APlayerController* NewPlayer) override;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -90,4 +93,10 @@ private:
 	FTimerHandle timerHandle;
 
 	FStoryMapData* StoryMapData;
+
+	TSubclassOf<class APawn> PlayerCharacterClass[3];
+	int playercharacterindex = 0;	
+
+	TArray<class USoundCue*> BGMs;
+	class UAudioComponent* Audio;
 };

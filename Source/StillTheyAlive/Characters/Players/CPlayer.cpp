@@ -82,10 +82,20 @@ void ACPlayer::BeginPlay()
 }
 void ACPlayer::Tick(float DeltaTime) { Super::Tick(DeltaTime); }
 
+float ACPlayer::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	Status->DecreaseHealth(DamageAmount);
+	
+	if (Status->GetHealth() <= 0)
+		Dead();
+
+	return DamageAmount;
+}
+
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+	
 	PlayerInputComponent->BindAxis("MoveForward", this, &ACPlayer::OnMoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ACPlayer::OnMoveRight);
 	PlayerInputComponent->BindAxis("HorizontalLook", this, &ACPlayer::OnHorizontalLook);
@@ -121,6 +131,7 @@ void ACPlayer::Hitted()
 
 void ACPlayer::Dead()
 {
+	//CLog::Print("HAHA");
 }
 
 void ACPlayer::OnMoveForward(float InAxis)
@@ -133,6 +144,7 @@ void ACPlayer::OnMoveForward(float InAxis)
 
 	AddMovementInput(direction, InAxis);
 }
+
 void ACPlayer::OnMoveRight(float InAxis)
 {
 	if (!!Status)
@@ -149,11 +161,13 @@ void ACPlayer::OnHorizontalLook(float InAxis)
 	float rate = Option->GetHorizontalLookRate();
 	AddControllerYawInput(InAxis * rate * GetWorld()->GetDeltaSeconds());
 }
+
 void ACPlayer::OnVerticalLook(float InAxis)
 {
 	float rate = Option->GetVerticalLookRate();
 	AddControllerPitchInput(InAxis * rate * GetWorld()->GetDeltaSeconds());
 }
+
 void ACPlayer::OnZoom(float InAxis)
 {
 	SpringArm->TargetArmLength += Option->GetZoomSpeed() * InAxis * GetWorld()->GetDeltaSeconds();
