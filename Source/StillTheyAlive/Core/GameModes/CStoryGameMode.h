@@ -95,7 +95,7 @@ private:
 	FStoryMapData* StoryMapData;
 
 	TSubclassOf<class APawn> PlayerCharacterClass[3];
-	int playercharacterindex = 0;	
+	int playercharacterindex = 0;
 
 	TArray<class USoundCue*> BGMs;
 	class UAudioComponent* Audio;

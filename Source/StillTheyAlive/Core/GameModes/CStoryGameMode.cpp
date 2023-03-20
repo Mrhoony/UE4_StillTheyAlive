@@ -43,8 +43,8 @@ void ACStoryGameMode::PostLogin(APlayerController* NewPlayer)
 		NewPlayer->GetPawn()->DetachFromControllerPendingDestroy();
 
 	FVector position = FVector(6800, 1400, 300);
-	//APawn* newunit = Cast<APawn>(GetWorld()->SpawnActor(PlayerCharacterClass[playercharacterindex++], &position));
-	APawn* newunit = Cast<APawn>(GetWorld()->SpawnActor(PlayerCharacterClass[2], &position));
+	APawn* newunit = Cast<APawn>(GetWorld()->SpawnActor(PlayerCharacterClass[playercharacterindex++], &position));
+	//APawn* newunit = Cast<APawn>(GetWorld()->SpawnActor(PlayerCharacterClass[2], &position));
 
 	NewPlayer->Possess(newunit);
 

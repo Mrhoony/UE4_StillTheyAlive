@@ -59,16 +59,16 @@ void ACEnemy::Dead()
 	Deck->Dead();
 
 
-	FVector location = (GetActorForwardVector() + GetActorUpVector() + GetActorRightVector()) * 300;
-	location.Rotation();
-
-	for (int32 i = 1; i < 4; i++)
-	{
-		location * i;
-		ACUltimate* ultimate = GetWorld()->SpawnActorDeferred<ACUltimate>(SpawnUltimate, GetActorTransform());
-		ultimate->SetDirection(location);
-		UGameplayStatics::FinishSpawningActor(ultimate, GetActorTransform());
-	}
+	//FVector location = (GetActorForwardVector() + GetActorUpVector() + GetActorRightVector()) * 300;
+	//location.Rotation();
+	//
+	//for (int32 i = 1; i < 4; i++)
+	//{
+	//	location * i;
+	//	ACUltimate* ultimate = GetWorld()->SpawnActorDeferred<ACUltimate>(SpawnUltimate, GetActorTransform());
+	//	ultimate->SetDirection(location);
+	//	UGameplayStatics::FinishSpawningActor(ultimate, GetActorTransform());
+	//}
 
 	Dissolve->Play();
 
@@ -118,7 +118,10 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 
 	UCUserWidget_Health* healthWidgetObject = Cast<UCUserWidget_Health>(HealthWidget->GetUserWidgetObject());
 	if (!!healthWidgetObject)
+	{
+		healthWidgetObject->SetVisibility(ESlateVisibility::Visible);
 		healthWidgetObject->Update(Status->GetHealth(), Status->GetMaxHealth());
+	}
 
 	if (Status->GetHealth() <= 0.f)
 	{
