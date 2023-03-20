@@ -9,13 +9,43 @@
 #include "Characters/Players/CPlayer.h"
 
 #include "Engine/DataTable.h"
+#include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
 
 ACStoryGameMode::ACStoryGameMode()
 {
 	//CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/BP_CPlayer.BP_CPlayer_C'");
 	//CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/Belica/BP_Belica.BP_Belica_C'");
-	CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/Phase/BP_Phase.BP_Phase_C'");
+	//CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/Phase/BP_Phase.BP_Phase_C'");
 	//CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/Yin/BP_Yin.BP_Yin_C'");
+
+	DefaultPawnClass = nullptr;
+
+	CHelpers::GetClass<APawn>(&PlayerCharacterClass[0], "Blueprint'/Game/_Project/Characters/Players/Belica/BP_Belica.BP_Belica_C'");
+	CHelpers::GetClass<APawn>(&PlayerCharacterClass[1], "Blueprint'/Game/_Project/Characters/Players/Phase/BP_Phase.BP_Phase_C'");
+	CHelpers::GetClass<APawn>(&PlayerCharacterClass[2], "Blueprint'/Game/_Project/Characters/Players/Yin/BP_Yin.BP_Yin_C'");
+
+	USoundCue* cue;
+	CHelpers::GetAsset(&cue, "SoundCue'/Game/_Project/Sounds/battle01_Cue.battle01_Cue'");
+	BGMs.Add(cue);
+	CHelpers::GetAsset(&cue, "SoundCue'/Game/_Project/Sounds/battle02_Cue.battle02_Cue'");
+	BGMs.Add(cue);
+
+	Audio = UGameplayStatics::CreateSound2D(GetWorld(), BGMs[UKismetMathLibrary::RandomIntegerInRange(0, BGMs.Num() - 1)]);
+}
+
+void ACStoryGameMode::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+
+	if(NewPlayer->GetPawn() != nullptr)
+		NewPlayer->GetPawn()->DetachFromControllerPendingDestroy();
+
+	FVector position = FVector(6800, 1400, 300);
+	//APawn* newunit = Cast<APawn>(GetWorld()->SpawnActor(PlayerCharacterClass[playercharacterindex++], &position));
+	APawn* newunit = Cast<APawn>(GetWorld()->SpawnActor(PlayerCharacterClass[2], &position));
+
+	NewPlayer->Possess(newunit);
 }
 
 void ACStoryGameMode::BeginPlay()
@@ -114,6 +144,9 @@ void ACStoryGameMode::StartNextRound()
 	}
 	
 	RoundWave();
+
+	//Audio->SetSound(BGMs[UKismetMathLibrary::RandomIntegerInRange(0, BGMs.Num() - 1)]);
+	//Audio->SetActive(true);
 }
 
 void ACStoryGameMode::SpawnMonster()
@@ -194,5 +227,6 @@ void ACStoryGameMode::DecreaseRoundCount()
 			GameClear();
 
 		bStarted = true;
+		Audio->Stop();
 	}
 }
