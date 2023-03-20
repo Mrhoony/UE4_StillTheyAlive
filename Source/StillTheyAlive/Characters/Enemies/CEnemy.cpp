@@ -10,18 +10,17 @@
 #include "Core/GameModes/CStoryGameMode.h"
 #include "Core/GameModes/CPlayGameMode.h"
 #include "Characters/Enemies/CAIController.h"
-#include "Characters/Players/CUltimate.h"
 
 #include "Components/WidgetComponent.h"
 #include "Widgets/CUserWidget_Health.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Perk/ActionData/CThrow.h"
+#include "Characters/Players/CUltimate.h"
 
 
 ACEnemy::ACEnemy()
 {
 	CHelpers::CreateActorComponent(this, &Dissolve, "Dissolve");
-	CHelpers::GetClass<ACUltimate>(&SpawnUltimate, "Blueprint'/Game/_Project/Perks/BP_CUltimate.BP_CUltimate_C'");
 }
 
 void ACEnemy::BeginPlay()
@@ -59,16 +58,17 @@ void ACEnemy::Dead()
 	//All Weapon Collision Disable
 	Deck->Dead();
 
-	FVector location = (GetActorForwardVector() + GetActorUpVector() + GetActorRightVector()) * 300;
-	location.Rotation();
 
-	for (int32 i = 1; i < 4; i++)
-	{
-		location * i;
-		ACUltimate* ultimate = GetWorld()->SpawnActorDeferred<ACUltimate>(SpawnUltimate, GetActorTransform());
-		ultimate->SetDirection(location);
-		UGameplayStatics::FinishSpawningActor(ultimate, GetActorTransform());
-	}
+	//FVector location = (GetActorForwardVector() + GetActorUpVector() + GetActorRightVector()) * 300;
+	//location.Rotation();
+	//
+	//for (int32 i = 1; i < 4; i++)
+	//{
+	//	location * i;
+	//	ACUltimate* ultimate = GetWorld()->SpawnActorDeferred<ACUltimate>(SpawnUltimate, GetActorTransform());
+	//	ultimate->SetDirection(location);
+	//	UGameplayStatics::FinishSpawningActor(ultimate, GetActorTransform());
+	//}
 
 	Dissolve->Play();
 
@@ -83,6 +83,7 @@ void ACEnemy::Dead()
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
 	Dissolve->Play();
+
 
 	//End_Dead
 	UKismetSystemLibrary::K2_SetTimer(this, "End_Dead", 3.f, false);
@@ -99,6 +100,7 @@ void ACEnemy::End_Dead()
 
 float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
+	
 	DamageValue = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 	Causer = DamageCauser;
 	if(EventInstigator != nullptr)
@@ -114,13 +116,19 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 		Status->DecreaseHealth(DamageValue);
 	}
 
+	UCUserWidget_Health* healthWidgetObject = Cast<UCUserWidget_Health>(HealthWidget->GetUserWidgetObject());
+	if (!!healthWidgetObject)
+	{
+		healthWidgetObject->SetVisibility(ESlateVisibility::Visible);
+		healthWidgetObject->Update(Status->GetHealth(), Status->GetMaxHealth());
+	}
+
 	if (Status->GetHealth() <= 0.f)
 	{
 		State->SetDead();
 		return DamageValue;
 	}
 
-	HealthBar->Update(Status->GetHealth(), Status->GetMaxHealth());
 	//State->SetHit();
 
 	return DamageValue;

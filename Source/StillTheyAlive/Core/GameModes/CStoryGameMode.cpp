@@ -10,19 +10,49 @@
 #include "Characters/Players/CPlayer.h"
 
 #include "Engine/DataTable.h"
+#include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
 
 ACStoryGameMode::ACStoryGameMode()
 {
 	//CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/BP_CPlayer.BP_CPlayer_C'");
 	//CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/Belica/BP_Belica.BP_Belica_C'");
-	CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/Phase/BP_Phase.BP_Phase_C'");
+	//CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/Phase/BP_Phase.BP_Phase_C'");
 	//CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/Yin/BP_Yin.BP_Yin_C'");
+
+	DefaultPawnClass = nullptr;
+
+	CHelpers::GetClass<APawn>(&PlayerCharacterClass[0], "Blueprint'/Game/_Project/Characters/Players/Belica/BP_Belica.BP_Belica_C'");
+	CHelpers::GetClass<APawn>(&PlayerCharacterClass[1], "Blueprint'/Game/_Project/Characters/Players/Phase/BP_Phase.BP_Phase_C'");
+	CHelpers::GetClass<APawn>(&PlayerCharacterClass[2], "Blueprint'/Game/_Project/Characters/Players/Yin/BP_Yin.BP_Yin_C'");
+
+	USoundCue* cue;
+	CHelpers::GetAsset(&cue, "SoundCue'/Game/_Project/Sounds/battle01_Cue.battle01_Cue'");
+	BGMs.Add(cue);
+	CHelpers::GetAsset(&cue, "SoundCue'/Game/_Project/Sounds/battle02_Cue.battle02_Cue'");
+	BGMs.Add(cue);
+
+	Audio = UGameplayStatics::CreateSound2D(GetWorld(), BGMs[UKismetMathLibrary::RandomIntegerInRange(0, BGMs.Num() - 1)]);
+}
+
+void ACStoryGameMode::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+
+	if(NewPlayer->GetPawn() != nullptr)
+		NewPlayer->GetPawn()->DetachFromControllerPendingDestroy();
+
+	FVector position = FVector(6800, 1400, 300);
+	APawn* newunit = Cast<APawn>(GetWorld()->SpawnActor(PlayerCharacterClass[playercharacterindex++], &position));
+	//APawn* newunit = Cast<APawn>(GetWorld()->SpawnActor(PlayerCharacterClass[2], &position));
+
+	NewPlayer->Possess(newunit);
+
 }
 
 void ACStoryGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-
 	// Find & Save SpawnPoints
 	TArray<AActor*> actors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACSpawnPoint::StaticClass(), actors);
@@ -116,6 +146,9 @@ void ACStoryGameMode::StartNextRound()
 	}
 	
 	RoundWave();
+
+	//Audio->SetSound(BGMs[UKismetMathLibrary::RandomIntegerInRange(0, BGMs.Num() - 1)]);
+	//Audio->SetActive(true);
 }
 
 void ACStoryGameMode::SpawnMonster()
@@ -137,16 +170,10 @@ void ACStoryGameMode::GameClear()
 void ACStoryGameMode::BossRound()
 {
 	TArray<AActor*> actors;
-	FVector bosslocation;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ABossSpawn::StaticClass(), actors);
-	bosslocation = actors[0]->GetActorLocation();
-	actors.Empty();
-	actors.Shrink();
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACPlayer::StaticClass(), actors);
 	for (AActor* actor : actors)
 	{
-		FVector location = UKismetMathLibrary::RandomUnitVectorInConeInRadians(bosslocation, 500.f);
-		actor->SetActorLocation(location);
+		actor->SetActorLocation(FVector(-61230, -9410, 260));
 	}
 }
 
@@ -208,9 +235,10 @@ void ACStoryGameMode::DecreaseRoundCount()
 	if (RoundAmount == 0)
 	{
 		CurrentRound++;
-		if (CurrentRound == 5)
+		if (CurrentRound == 2)
 			BossRound();
 
 		bStarted = true;
+		Audio->Stop();
 	}
 }

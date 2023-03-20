@@ -21,7 +21,7 @@ void ACLobbyGameMode::PostLogin(APlayerController* NewPlayer)
 		ACPlayerState* State = Cast<ACPlayerState>(player->GetPlayerState());
 		State->SetPlayerNum(PlayerNum);
 	}
-	if (PlayerNum >= 2)
+	if (PlayerNum >= 3)
 		GetWorldTimerManager().SetTimer(GameStartTimer, this, &ACLobbyGameMode::StartGame, 10);
 }
 
