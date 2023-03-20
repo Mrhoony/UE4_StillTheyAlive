@@ -5,14 +5,17 @@
 #include "Components/SphereComponent.h"
 #include "Characters/Enemies/BossThrowStone.h"
 #include "Characters/Enemies/BossFallingStone.h"
+#include "Characters/Enemies/BossFloor.h"
 #include "Characters/Enemies/CAIController.h"
 #include "Characters/Players/CPlayer.h"
+#include "Core/GameModes/CStoryGameMode.h"
 
 ACEnemy_Boss::ACEnemy_Boss()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	CHelpers::GetClass<ABossThrowStone>(&ThrowStone, "Blueprint'/Game/_Project/Blueprints/BP_BossThrowStone.BP_BossThrowStone_C'");
 	CHelpers::GetClass<ABossFallingStone>(&FallingStone, "Blueprint'/Game/_Project/Blueprints/BP_BossFallingStone.BP_BossFallingStone_C'");
+	CHelpers::GetClass<ABossFloor>(&BossFloor, "Blueprint'/Game/_Project/Blueprints/BP_BossFloor.BP_BossFloor_C'");
 	CHelpers::CreateSceneComponent(this, &Sphere, "Sphere", GetMesh());
 	CT_RangeAttack = MAXCT_RangeAttack;
 	CT_Skill = MAXCT_Skill;
@@ -64,6 +67,14 @@ void ACEnemy_Boss::Tick(float DeltaTime)
 	}
 }
 
+void ACEnemy_Boss::Dead()
+{
+	Super::Dead();
+	ACStoryGameMode* gameMode = Cast<ACStoryGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (!!gameMode)
+		gameMode->GameClear();
+}
+
 void ACEnemy_Boss::BeginAttack()
 {
 	Sphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
@@ -102,6 +113,16 @@ void ACEnemy_Boss::PlaySkill2_Implementation()
 	CT_Skill2 = MAXCT_Skill2;
 	State->SetAction();
 	PlayAnimMontage(Skill2);
+}
+
+void ACEnemy_Boss::BeginSkill2()
+{
+	FVector location = GetActorLocation() + GetActorForwardVector() * 500;
+	FActorSpawnParameters spawn;
+	spawn.Owner = this;
+	FTransform transform;
+	transform.SetLocation(location);
+	ABossFloor* stone = Cast<ABossFloor>(GetWorld()->SpawnActor(BossFloor, &transform, spawn));
 }
 
 void ACEnemy_Boss::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

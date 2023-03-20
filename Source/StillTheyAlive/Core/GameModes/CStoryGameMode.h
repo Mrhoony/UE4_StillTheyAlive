@@ -44,7 +44,7 @@ public:
 	FORCEINLINE int32 GetMoney() const { return Money; }
 	FORCEINLINE int32 GetLife() const { return Life; }
 
-
+	void GameClear();
 private:
 	UFUNCTION()
 	void SpawnMonster();
@@ -56,7 +56,7 @@ private:
 	void OpenDoor();
 private:
 	void RoundWave();
-	void GameClear();
+	void BossRound();
 
 	TArray<FSpawnData*> CurrentRoundDatas();
 public:

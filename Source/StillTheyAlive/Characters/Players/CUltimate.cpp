@@ -17,8 +17,6 @@ ACUltimate::ACUltimate()
 
 	CHelpers::CreateSceneComponent(this, &Sphere, "Sphere", Mesh);
 	CHelpers::CreateSceneComponent(this, &Particle, "Particle", Mesh);
-
-	Mesh->SetSimulatePhysics(true);
 }
 
 void ACUltimate::BeginPlay()

@@ -2,6 +2,7 @@
 #include "Global.h"
 
 #include "Core/CGameInstance.h"
+#include "Core/BossSpawn.h"
 #include "Characters/Enemies/CEnemy.h"
 #include "Maps/CSpawnPoint.h"
 #include "Maps/CGoalPoint.h"
@@ -85,6 +86,7 @@ void ACStoryGameMode::DecreaseLifes()
 		APlayerController* controller = world->GetFirstPlayerController();
 		CheckNull(controller);
 
+		
 		controller->ConsoleCommand("Quit");
 	}
 }
@@ -130,6 +132,22 @@ void ACStoryGameMode::GameClear()
 	if (!!player)
 		player->PlayGameMessage("Game Clear!!");
 	
+}
+
+void ACStoryGameMode::BossRound()
+{
+	TArray<AActor*> actors;
+	FVector bosslocation;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ABossSpawn::StaticClass(), actors);
+	bosslocation = actors[0]->GetActorLocation();
+	actors.Empty();
+	actors.Shrink();
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACPlayer::StaticClass(), actors);
+	for (AActor* actor : actors)
+	{
+		FVector location = UKismetMathLibrary::RandomUnitVectorInConeInRadians(bosslocation, 500.f);
+		actor->SetActorLocation(location);
+	}
 }
 
 void ACStoryGameMode::OpenDoor_Implementation()
@@ -191,7 +209,7 @@ void ACStoryGameMode::DecreaseRoundCount()
 	{
 		CurrentRound++;
 		if (CurrentRound == 5)
-			GameClear();
+			BossRound();
 
 		bStarted = true;
 	}
