@@ -15,6 +15,7 @@
 #include "Widgets/CUserWidget_Health.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Perk/ActionData/CThrow.h"
+#include "Characters/Players/CUltimate.h"
 
 
 ACEnemy::ACEnemy()
