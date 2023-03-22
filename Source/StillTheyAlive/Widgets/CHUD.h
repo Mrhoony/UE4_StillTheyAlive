@@ -15,7 +15,10 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 		class UPanelWidget* Slot_Status;
-
+	
 	UPROPERTY(meta = (BindWidget))
 		class UPanelWidget* Slot_Message;
+
+	UPROPERTY(meta = (BindWidget))
+		class UPanelWidget* Slot_BossHealth;
 };

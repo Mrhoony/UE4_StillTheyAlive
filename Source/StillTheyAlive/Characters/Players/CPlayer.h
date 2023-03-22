@@ -40,6 +40,7 @@ public:
 	virtual FGenericTeamId GetGenericTeamId() const override;
 
 	void PlayGameMessage(const FString& InMessage);
+	void OnBossHealth(class UBossHealth* health);
 private:
 	// Axis Mapping
 	void OnMoveForward(float InAxis);

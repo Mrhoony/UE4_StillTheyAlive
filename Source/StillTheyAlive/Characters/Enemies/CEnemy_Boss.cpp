@@ -1,6 +1,7 @@
 #include "CEnemy_Boss.h"
 #include "Global.h"
 #include "Components/CStateComponent.h"
+#include "Components/CStatusComponent.h"
 #include "Components/CBehaviorComponent.h"
 #include "Components/SphereComponent.h"
 #include "Characters/Enemies/BossThrowStone.h"
@@ -9,6 +10,14 @@
 #include "Characters/Enemies/CAIController.h"
 #include "Characters/Players/CPlayer.h"
 #include "Core/GameModes/CStoryGameMode.h"
+#include "Net/UnrealNetwork.h"
+#include "Widgets/BossHealth.h"
+
+void ACEnemy_Boss::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ACEnemy_Boss, TargetLocation);
+}
 
 ACEnemy_Boss::ACEnemy_Boss()
 {
@@ -16,6 +25,7 @@ ACEnemy_Boss::ACEnemy_Boss()
 	CHelpers::GetClass<ABossThrowStone>(&ThrowStone, "Blueprint'/Game/_Project/Blueprints/BP_BossThrowStone.BP_BossThrowStone_C'");
 	CHelpers::GetClass<ABossFallingStone>(&FallingStone, "Blueprint'/Game/_Project/Blueprints/BP_BossFallingStone.BP_BossFallingStone_C'");
 	CHelpers::GetClass<ABossFloor>(&BossFloor, "Blueprint'/Game/_Project/Blueprints/BP_BossFloor.BP_BossFloor_C'");
+	CHelpers::GetClass<UBossHealth>(&HealthWidgetClass, "WidgetBlueprint'/Game/_Project/Widgets/WB_Boss.WB_Boss_C'");
 	CHelpers::CreateSceneComponent(this, &Sphere, "Sphere", GetMesh());
 	CT_RangeAttack = MAXCT_RangeAttack;
 	CT_Skill = MAXCT_Skill;
@@ -30,6 +40,10 @@ void ACEnemy_Boss::BeginPlay()
 	ACAIController* controller = Cast<ACAIController>(GetController());
 	if (!!controller)
 		Behavior = CHelpers::GetComponent<UCBehaviorComponent>(controller);
+	
+	BossHealth = Cast<UBossHealth>(CreateWidget(UGameplayStatics::GetPlayerController(GetWorld(), 0), HealthWidgetClass));
+	BossHealth->AddToViewport();
+	BossHealth->UpdateBoss(Status->GetHealth(), Status->GetMaxHealth());
 }
 
 void ACEnemy_Boss::Tick(float DeltaTime)
@@ -75,6 +89,25 @@ void ACEnemy_Boss::Dead()
 		gameMode->GameClear();
 }
 
+float ACEnemy_Boss::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	DamageValue = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+	Causer = DamageCauser;
+	if (EventInstigator != nullptr)
+		Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
+
+	Status->DecreaseHealth(DamageValue);
+	BossHealth->UpdateBoss(Status->GetHealth(), Status->GetMaxHealth());
+
+	if (Status->GetHealth() <= 0.f)
+	{
+		State->SetDead();
+		return DamageValue;
+	}
+
+	return DamageValue;
+}
+
 void ACEnemy_Boss::BeginAttack()
 {
 	Sphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
@@ -117,12 +150,12 @@ void ACEnemy_Boss::PlaySkill2_Implementation()
 
 void ACEnemy_Boss::BeginSkill2()
 {
-	FVector location = GetActorLocation() + GetActorForwardVector() * 500;
+	FVector location = GetActorLocation() - FVector(0,0,88) * 3;
 	FActorSpawnParameters spawn;
 	spawn.Owner = this;
 	FTransform transform;
 	transform.SetLocation(location);
-	ABossFloor* stone = Cast<ABossFloor>(GetWorld()->SpawnActor(BossFloor, &transform, spawn));
+	GetWorld()->SpawnActor(BossFloor, &transform, spawn);
 }
 
 void ACEnemy_Boss::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -136,17 +169,20 @@ void ACEnemy_Boss::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedCompon
 	}
 }
 
-void ACEnemy_Boss::BeginRangeAttack()
+void ACEnemy_Boss::BeginRangeAttack_Implementation()
 {
 	FActorSpawnParameters spawn;
 	spawn.Owner = this;
-	if (Behavior->GetTarget() == nullptr) return;
-		FVector location = Behavior->GetTarget()->GetActorLocation();
+	if (!!Behavior)
+	{
+		if (Behavior->GetTarget() == nullptr) return;
+		TargetLocation = Behavior->GetTarget()->GetActorLocation();
+	}
 	FTransform transform;
-	transform.SetLocation(GetActorLocation());
+	transform.SetLocation(GetMesh()->GetSocketLocation("Throw_Stone"));
 	ABossThrowStone* stone = Cast<ABossThrowStone>(GetWorld()->SpawnActor(ThrowStone, &transform, spawn));
 	stone->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepWorldTransform, "Throw_Stone");
-	stone->Throw(location);
+	stone->Throw(TargetLocation);
 }
 void ACEnemy_Boss::BeginSkill()
 {

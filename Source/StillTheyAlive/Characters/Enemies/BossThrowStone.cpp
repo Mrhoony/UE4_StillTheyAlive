@@ -28,12 +28,18 @@ void ABossThrowStone::BeginPlay()
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
 }
 
-void ABossThrowStone::Throw(FVector Location)
+void ABossThrowStone::OnThrow()
 {
 	Sphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	Projectile->Velocity = (Location - GetActorLocation()) * 10;
 	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	Projectile->Velocity = (TargetLocation - GetActorLocation()) * 10;
 	Projectile->Activate();
+}
+
+void ABossThrowStone::Throw(FVector Location)
+{
+	TargetLocation = Location;
+	UKismetSystemLibrary::K2_SetTimer(this, "OnThrow", 1.2f, false);
 }
 
 void ABossThrowStone::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

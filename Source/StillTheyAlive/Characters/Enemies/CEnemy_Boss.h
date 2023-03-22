@@ -19,6 +19,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void Dead() override;
 
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
 	FORCEINLINE bool IsRangeAttack() { return bRangeAttack; }
 	FORCEINLINE bool IsSkill() { return bSkill; }
 	FORCEINLINE bool IsSkill2() { return bSkill2; }
@@ -27,6 +29,7 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 		void PlayRangeAttack();
 		void PlayRangeAttack_Implementation();
+		UFUNCTION(NetMulticast, Reliable)
 		void BeginRangeAttack();
 
 	UFUNCTION(NetMulticast, Reliable)
@@ -58,7 +61,7 @@ private:
 	bool bSkill = false;
 
 	UPROPERTY(EditAnywhere)
-	float MAXCT_Skill2 = 30.f;
+	float MAXCT_Skill2 = 25.f;
 	float CT_Skill2;
 	bool bSkill2 = false;
 
@@ -77,4 +80,9 @@ private:
 	TSubclassOf<class ABossThrowStone> ThrowStone;
 	TSubclassOf<class ABossFallingStone> FallingStone;
 	TSubclassOf<class ABossFloor> BossFloor;
+	UPROPERTY(Replicated)
+	FVector TargetLocation;
+	TSubclassOf<class UBossHealth> HealthWidgetClass;
+public:
+	class UBossHealth* BossHealth;
 };
