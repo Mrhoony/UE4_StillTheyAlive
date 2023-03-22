@@ -23,6 +23,8 @@ private:
 	UFUNCTION()
 		void OnComponentEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	UFUNCTION()
+	void OnThrow();
 private:
 	UPROPERTY(EditDefaultsOnly)
 		class UParticleSystem* ImpactParticle;
@@ -37,4 +39,5 @@ private:
 		class UProjectileMovementComponent* Projectile;
 
 	class ACharacter* OwnerCharacter;
+	FVector TargetLocation;
 };

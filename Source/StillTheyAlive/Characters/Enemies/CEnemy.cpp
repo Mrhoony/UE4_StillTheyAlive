@@ -51,7 +51,7 @@ void ACEnemy::Hitted()
 void ACEnemy::Dead()
 {
 	CheckFalse(State->IsDead());
-
+	isDead = true;
 	//NameWidget->SetVisibility(false);
 	HealthWidget->SetVisibility(false);
 
@@ -125,6 +125,7 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 
 	if (Status->GetHealth() <= 0.f)
 	{
+		if (isDead == true) return DamageValue;
 		State->SetDead();
 		return DamageValue;
 	}

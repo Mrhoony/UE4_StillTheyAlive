@@ -13,6 +13,7 @@
 #include "Widgets/CUserWidget_GameMessage.h"
 #include "Widgets/CHUD.h"
 #include "Widgets/CUserWidget_PlayerStatus.h"
+#include "Widgets/BossHealth.h"
 
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -231,4 +232,10 @@ void ACPlayer::PlayGameMessage(const FString& InMessage)
 	GameMessage = Cast<UCUserWidget_GameMessage>(CreateWidget(playerController, MessageWidgetClass));
 	HUD->Slot_Message->AddChild(GameMessage);
 	GameMessage->StartMessage(InMessage);
+}
+
+void ACPlayer::OnBossHealth(UBossHealth* health)
+{
+		HUD->Slot_BossHealth->AddChild(health);
+		health->SetVisibility(ESlateVisibility::Visible);
 }

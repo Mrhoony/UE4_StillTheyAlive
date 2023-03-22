@@ -4,10 +4,12 @@
 #include "Core/CGameInstance.h"
 #include "Core/BossSpawn.h"
 #include "Characters/Enemies/CEnemy.h"
+#include "Characters/Enemies/CEnemy_Boss.h"
 #include "Maps/CSpawnPoint.h"
 #include "Maps/CGoalPoint.h"
 #include "Maps/StartDoor.h"
 #include "Characters/Players/CPlayer.h"
+#include "Widgets/BossHealth.h"
 
 #include "Engine/DataTable.h"
 #include "Sound/SoundCue.h"
@@ -171,6 +173,17 @@ void ACStoryGameMode::BossRound()
 {
 	TArray<AActor*> actors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACPlayer::StaticClass(), actors);
+
+	TArray<AActor*> boss;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACEnemy_Boss::StaticClass(), boss);
+
+	ACEnemy_Boss* Boss = Cast<ACEnemy_Boss>(boss[0]);
+	UBossHealth* bosshealth = Boss->BossHealth;
+
+	ACPlayer* player = Cast<ACPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	if (!!player)
+		player->OnBossHealth(bosshealth);
+
 	for (AActor* actor : actors)
 	{
 		actor->SetActorLocation(FVector(-61230, -9410, 260));
