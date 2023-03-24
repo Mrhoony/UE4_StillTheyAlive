@@ -24,6 +24,7 @@ public:
 	FORCEINLINE bool IsRangeAttack() { return bRangeAttack; }
 	FORCEINLINE bool IsSkill() { return bSkill; }
 	FORCEINLINE bool IsSkill2() { return bSkill2; }
+	FORCEINLINE bool IsSkill3() { return Page2; }
 
 
 	UFUNCTION(NetMulticast, Reliable)
@@ -41,10 +42,22 @@ public:
 		void PlaySkill2();
 		void PlaySkill2_Implementation();
 		void BeginSkill2();
+	UFUNCTION(NetMulticast, Reliable)
+		void Page2Skill();
+		void Page2Skill_Implementation();
+	UFUNCTION()
+		void BeginPage2Skill();
+	UFUNCTION()
+		void TimerSkill();
+	UFUNCTION()
+		void TimerEndSkill();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void PlayAttack();
+	void PlayAttack_Implementation();
 
 	void BeginAttack();
 	void EndAttack();
-	void PlayAttack();
 private:
 	UFUNCTION()
 		void OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -65,6 +78,10 @@ private:
 	float CT_Skill2;
 	bool bSkill2 = false;
 
+	float MAXCT_Skill3 = 45.f;
+	float CT_Skill3;
+	bool Page2 = false;
+
 	UPROPERTY(EditAnywhere)
 		UAnimMontage* Attack;
 	UPROPERTY(EditAnywhere)
@@ -73,6 +90,8 @@ private:
 		UAnimMontage* Skill1;
 	UPROPERTY(EditAnywhere)
 		UAnimMontage* Skill2;
+	UPROPERTY(EditAnywhere)
+		UAnimMontage* Skill3;
 	UPROPERTY(VisibleDefaultsOnly)
 		class USphereComponent* Sphere;
 

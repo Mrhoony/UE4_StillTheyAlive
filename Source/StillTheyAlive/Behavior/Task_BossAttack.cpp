@@ -19,6 +19,7 @@ EBTNodeResult::Type UTask_BossAttack::ExecuteTask(UBehaviorTreeComponent& OwnerC
 	UCStateComponent* state = CHelpers::GetComponent<UCStateComponent>(aiPawn);
 	if (state->IsIdle())
 	{
+		state->SetAction();
 		aiPawn->PlayAttack();
 		return EBTNodeResult::InProgress;
 	}

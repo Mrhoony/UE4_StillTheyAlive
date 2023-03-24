@@ -46,7 +46,7 @@ void UCBTService_Spawn::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 
 	float distane = aiPawn->GetDistanceTo(target);
 
-	if (distane < controller->GetBehaviorRange())
+	if (distane < 150.f)
 	{
 		behavior->SetActionMode();
 		

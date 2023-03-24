@@ -30,6 +30,7 @@ ACEnemy_Boss::ACEnemy_Boss()
 	CT_RangeAttack = MAXCT_RangeAttack;
 	CT_Skill = MAXCT_Skill;
 	CT_Skill2 = MAXCT_Skill2;
+	CT_Skill3 = MAXCT_Skill3;
 	Sphere->OnComponentBeginOverlap.AddDynamic(this, &ACEnemy_Boss::OnComponentBeginOverlap);
 	Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
@@ -79,6 +80,19 @@ void ACEnemy_Boss::Tick(float DeltaTime)
 			bSkill2 = true;
 		}
 	}
+
+	if (Page2 == false)
+	{
+		CT_Skill3 -= DeltaTime;
+		if (CT_Skill3 <= 0.f)
+		{
+			CT_Skill3 = 0.f;
+			if (Status->GetHealth() / Status->GetMaxHealth() <= 0.5f)
+			{
+				Page2 = true;
+			}
+		}
+	}
 }
 
 void ACEnemy_Boss::Dead()
@@ -104,8 +118,24 @@ float ACEnemy_Boss::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AC
 		State->SetDead();
 		return DamageValue;
 	}
-
+	
 	return DamageValue;
+
+}
+
+void ACEnemy_Boss::Page2Skill_Implementation()
+{
+	Page2 = false;
+	State->SetAction();
+	PlayAnimMontage(Skill3);
+}
+
+void ACEnemy_Boss::BeginPage2Skill()
+{
+	UKismetSystemLibrary::K2_SetTimer(this, "TimerSkill", 0.05f, true);
+	FTimerDynamicDelegate timer;
+	timer.BindUFunction(this, "TimerEndSkill");
+	UKismetSystemLibrary::K2_SetTimerDelegate(timer, 5.f, false);
 }
 
 void ACEnemy_Boss::BeginAttack()
@@ -118,10 +148,26 @@ void ACEnemy_Boss::EndAttack()
 	Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
-void ACEnemy_Boss::PlayAttack()
+void ACEnemy_Boss::PlayAttack_Implementation()
 {
 	State->SetAction();
 	PlayAnimMontage(Attack);
+}
+
+void ACEnemy_Boss::TimerSkill()
+{
+	FVector location = UKismetMathLibrary::RandomPointInBoundingBox(GetActorLocation(), FVector(3000, 3000, 0));
+	location += FVector(0, 0, 800);
+	FActorSpawnParameters spawn;
+	spawn.Owner = this;
+	FTransform transform;
+	transform.SetLocation(location);
+	GetWorld()->SpawnActor(FallingStone, &transform, spawn);
+}
+
+void ACEnemy_Boss::TimerEndSkill()
+{
+	UKismetSystemLibrary::K2_ClearTimer(this, "TimerSkill");
 }
 
 void ACEnemy_Boss::PlayRangeAttack_Implementation()

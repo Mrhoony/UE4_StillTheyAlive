@@ -59,6 +59,7 @@ float ACSpawnCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent
 {
 	DamageValue = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 	Causer = DamageCauser;
+	if(!!EventInstigator)
 	Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
 
 	Status->DecreaseHealth(DamageValue);

@@ -20,6 +20,7 @@ EBTNodeResult::Type UTask_BossSkill1::ExecuteTask(UBehaviorTreeComponent& OwnerC
 
 	if (state->IsIdle())
 	{
+		state->SetAction();
 		aiPawn->PlaySkill();
 			return EBTNodeResult::InProgress;
 	}

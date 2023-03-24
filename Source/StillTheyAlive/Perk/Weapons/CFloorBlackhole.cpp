@@ -78,7 +78,7 @@ void ACFloorBlackhole::DamageAction()
 			direction.Normalize();
 
 			enemy->GetCharacterMovement()->StopMovementImmediately();
-			enemy->LaunchCharacter(direction * techdata[0].Power * 100, true, false);
+			enemy->LaunchCharacter(direction * techdata[0].Power * 30, true, false);
 
 			UParticleSystem* hitEffect = techdata[0].Effect;
 			if (!!hitEffect)

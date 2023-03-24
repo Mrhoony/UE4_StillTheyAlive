@@ -6,6 +6,7 @@
 #include "Characters/Enemies/CAIController.h"
 #include "Components/CBehaviorComponent.h"
 #include "Components/CStateComponent.h"
+#include "Components/CStatusComponent.h"
 
 #include "GameFrameWork/Character.h"
 
@@ -24,6 +25,7 @@ void UBTService_Boss::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 	CheckNull(behavior);
 	ACEnemy_Boss* aiPawn = Cast<ACEnemy_Boss>(controller->GetPawn());
 	UCStateComponent* state = CHelpers::GetComponent<UCStateComponent>(aiPawn);
+	UCStatusComponent* status = CHelpers::GetComponent<UCStatusComponent>(aiPawn);
 
 	/*if (state->IsHit())
 	{
@@ -37,6 +39,12 @@ void UBTService_Boss::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 		controller->K2_ClearFocus();
 
 		behavior->SetWaitMode();
+		return;
+	}
+
+	if (aiPawn->IsSkill3())
+	{
+		behavior->Set2PageMode();
 		return;
 	}
 
@@ -66,7 +74,13 @@ void UBTService_Boss::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 			return;
 		}
 		
-		behavior->SetApproachMode();
+		if (state->IsIdle())
+		{
+			behavior->SetApproachMode();
+			return;
+		}
+
+		behavior->SetWaitMode();
 		return;
 	}
 }

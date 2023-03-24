@@ -19,6 +19,7 @@ EBTNodeResult::Type UTask_BossSkill2::ExecuteTask(UBehaviorTreeComponent& OwnerC
 	UCStateComponent* state = CHelpers::GetComponent<UCStateComponent>(aiPawn);
 	if (state->IsIdle())
 	{
+		state->SetAction();
 		aiPawn->PlaySkill2();
 		return EBTNodeResult::InProgress;
 	}

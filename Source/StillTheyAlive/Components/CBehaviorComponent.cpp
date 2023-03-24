@@ -34,6 +34,7 @@ bool UCBehaviorComponent::IsReturnMode()	{	return GetType() == EBehaviorType::Re
 bool UCBehaviorComponent::IsRangeAttackMode(){	return GetType() == EBehaviorType::RangeAttack;	}
 bool UCBehaviorComponent::IsSkillMode(){	return GetType() == EBehaviorType::Skill;	}
 bool UCBehaviorComponent::IsSkill2Mode(){	return GetType() == EBehaviorType::Skill2;	}
+bool UCBehaviorComponent::Is2PageMode(){	return GetType() == EBehaviorType::Page2;	}
 void UCBehaviorComponent::SetWaitMode()		{	ChangeType(EBehaviorType::Wait);			}
 void UCBehaviorComponent::SetApproachMode()	{	ChangeType(EBehaviorType::Approach);		}
 void UCBehaviorComponent::SetActionMode()	{	ChangeType(EBehaviorType::Action);			}
@@ -43,6 +44,7 @@ void UCBehaviorComponent::SetReturnMode()	{	ChangeType(EBehaviorType::Return);		
 void UCBehaviorComponent::SetRangeAttackMode() {	ChangeType(EBehaviorType::RangeAttack);	}
 void UCBehaviorComponent::SetSkillMode() {	ChangeType(EBehaviorType::Skill);	}
 void UCBehaviorComponent::SetSkill2Mode() {	ChangeType(EBehaviorType::Skill2);	}
+void UCBehaviorComponent::Set2PageMode() {	ChangeType(EBehaviorType::Page2);	}
 
 ACharacter* UCBehaviorComponent::GetTarget()
 {

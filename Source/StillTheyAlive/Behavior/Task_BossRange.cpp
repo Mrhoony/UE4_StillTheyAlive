@@ -20,6 +20,7 @@ EBTNodeResult::Type UTask_BossRange::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 
 	if (state->IsIdle())
 	{
+		state->SetAction();
 		aiPawn->PlayRangeAttack();
 		return EBTNodeResult::InProgress;
 	}
