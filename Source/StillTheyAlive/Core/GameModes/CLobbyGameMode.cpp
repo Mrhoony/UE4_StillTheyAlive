@@ -4,6 +4,8 @@
 #include "core/CPlayerState.h"
 #include "Characters/Players/CPlayer.h"
 
+#define NeedPlayerToStart 2
+
 ACLobbyGameMode::ACLobbyGameMode()
 {
 	CHelpers::GetClass<APawn>(&DefaultPawnClass, "Blueprint'/Game/_Project/Characters/Players/BP_CPlayer.BP_CPlayer_C'");
@@ -21,7 +23,7 @@ void ACLobbyGameMode::PostLogin(APlayerController* NewPlayer)
 		ACPlayerState* State = Cast<ACPlayerState>(player->GetPlayerState());
 		State->SetPlayerNum(PlayerNum);
 	}
-	if (PlayerNum >= 3)
+	if (PlayerNum >= NeedPlayerToStart)
 		GetWorldTimerManager().SetTimer(GameStartTimer, this, &ACLobbyGameMode::StartGame, 10);
 }
 
