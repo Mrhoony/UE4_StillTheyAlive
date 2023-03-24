@@ -104,7 +104,7 @@ void UCGameInstance::RefreshServerList()
 	SessionSearch = MakeShareable(new FOnlineSessionSearch());
 	if (SessionSearch.IsValid())
 	{
-		SessionSearch->bIsLanQuery = true;
+		//SessionSearch->bIsLanQuery = true;
 		SessionSearch->MaxSearchResults = 4;
 		SessionSearch->QuerySettings.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals); 
 		UE_LOG(LogTemp, Error, TEXT("Start Find Sessions"));
