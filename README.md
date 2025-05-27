@@ -5,12 +5,18 @@ UE4 [3D, CO-OP] C++Game TeamProject
 - 엔진 : Unreal Engine 4.25
 - 에디터 : Microsoft Visual Studio Community 2019
 - 제작기간 : 2023. 1. 28 ~ 2023. 3.18 (약 7주)
-- 개발규모 : 3인개발
+- 개발규모 : 3인
 
 # 프로젝트 계획
 <a href="https://docs.google.com/presentation/d/1qh6l1qLla1Th_4UJXmsGReylD32ysylcZVOdDvgpvtI/edit?usp=sharing" target="_blank">게임 제작계획 (구글 프레젠테이션)</a>
 
+<a href="https://docs.google.com/spreadsheets/d/1I4Y8p5T8Re1ahrjKONNNA9AJdRiGYTCarADWV9pq6gA/edit?usp=sharing" target="_blank">갠트차트 (구글 시트)</a>
+
+<a href="https://github.com/users/Mrhoony/projects/2" target="_blank">칸반보드 (깃 프로젝트 보드)</a>
+
 # 데모 동영상
+[![데모 동영상](https://i9.ytimg.com/vi/KV6yU9tjwCY/mqdefault.jpg?v=641d8d70&sqp=CLTp2MEG&rs=AOn4CLAexMAZaXhINByPC-bScjtEbOelBg)](https://youtu.be/KV6yU9tjwCY)
+[(클릭 시 유튜브로 이동)](https://youtu.be/KV6yU9tjwCY)
 
 # 기술 설명서
 ## Deck System
