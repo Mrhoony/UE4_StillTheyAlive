@@ -15,7 +15,8 @@ UE4 [3D, CO-OP] C++Game TeamProject
 <a href="https://github.com/users/Mrhoony/projects/2" target="_blank">칸반보드 (깃 프로젝트 보드)</a>
 
 # 데모 동영상
-[![데모 동영상](https://i9.ytimg.com/vi/KV6yU9tjwCY/mqdefault.jpg?v=641d8d70&sqp=CLTp2MEG&rs=AOn4CLAexMAZaXhINByPC-bScjtEbOelBg)](https://youtu.be/KV6yU9tjwCY)
+
+[![데모 동영상](https://github.com/user-attachments/assets/85ea3add-284f-4d9c-8e3d-8d281b0c11f6)](https://youtu.be/KV6yU9tjwCY)
 [(클릭 시 유튜브로 이동)](https://youtu.be/KV6yU9tjwCY)
 
 # 기술 설명서
